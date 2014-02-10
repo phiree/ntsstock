@@ -1,0 +1,4 @@
+autofixture  
+	generators.py 155 
+	error: length = random.randint(self.max_length / 10, self.max_length)
+	fix: length = random.randint(self.max_length % 10, self.max_length)

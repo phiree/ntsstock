@@ -1,0 +1,22 @@
+		需求概要
+	业务需求
+管理展厅货品的位置,数量,状态,进出记录以及相关供应商的账款信息
+	功能模块
+	-业务功能
+1 根据货品id,时间段,分类,位置等条件 展示货品当前库存数量或状态.
+2 货品出入库操作.记录时间,货品数量及金额明细,放置位置,来源,原因等
+3 货品清点.可以按照分类,位置等信息局部盘点.根据盘点结果生成对应的出入库单据.
+4 报表.货品位置分布图,进出记录
+
+
+		设计
+	1 类设计.
+产品						Product
+多语种产品信息			Productlanguage
+产品当前库存				ProductStock
+进出库单据				StockBill
+进出库单据详情			StockBillDetail
+盘点计划单据				CheckPlanBill
+盘点计划详单				CheckPlanBillDetail
+实际盘点单据				CheckActuralBill
+实际盘点详单				CheckActuralBillDetail
