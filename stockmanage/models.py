@@ -24,8 +24,11 @@ class Product(models.Model):
     SyncTime=DateTimeField()
     ProductCode=CharField(max_length=255)
     ModelNumber_Original=CharField(max_length=255)
+    
     class Meta:
         db_table="product"
+    def __str__(self):
+        return self.id
 
 class Productlanguage(models.Model):
     id=UUIDField(primary_key=True)
@@ -38,8 +41,12 @@ class Productlanguage(models.Model):
     Unit=CharField(max_length=255)
     Language=CharField(max_length=255)
     product=ForeignKey(Product)
+    def __str__(self):
+        return self.Name
     class Meta:
         db_table='productlanguage'
+
+
 
 
     

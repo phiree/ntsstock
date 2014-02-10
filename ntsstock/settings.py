@@ -58,12 +58,8 @@ WSGI_APPLICATION = 'ntsstock.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'ntsstock',
-        'USER':'root',
-        'PASSWORD':'',
-        'HOST':'127.0.0.1',
-        'AUTOCOMMIT':False,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.db3'),
     }
 }
 
