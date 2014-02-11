@@ -1,7 +1,7 @@
 from django.test import TestCase
 from random import choice
 from autofixture import  AutoFixture,generators
-from stockmanage.models import  Product,Productlanguage
+from stockmanage.models import  Product,Productlanguage,StockLocation,ProductStock,ProductSnapshot,ProductlanguageSnapshot
 # Create your tests here.
 class ProductMethodTests(TestCase):
     def testGetnameWithMoreThanOneLanguageVersion(self):
@@ -12,7 +12,7 @@ class ProductMethodTests(TestCase):
                                                          'Language':'en',
                                                          'theproduct':theproduct
                                                          }
-                                           ,generate_fk=True)
+                                           ,)
         theproductlanguage=fixtureProductlanguage.create(11)
         self.assertRaisesRegex(Exception, '.*',)        
         
@@ -24,14 +24,69 @@ class ProductMethodTests(TestCase):
                                                          'Language':'en',
                                                          'theproduct':theproduct
                                                          }
-                                           ,generate_fk=True)
+                                           ,)
         theproductlanguage=fixtureProductlanguage.create(1)
         self.assertTrue(theproduct.GetName('en'))
         
     def testGetnameWithNoLanguageVersion(self):
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
-       
-        self.assertRaisesRegex(Exception, '.*',)    
+        self.assertRaisesRegex(Exception, '.*',)
+    def test_make_a_snapshot(self):
+        fixtureProduct=AutoFixture(Product)
+        theproduct=fixtureProduct.create(1)[0]
+        fixtureProductlanguage=AutoFixture(Productlanguage,
+                                           field_values={
+                                                         'Language':'en',
+                                                         'theproduct':theproduct
+                                                         }
+                                           ,)
+        theproductlanguage=fixtureProductlanguage.create(5)
+        theproduct=fixtureProduct.create(1)[0]
+        theproduct.Snapshot()
         
+
+class StockLocationTest(TestCase):
+    def testLocationGetChildren(self):
+        
+        fixtureParent=AutoFixture(StockLocation)
+        locationParent=fixtureParent.create(1)[0]
+        fixture=AutoFixture(StockLocation,
+                            field_values={"ParentLocation":locationParent},
+                             generate_fk=True)
+        locations=fixture.create(5)
+        self.assertEqual(5,len( locationParent.GetChildren()))
+    
+    def testLocationGetProductStock(self):
+        
+        fixtureProduct=AutoFixture(Product)
+        theproduct=fixtureProduct.create(1)[0]
+        fixtureProductlanguage=AutoFixture(Productlanguage,
+                                           field_values={
+                                                         'Language':'en',
+                                                         'theproduct':theproduct
+                                                         }
+                                           ,)
+        theproductlanguage=fixtureProductlanguage.create(1)
+        
+        fixturelocation=AutoFixture(StockLocation,generate_fk=True)
+        locations=fixturelocation.create(5)
+        fixturestock=AutoFixture(ProductStock,field_values={'theproduct':theproduct},)
+        stocks=fixturestock.create(5)
+        print('------stock in location-------')
+        for location in locations:
+            location.Products_Stocks=stocks
+            print(len(location.Products_Stocks.all()))
+            pass
+            #location.ProductStocks=stocks
+        print('------location in stock-------')
+        for stock in stocks:
+            stock.Products_Stocks=locations
+           
+            print(len(stock.Products_Stocks))
+        print('------stocks in one location of '+str(locations[0]))
+        for stock in locations[0].Products_Stocks.all():
+            print(stock)
+        
+  
         
