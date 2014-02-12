@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from django.db import models
 from django_extensions.db.fields import UUIDField
@@ -39,6 +40,7 @@ class Product(models.Model):
             return matches[0].Name
     def Snapshot(self):
         snapshot=ProductSnapshot()
+        snapshot.id=uuid.uuid4()
         snapshot.theproduct=self
         snapshot.SnapshotTime=datetime.now()
         snapshot.CategoryCode=self.CategoryCode
@@ -60,8 +62,8 @@ class Product(models.Model):
         snapshot.SyncTime=self.SyncTime
         snapshot.ProductCode=self.ProductCode
         snapshot.ModelNumber_Original=self.ModelNumber
-        for productlanguage in self.productlanguage_set.all:
-            plsnap=ProductlanguageSnapshot()
+        for productlanguage in self.productlanguage_set.all():
+            plsnap=snapshot.productlanguagesnapshot_set.create()
             plsnap.theproductSnapshot=snapshot
             plsnap.Name=productlanguage.Name
             plsnap.PlaceOfDelivery=productlanguage.PlaceOfDelivery
@@ -69,7 +71,9 @@ class Product(models.Model):
             plsnap.ProductDescription=productlanguage.ProductDescription
             plsnap.ProductParameters=productlanguage.ProductParameters
             plsnap.Language=productlanguage.Language
-        
+            #snapshot.productlanguagesnapshot_set.add(plsnap)
+        return snapshot
+    
     class Meta:
         db_table="product"
     def __str__(self):
@@ -77,7 +81,8 @@ class Product(models.Model):
     
 class ProductSnapshot(models.Model):
     '''keep a snapshot when it is modified'''
-    theproductSnapshot=ForeignKey(Product)
+    id=UUIDField(primary_key=True)
+    theproduct=ForeignKey(Product)
     CategoryCode=CharField(max_length=255)
     CreateTime=DateTimeField('CreateTime',blank=True)
     LastUpdateTime=DateTimeField()
@@ -126,7 +131,7 @@ class ProductlanguageSnapshot(models.Model):
     Unit=CharField(max_length=255)
     LanguageChoices=[('en','en'),('zh','zh')]
     Language=CharField(max_length=2,choices=LanguageChoices,default='en')
-    theproduct=ForeignKey(ProductSnapshot)
+    theproductsnapshot=ForeignKey(ProductSnapshot)
     
 class ProductStock(models.Model):
     '''current stock quantity of a product
@@ -135,8 +140,6 @@ class ProductStock(models.Model):
     Qty=IntegerField()
     theproduct=ForeignKey(Product)
     productSnapshot=ForeignKey(ProductSnapshot,null=True)
-    #Redundancy of stocked product information
-    productname=CharField(max_length=255)
     def __str__(self):
         return str(self.theproduct)+':'+str(self.Qty)
     

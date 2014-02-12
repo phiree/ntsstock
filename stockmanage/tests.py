@@ -32,7 +32,9 @@ class ProductMethodTests(TestCase):
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
         self.assertRaisesRegex(Exception, '.*',)
+        
     def test_make_a_snapshot(self):
+        print('-----test_make_a_snapshot--------')
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
         fixtureProductlanguage=AutoFixture(Productlanguage,
@@ -41,9 +43,12 @@ class ProductMethodTests(TestCase):
                                                          'theproduct':theproduct
                                                          }
                                            ,)
-        theproductlanguage=fixtureProductlanguage.create(5)
-        theproduct=fixtureProduct.create(1)[0]
-        theproduct.Snapshot()
+        theproductlanguage=fixtureProductlanguage.create(1)
+        print('id of product:'+theproduct.id)
+        snapshot= theproduct.Snapshot()
+        self.assertEqual(theproduct.CategoryCode, snapshot.CategoryCode)
+        self.assertEqual(theproduct.productlanguage_set.all().count(), snapshot.productlanguagesnapshot_set.all().count())
+        
         
 
 class StockLocationTest(TestCase):
