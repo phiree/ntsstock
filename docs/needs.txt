@@ -13,10 +13,18 @@
 	1 类设计.
 产品						Product
 多语种产品信息			Productlanguage
+产品快照					ProductSnapshot，ProductlanguageSnapshot
+
+仓位信息					StockLocation
+
 产品当前库存				ProductStock
+
+单据基类					BillBase
 进出库单据				StockBill
 进出库单据详情			StockBillDetail
 盘点计划单据				CheckPlanBill
 盘点计划详单				CheckPlanBillDetail
 实际盘点单据				CheckActuralBill
 实际盘点详单				CheckActuralBillDetail
+
+供应商					Supplier

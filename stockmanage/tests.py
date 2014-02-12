@@ -1,9 +1,12 @@
 from django.test import TestCase
 from random import choice
+from django.utils import timezone
+import datetime
 from autofixture import  AutoFixture,generators
 from stockmanage.models import  Product,Productlanguage,StockLocation,ProductStock,ProductSnapshot,ProductlanguageSnapshot
 # Create your tests here.
 class ProductMethodTests(TestCase):
+    
     def testGetnameWithMoreThanOneLanguageVersion(self):
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
@@ -32,7 +35,34 @@ class ProductMethodTests(TestCase):
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
         self.assertRaisesRegex(Exception, '.*',)
+    def test_get_a_snapshot_of_given_time(self):
         
+        print('----------test_get_a_snapshot_of_given_time')
+        fixtureProduct=AutoFixture(Product)
+        theproduct=fixtureProduct.create(1)[0]
+        fixtureProductlanguage=AutoFixture(Productlanguage,
+                                           field_values={
+                                                         'Language':'en',
+                                                         'theproduct':theproduct
+                                                         }
+                                           ,)
+        theproductlanguage=fixtureProductlanguage.create(2)
+        
+        snapshot1=theproduct.Snapshot()
+        print([snapshot1.productlanguagesnapshot_set.all()])
+        '''snapshot1.ShotTime=timezone.now()+datetime.timedelta(days=1)
+        snapshot2=theproduct.Snapshot()
+        snapshot2.ShotTime=timezone.now()
+        snapshot3=theproduct.Snapshot()
+        snapshot3.ShotTime=timezone.now()-datetime.timedelta(days=1)'''
+        print('snapshot amounts:'+str(theproduct.productsnapshot_set.all().count()))
+        onesnapshot=theproduct.productsnapshot_set.all()[0]
+        print(onesnapshot.id)
+        print(onesnapshot.productlanguagesnapshot_set.all().count())
+        print([onesnapshot.productlanguagesnapshot_set.all()])
+        nearestSnap=theproduct.GetSnapshot(timezone.now())
+        print(nearestSnap)
+       
     def test_make_a_snapshot(self):
         print('-----test_make_a_snapshot--------')
         fixtureProduct=AutoFixture(Product)
@@ -43,14 +73,20 @@ class ProductMethodTests(TestCase):
                                                          'theproduct':theproduct
                                                          }
                                            ,)
-        theproductlanguage=fixtureProductlanguage.create(1)
+        theproductlanguage=fixtureProductlanguage.create(2)
         print('id of product:'+theproduct.id)
         snapshot= theproduct.Snapshot()
+        
+        print(snapshot.theproduct.id)
         self.assertEqual(theproduct.CategoryCode, snapshot.CategoryCode)
-        self.assertEqual(theproduct.productlanguage_set.all().count(), snapshot.productlanguagesnapshot_set.all().count())
         
+        c=snapshot.productlanguagesnapshot_set.all().count()
         
-
+        self.assertEqual(2, c)
+        self.assertEqual(theproduct.productlanguage_set.all().count(), c)
+        self.assertEqual(theproduct.productlanguage_set.first().Name,snapshot.productlanguagesnapshot_set.first().Name)
+        
+  
 class StockLocationTest(TestCase):
     def testLocationGetChildren(self):
         
