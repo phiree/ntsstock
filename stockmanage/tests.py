@@ -46,23 +46,27 @@ class ProductMethodTests(TestCase):
                                                          'theproduct':theproduct
                                                          }
                                            ,)
-        theproductlanguage=fixtureProductlanguage.create(2)
+        theproductlanguage=fixtureProductlanguage.create(1)
+        #造像
+        self.assertEqual(0,  theproduct.productsnapshot_set.all().count())
         
         snapshot1=theproduct.Snapshot()
-        print([snapshot1.productlanguagesnapshot_set.all()])
-        '''snapshot1.ShotTime=timezone.now()+datetime.timedelta(days=1)
-        snapshot2=theproduct.Snapshot()
-        snapshot2.ShotTime=timezone.now()
-        snapshot3=theproduct.Snapshot()
-        snapshot3.ShotTime=timezone.now()-datetime.timedelta(days=1)'''
-        print('snapshot amounts:'+str(theproduct.productsnapshot_set.all().count()))
-        onesnapshot=theproduct.productsnapshot_set.all()[0]
-        print(onesnapshot.id)
-        print(onesnapshot.productlanguagesnapshot_set.all().count())
-        print([onesnapshot.productlanguagesnapshot_set.all()])
-        nearestSnap=theproduct.GetSnapshot(timezone.now())
-        print(nearestSnap)
-       
+        snapshot2=theproduct.productsnapshot_set.all()[0]
+        self.assertEqual(1,  theproduct.productsnapshot_set.all().count())
+        '''AssertionError: <stockmanage.models.ProductSnapshot object at 0x02CC85D0> != <st
+ockmanage.models.ProductSnapshot object at 0x02CCCDD0>'''
+        print('CateCode:'+snapshot1.CategoryCode)
+        self.assertEqual(snapshot1.CategoryCode, snapshot2.CategoryCode,type(snapshot1))
+        #self.assertEqual(snapshot1, snapshot2,type(snapshot1))
+        print('type:'+str(type(snapshot1.id)))
+        print (str(snapshot1.id))
+        print('type2:'+str(type(snapshot2.id)))
+        #TIPS: UUID,string. when get from database, the uuid become string. but before saving to db, it;s uuid type. 
+        self.assertEqual(str(snapshot1.id),str(snapshot2.id))
+        print(snapshot1)
+        
+        print(theproduct.productsnapshot_set.all()[0])
+        
     def test_make_a_snapshot(self):
         print('-----test_make_a_snapshot--------')
         fixtureProduct=AutoFixture(Product)
@@ -74,19 +78,11 @@ class ProductMethodTests(TestCase):
                                                          }
                                            ,)
         theproductlanguage=fixtureProductlanguage.create(2)
-        print('id of product:'+theproduct.id)
         snapshot= theproduct.Snapshot()
-        
-        print(snapshot.theproduct.id)
-        self.assertEqual(theproduct.CategoryCode, snapshot.CategoryCode)
-        
-        c=snapshot.productlanguagesnapshot_set.all().count()
-        
-        self.assertEqual(2, c)
-        self.assertEqual(theproduct.productlanguage_set.all().count(), c)
-        self.assertEqual(theproduct.productlanguage_set.first().Name,snapshot.productlanguagesnapshot_set.first().Name)
-        
-  
+        snapshotInProduct=theproduct.productsnapshot_set.all()[0]
+        self.assertEqual(sorted([x.Name for x in theproduct.productlanguage_set.all()]),
+                         sorted([x.Name for x in snapshot.productlanguagesnapshot_set.all()]))
+        self.assertEqual(theproduct.CategoryCode,snapshot.CategoryCode)
 class StockLocationTest(TestCase):
     def testLocationGetChildren(self):
         

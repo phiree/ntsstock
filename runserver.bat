@@ -1,2 +1,2 @@
-python manage.py runserver
+python -m pdb manage.py runserver
 pause

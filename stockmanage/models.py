@@ -41,37 +41,40 @@ class Product(models.Model):
         else:
             return matches[0].Name
     def Snapshot(self):
-        snapshot=self.productsnapshot_set.create()
-        snapshot.id=uuid.uuid4()
-        #snapshot.theproduct=self
-        snapshot.CategoryCode=self.CategoryCode
-        snapshot.CreateTime=self.CreateTime
-        snapshot.LastUpdateTime=self.LastUpdateTime
-        snapshot.ModelNumber=self.ModelNumber
-        snapshot.SupplierCode=self.SupplierCode
-        snapshot.NTSCode=self.NTSCode
-        snapshot.OrderAmountMin=self.OrderAmountMin
-        snapshot.PriceOfFactory=self.PriceOfFactory
-        snapshot.ProductionCycle=self.ProductionCycle
-        snapshot.State=self.State
-        snapshot.TaxRate=self.TaxRate
-        snapshot.PriceDate=self.PriceDate
-        snapshot.PriceValidPeriod=self.PriceValidPeriod
-        snapshot.MoneyType=self.MoneyType
-        snapshot.ImageState=self.ImageState
-        snapshot.SyncState=self.SyncState
-        snapshot.SyncTime=self.SyncTime
-        snapshot.ProductCode=self.ProductCode
-        snapshot.ModelNumber_Original=self.ModelNumber
+        #self.productsnapshot_set.create  ProductSnapshot
+        snapshot=self.productsnapshot_set.create(
+            id=uuid.uuid4()
+            #,theproduct=self
+            ,CategoryCode=self.CategoryCode
+            ,CreateTime=self.CreateTime
+            ,LastUpdateTime=self.LastUpdateTime
+            ,ModelNumber=self.ModelNumber
+            ,SupplierCode=self.SupplierCode
+            ,NTSCode=self.NTSCode
+            ,OrderAmountMin=self.OrderAmountMin
+            ,PriceOfFactory=self.PriceOfFactory
+            ,ProductionCycle=self.ProductionCycle
+            ,State=self.State
+            ,TaxRate=self.TaxRate
+            ,PriceDate=self.PriceDate
+            ,PriceValidPeriod=self.PriceValidPeriod
+            ,MoneyType=self.MoneyType
+            ,ImageState=self.ImageState
+            ,SyncState=self.SyncState
+            ,SyncTime=self.SyncTime
+            ,ProductCode=self.ProductCode
+            ,ModelNumber_Original=self.ModelNumber
+            )
+        #self.productsnapshot_set.add(snapshot)
         for productlanguage in self.productlanguage_set.all():
-            plsnap=snapshot.productlanguagesnapshot_set.create()
-            plsnap.Name=productlanguage.Name
-            plsnap.PlaceOfDelivery=productlanguage.PlaceOfDelivery
-            plsnap.PlaceOfOrigin=productlanguage.PlaceOfOrigin
-            plsnap.ProductDescription=productlanguage.ProductDescription
-            plsnap.ProductParameters=productlanguage.ProductParameters
-            plsnap.Language=productlanguage.Language
-            snapshot.productlanguagesnapshot_set.add(plsnap)
+            plsnap=snapshot.productlanguagesnapshot_set.create(
+            Name=productlanguage.Name,PlaceOfDelivery=productlanguage.PlaceOfDelivery
+            ,PlaceOfOrigin=productlanguage.PlaceOfOrigin
+            ,ProductDescription=productlanguage.ProductDescription
+            ,ProductParameters=productlanguage.ProductParameters
+            ,Language=productlanguage.Language
+            )
+            #snapshot.productlanguagesnapshot_set.add(plsnap)
         #self.productsnapshot_set.add(snapshot)
         return snapshot
     def GetSnapshot(self,shottime):
@@ -114,7 +117,7 @@ class ProductSnapshot(models.Model):
         if len(matches)==0:
             raise Exception('productshot {0} has no  language {1} version, its invalid,they are:{2}'.format(self.id,language,[str(x)+'|' for x in languageset]))
         elif len(matches)>1:
-            raise Exception('productshot  has more than one ('+self.id+') language versions, it is invalid')    
+            raise Exception('productshot  has more than one ('+str(self.id)+') language versions, it is invalid')    
         else:
             return matches[0].Name
     def __str__(self):
