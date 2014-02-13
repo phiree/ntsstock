@@ -1,0 +1,37 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" content="GridSystemGenerator.com - v1.02" />
+<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/reset.css'%}" />
+<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/text.css'%}" />
+<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/970_12_10.css'%}" />
+		<title>{%block title%}NTS Stock Management{%endblock%}</title>
+		
+	</head>
+	<body>
+		<div>
+			<div id="header" class='g960'>
+				<h1>NTS Stock Management</h1>
+				<div class='clear'>&nbsp;</div>
+			</div>
+			<div id="body" class='g960'>
+				<!--Left Menu-->
+				<div id="lm" class='g240'> 
+					<ul>
+						
+					</ul>
+					</div>
+					<!--Main Content-->
+				<div id='mc' class='g720'>
+					{%block content%}my default content{%endblock%}
+				</div>
+				<div class="clear">&nbsp;</div>
+			</div>
+			<div id="footer" class='g960'> 
+				<span>----------------NTS-----------------</span>
+				<div class="clear"> </div>
+				</div>
+		</div>
+	</body>
+</html>

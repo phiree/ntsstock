@@ -12,21 +12,21 @@ class Product(models.Model):
     id=UUIDField(primary_key=True)
     CategoryCode=CharField(max_length=255)
     CreateTime=DateTimeField('CreateTime',blank=True,default=datetime.now())
-    LastUpdateTime=DateTimeField()
+    LastUpdateTime=DateTimeField(blank=True,default=datetime.now())
     ModelNumber=CharField(max_length=255)
     SupplierCode=CharField(max_length=255)
     NTSCode=CharField(max_length=255)
-    OrderAmountMin=DecimalField(max_digits=19,decimal_places=5)
+    OrderAmountMin=DecimalField(max_digits=10,decimal_places=2)
     PriceOfFactory=CharField(max_length=255)
-    ProductionCycle=DecimalField(max_digits=19,decimal_places=5)
+    ProductionCycle=DecimalField(max_digits=10,decimal_places=2)
     State=IntegerField(default=0)
-    TaxRate=DecimalField(max_digits=19,decimal_places=5)
+    TaxRate=DecimalField(max_digits=10,decimal_places=2)
     PriceDate=CharField(max_length=255)
     PriceValidPeriod=CharField(max_length=255)
     MoneyType=CharField(max_length=255)
     ImageState=CharField(max_length=255)
-    SyncState=IntegerField()
-    SyncTime=DateTimeField()
+    SyncState=IntegerField(default=0)
+    SyncTime=DateTimeField(blank=True,null=True)
     ProductCode=CharField(max_length=255)
     ModelNumber_Original=CharField(max_length=255)
    
@@ -37,7 +37,7 @@ class Product(models.Model):
             
             raise Exception('product {0} has no  language {1} version, its invalid,they are:{2}'.format(self.id,language,[str(x)+'|' for x in languageset]))
         elif len(matches)>1:
-            raise Exception('product  has more than one ('+self.id+') language versions, it is invalid')    
+            raise Exception('product  has more than one ('+str(self.id)+') language versions, it is invalid')    
         else:
             return matches[0].Name
     def Snapshot(self):
@@ -180,7 +180,7 @@ class BillBase(models.Model):
     '''base class of all bills 
     '''
     id=UUIDField(primary_key=True)#use uuid instead of autoincreament, to allow asigning an id to the object before saved into database
-    BillTime=DateTimeField()
+    BillTime=DateTimeField(default=datetime.now())
     state_draft='draft' # saved for future change. not complete
     state_applied='applied'# appled for checking. can't change anymore 
     state_checked='checked'# ok
@@ -191,10 +191,11 @@ class BillBase(models.Model):
     # staff-- not the login user who assonated with the bill
     StaffName=CharField(max_length=50)
     Memo=CharField(max_length=1000)
+    
 class StockBill(BillBase):
     '''bills record stock in and out'''
     BillType_Choices=(('in','stock in'),('out','stock out'))
-    BillType=CharField(max_length='5', choices=BillType_Choices,default='in')
+    BillType=CharField(max_length=5, choices=BillType_Choices,default='in')
     StockChange_Choices=(('in',
                          (
                           ('buy','buy'),
@@ -215,14 +216,22 @@ class StockBill(BillBase):
                          )
                         )
                          
-    StockChangeReason=CharField(max_length=20,choices=StockChange_Choices)
-    
+    StockChangeReason=CharField(max_length=20,choices=StockChange_Choices,default='repaired')
+    TotalAmount=DecimalField(max_digits=10,decimal_places=2,default=0)
+    # how many kinds of product in the bill
+    TotalKinds=IntegerField()
+    def __str__(self):
+        return str(self.BillTime)+self.BillType
 
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill=ForeignKey(BillBase)
     product=ForeignKey(Product)
     Quantity=IntegerField()
+
+
+    
+
 
 
     
