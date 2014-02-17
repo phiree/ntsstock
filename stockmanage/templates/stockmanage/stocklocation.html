@@ -1,0 +1,54 @@
+{%extends 'stockmanage/base.html'%}
+{%load staticfiles%}
+{%block header%}
+<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/showroommanage.css'%}" />
+<script  type="text/javascript" src="{%static 'stockmanage/jquery/plugin/jquery.cookie.js'%}"></script>
+<script  type="text/javascript" src="{%static 'stockmanage/js/locationservice.js'%}"></script>
+
+{%endblock%}
+{%block content%}
+{%csrf_token%}
+{%for location_lv1 in all_top_locations.all%}
+           <div class="dvContainerLv1">
+                <h2 class="posName" posid='{{location_lv1.id}}'>
+                    {{location_lv1.Name}}</h2>
+                    {%for location_lv2 in location_lv1.stocklocation_set.all%}
+                    
+                          <div class="dvContainerLv2">
+                                 <h3 class="posName" posid='{{location_lv2.id}}'>
+                                    {{location_lv2.Name}}</h3>
+                             
+                                   {%for location_lv3 in location_lv2_set.all%} 
+                                             <div class="dvContainerLv3">
+                                               <span class="posName" posid='{{location_lv3.id}}'>{{location_lv3.Name}}</span> 
+                                            </div>
+                                    {%endfor%}
+                                     <div class="dvAdd">
+                                               <span>增加展区</span></div>
+                            </div>                         
+                        {%endfor%}
+                 <div class="dvAdd">
+                  <span >增加展厅</span></div>
+            </div>
+{%endfor%}
+<!--Add a location in page-->
+
+<div class="dvAdd">
+<span>增加展馆</span></div>
+<div id="dvPositionForm">
+ <input type="hidden" id="hiId" />
+ <input type="hidden" id="hiParentId" />
+     <fieldset>
+        <label for="name">
+            名称</label>
+        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+        <label for="code">
+            位置代码</label>
+        <input type="text" name="code" id="code" value="" class="text ui-widget-content ui-corner-all" />
+        <label for="description">
+            位置描述</label>
+        <input name="description" id="desc" value="" class="text ui-widget-content ui-corner-all" />
+       <span id="spMsg"  class="hide success">保存成功</span>
+    </fieldset>
+</div>
+{%endblock%}

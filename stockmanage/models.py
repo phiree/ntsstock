@@ -168,6 +168,7 @@ class ProductStock(models.Model):
 class StockLocation(models.Model):
     '''location infomation in the warehouse'''
     LocationCode=CharField(max_length=20)
+    Name=CharField(max_length=20)
     Description=CharField(max_length=200)
     ParentLocation=ForeignKey('self',db_column='parentlocation',blank=True,null=True)
     Products_Stocks=ManyToManyField(ProductStock)
