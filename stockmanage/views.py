@@ -42,4 +42,7 @@ def location_delete(request,location_id):
     location.delete()
     return HttpResponse("")
 
+def stockbill_in_index(request):
+    return render(request,'stockmanage/stockbill.html')
+
 

@@ -163,7 +163,6 @@ class ProductStock(models.Model):
     def __str__(self):
         return str(self.theproduct)+':'+str(self.Qty)
     
-    
 
 class StockLocation(models.Model):
     '''location infomation in the warehouse'''
