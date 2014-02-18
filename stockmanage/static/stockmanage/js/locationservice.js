@@ -1,5 +1,7 @@
 $(function () {
-            var serviceUrl = "/stockmanage/locationmanage/";
+            var serviceUrl_addmodify = "/stockmanage/location_add_modify/";
+            var serviceUrl_delete = "/stockmanage/location_delete/";
+            var serviceUrl_get="/stockmanage/location_get/";
             var diag = $("#dvPositionForm").dialog({
                 width: 370,
                 autoOpen: false,
@@ -13,8 +15,8 @@ $(function () {
                                     var desc = $("#desc").val();
                                     var code = $("#code").val();
                                     var csrf=$.cookie("csrftoken");
-                                    $.post(serviceUrl,
-                                                {"csrfmiddlewaretoken":csrf, "actiontype": "position_addmodify", "id": id, "parentId": parentId, "name": name, "code": code, "desc": desc }
+                                    $.post(serviceUrl_addmodify,
+                                                {"csrfmiddlewaretoken":csrf, "id": id, "parentId": parentId, "name": name, "code": code, "desc": desc }
                                                 , function (returnId) {
                                                     $("#hiId").val(returnId);
                                                     $("#spMsg").show();
@@ -39,7 +41,7 @@ $(function () {
                                     var name = $("#name").val();
                                     var id = $("#hiId").val();
                                     if (!confirm("确定要删除:  \"" + name + "\" 么?")) return false;
-                                    $.get(serviceUrl, { actiontype: "position_delete", id: id }
+                                    $.get(serviceUrl_delete+id
                                         , function (data) {
                                             if (data != "")
                                             { alert(data); }
@@ -69,13 +71,15 @@ $(function () {
             $(".posName").click(function () {
                 $("#dialog_button_delete").show();
                 var posId = $(this).attr("posId");
-                $.get(serviceUrl,
-                 { "actiontype": "position_get", "id": posId }
+                $.get(serviceUrl_get+posId
                  , function (data) {
-                     $("#hiId").val(data.id);
-                     $("#name").val(data.name);
-                     $("#desc").val(data.desc);
-                     $("#code").val(data.code);
+                 	 id=data[0].pk;
+                 	 fields=data[0].fields;
+                     $("#hiId").val(id);
+                     $("#name").val(fields.Name);
+                     $("#desc").val(fields.Description);
+                     $("#code").val(fields.LocationCode);
+                     $("#hiParentId").val(fields.ParentLocation);
                      $("#dvPositionForm").dialog("open");
                  }
             );

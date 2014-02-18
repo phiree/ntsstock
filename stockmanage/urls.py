@@ -4,6 +4,8 @@ from stockmanage import views
 urlpatterns=patterns(''
                      
                      ,url(r'^stocklocation/',views.location_index,name='stocklocation_index' )
-                     ,url(r'^locationmanage/',views.location_manage,name='location_manage' )
+                     ,url(r'^location_add_modify/',views.location_add_modify,name='location_add_modify' )
+                     ,url(r'^location_get/(?P<location_id>\d+)$',views.location_get,name='location_get' )
+                     ,url(r'^location_delete/(?P<location_id>\d+)$',views.location_delete,name='location_delete' )
                      ,url(r'^$',views.index,name='index')
                      )

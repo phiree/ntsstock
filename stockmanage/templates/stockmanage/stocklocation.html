@@ -4,7 +4,9 @@
 <link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/showroommanage.css'%}" />
 <script  type="text/javascript" src="{%static 'stockmanage/jquery/plugin/jquery.cookie.js'%}"></script>
 <script  type="text/javascript" src="{%static 'stockmanage/js/locationservice.js'%}"></script>
-
+{%endblock%}
+{%block content_title%}
+Stock Location Manage
 {%endblock%}
 {%block content%}
 {%csrf_token%}
@@ -18,7 +20,7 @@
                                  <h3 class="posName" posid='{{location_lv2.id}}'>
                                     {{location_lv2.Name}}</h3>
                              
-                                   {%for location_lv3 in location_lv2_set.all%} 
+                                   {%for location_lv3 in location_lv2.stocklocation_set.all%} 
                                              <div class="dvContainerLv3">
                                                <span class="posName" posid='{{location_lv3.id}}'>{{location_lv3.Name}}</span> 
                                             </div>
@@ -39,16 +41,16 @@
  <input type="hidden" id="hiId" />
  <input type="hidden" id="hiParentId" />
      <fieldset>
-        <label for="name">
+        <div><label for="name">
             名称</label>
         <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-        <label for="code">
+       </div><div><label for="code">
             位置代码</label>
         <input type="text" name="code" id="code" value="" class="text ui-widget-content ui-corner-all" />
-        <label for="description">
+        </div><div> <label for="description">
             位置描述</label>
         <input name="description" id="desc" value="" class="text ui-widget-content ui-corner-all" />
-       <span id="spMsg"  class="hide success">保存成功</span>
+       </div><div> <span id="spMsg" style="display:none"  class="hide success">保存成功</span></div>
     </fieldset>
 </div>
 {%endblock%}
