@@ -1,6 +1,7 @@
 import uuid
 from django.contrib.auth.models import User
 from datetime import datetime
+from decimal import Decimal
 from django.utils import timezone
 from django.db import models
 from django_extensions.db.fields import UUIDField
@@ -222,7 +223,10 @@ class StockBill(BillBase):
     TotalKinds=IntegerField()
     def __str__(self):
         return str(self.BillTime)+self.BillType
-
+    def save(self, *args, **kwargs):
+        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
+        self.TotalKinds=len(self.stockbilldetail_set.all())
+        super(StockBill,self).save(*args, **kwargs)
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill=ForeignKey(BillBase)

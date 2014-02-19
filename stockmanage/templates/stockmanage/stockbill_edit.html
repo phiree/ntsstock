@@ -1,0 +1,13 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+StockBill In
+{%endblock%}
+{%block content%}
+<form method="post" action=".">
+	 {%csrf_token%}
+	 <table>
+	 {{form.as_table}}
+	 </table>
+<input type="submit" value="Submit" />
+</form>
+{%endblock%}
