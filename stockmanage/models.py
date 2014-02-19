@@ -18,7 +18,7 @@ class Product(models.Model):
     SupplierCode=CharField(max_length=255)
     NTSCode=CharField(max_length=255)
     OrderAmountMin=DecimalField(max_digits=10,decimal_places=2)
-    PriceOfFactory=CharField(max_length=255)
+    PriceOfFactory=CharField(max_length=255,default='0')
     ProductionCycle=DecimalField(max_digits=10,decimal_places=2)
     State=IntegerField(default=0)
     TaxRate=DecimalField(max_digits=10,decimal_places=2)
@@ -159,10 +159,11 @@ class ProductStock(models.Model):
     '''current stock quantity of a product
     
     '''
-    Qty=IntegerField()
+    Quantity=IntegerField()
     theproduct=ForeignKey(Product)
     def __str__(self):
-        return str(self.theproduct)+':'+str(self.Qty)
+        return str(self.theproduct)+':'+str(self.Quantity)
+    #stock bill detail will change stock quantity or location
     
 
 class StockLocation(models.Model):
@@ -171,7 +172,7 @@ class StockLocation(models.Model):
     Name=CharField(max_length=20)
     Description=CharField(max_length=200)
     ParentLocation=ForeignKey('self',db_column='parentlocation',blank=True,null=True)
-    Products_Stocks=ManyToManyField(ProductStock)
+    stocks=ManyToManyField(ProductStock)
     def __str__(self):
         return self.LocationCode    
     def GetChildren(self):
@@ -223,14 +224,57 @@ class StockBill(BillBase):
     TotalKinds=IntegerField()
     def __str__(self):
         return str(self.BillTime)+self.BillType
+    
+    def stock_change(self,old_billdetail,new_billdetail):
+        oldstock=ProductStock.objects.all().get(theproduct__id=old_billdetail.product.id
+                                       ,stocklocation__id=oldbilldetail.location.id)
+        newstock,created=ProductStock.objects.all().get_or_create(theproduct__id=new_billdetail.product.id
+                                       ,stocklocation__id=new_billdetail.location.id
+                                       ,defaults={'Quantity':new_billdetail.Quantity,'theproduct':new_billdetail.product})
+        if not created:
+            oldstock.Quantity+=(1 if new_billdetail.stockbill.BillType=='in' else -1)*new_billdetail.Quantity
+            -(1 if old_billdetail.stockbill.BillType=='in' else -1)*old_billdetail.Quantity
+            newstock.Quantity+=(1 if new_billdetail.stockbill.BillType=='in' else -1)*new_billdetail.Quantity
+            -(1 if old_billdetail.stockbill.BillType=='in' else -1)*old_billdetail.Quantity
+        else:
+            oldstock.delete()
+            
     def save(self, *args, **kwargs):
-        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
+        #change productstock models
+        
+        for detail in self.stockbilldetail_set.all():
+            
+            old_detial= self .stockbilldetail_set.all().get(pk=detail.id)
+            
+            productstock,productstock_created=ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
+                                                            stocklocation__id=detail.location.id
+                                                            ,defaults={'Quantity':0
+                                                                    ,'theproduct':detail.product})
+            if detail_created:
+                if productstock_created:
+                    productstock.Quantity=detail.Quantity if self.BillType=='in' else -detail.Quantity
+                else:
+                    productstock.Quantity+=detail.Quantity if self.BillType=='in' else -detail.Quantity
+            else:
+                if productstock_created:
+                    pass
+                quantity_change=detail.Quantity if self.BillType=='in' else -detail.Quantity
+                
+            productstock.Quantity+=quantity_change
+            #import pdb; pdb.set_trace()
+            productstock.stocklocation_set.add(detail.location)
+            productstock.save()
+            #get product quantity in the same location
+            #if exists change quantity
+            #else create a new instance and save to database.
+        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) if self.BillType=='in' else -x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
         self.TotalKinds=len(self.stockbilldetail_set.all())
         super(StockBill,self).save(*args, **kwargs)
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill=ForeignKey(BillBase)
     product=ForeignKey(Product)
+    location=ForeignKey(StockLocation)
     Quantity=IntegerField()
 
 

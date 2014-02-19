@@ -3,7 +3,9 @@ from random import choice
 from django.utils import timezone
 import datetime
 from autofixture import  AutoFixture,generators
-from stockmanage.models import  Product,Productlanguage,StockLocation,ProductStock,ProductSnapshot,ProductlanguageSnapshot
+from stockmanage.models import  Product,Productlanguage\
+                        ,StockLocation,ProductStock,ProductSnapshot\
+                        ,ProductlanguageSnapshot,StockBill,StockBillDetail
 # Create your tests here.
 class ProductMethodTests(TestCase):
     
@@ -110,20 +112,41 @@ class StockLocationTest(TestCase):
         locations=fixturelocation.create(5)
         fixturestock=AutoFixture(ProductStock,field_values={'theproduct':theproduct},)
         stocks=fixturestock.create(5)
-        print('------stock in location-------')
-        for location in locations:
-            location.Products_Stocks=stocks
-            print(len(location.Products_Stocks.all()))
-            pass
-            #location.ProductStocks=stocks
-        print('------location in stock-------')
-        for stock in stocks:
-            stock.Products_Stocks=locations
-           
-            print(len(stock.Products_Stocks))
-        print('------stocks in one location of '+str(locations[0]))
-        for stock in locations[0].Products_Stocks.all():
-            print(stock)
         
-  
+        for stock in stocks:
+            for location in locations:
+                location.stocks.add(stock)
+        for stock in stocks:
+            self.assertEqual(len(stock.stocklocation_set.all()),5)
+        for location in locations:
+            self.assertEqual(len(location.stocks.all()),5)
+        
+class StockBillTest(TestCase):
+    def testSaveBill(self):
+        fixtureProduct=AutoFixture(Product,field_values={'PriceOfFactory':'1'})
+        theproduct=fixtureProduct.create(1)[0]
+        #theproduct.PriceOfFactory='1'
+        fixtureProductlanguage=AutoFixture(Productlanguage,
+                                           field_values={
+                                                         'Language':'en',
+                                                         'theproduct':theproduct
+                                                         }
+                                           ,)
+        theproductlanguage=fixtureProductlanguage.create(1)
+        fixtureLocation=AutoFixture(StockLocation,generate_fk=True,
+                                    field_values={'id':'lcoation1'})
+        location=fixtureLocation.create(1)[0]
+        fixtureBill=AutoFixture(StockBill,generate_fk=True)
+        bill=fixtureBill.create(1)[0]
+        fixtureBillDetail=AutoFixture(StockBillDetail,generate_fk=True
+                                      ,field_values={'stockbill':bill,'product':theproduct,'Quantity':1
+                                                     ,'location':location})
+        detail=fixtureBillDetail.create(5)
+        
+        bill.save()
+        self.assertEqual(len(ProductStock.objects.all()),1)
+        self.assertEqual(bill.TotalAmount,5)
+        
+        self.assertEqual(ProductStock.objects.all()[0].Quantity,5)
+        
         
