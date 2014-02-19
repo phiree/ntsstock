@@ -57,10 +57,18 @@ WSGI_APPLICATION = 'ntsstock.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.db3'),
-    }
+    },
+             'default':{
+                      'ENGINE':'django.db.backends.mysql',
+                      'NAME':'ntsstock',
+                      'USER':'root',
+                      'PASSWORD': '',                  # Not used with sqlite3.
+                      'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+                      'PORT': '',    
+                      }
 }
 
 # Internationalization
