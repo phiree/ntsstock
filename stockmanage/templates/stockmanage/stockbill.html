@@ -1,12 +1,16 @@
 {% extends "stockmanage/base.html" %}
 {%block content_title%}
-StockBill In
+StockBill list
 {%endblock%}
 {%block content%}
-<table>
-	<tr><td></td><td>Date Time</td><td></td><td></td></tr>
-{%for bill in stockbills%}
-
-{%endfor%}
-</table>
+{% if stockbill_list %}
+<ul>
+{%for stockbill in stockbill_list%}
+  {#<li><a href="{%url 'stockmanage:stockbill_edit' stockbill.id%}">{{stockbill.billtime}}</a></li>#}
+  <li><a href="{%url 'stockmanage:estockbill_edit' stockbill.id%}">{{stockbill.BillTime}}</a></li>
+  {%endfor%}
+</ul>
+{%else%}
+<p>No bill are availabel.</p>
+{%endif%}
 {%endblock%}
