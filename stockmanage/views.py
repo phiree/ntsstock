@@ -62,6 +62,9 @@ def stockbill_edit(request,bill_id):
     #import pdb; pdb.set_trace()
     if bill_id:
         bill=StockBill.objects.get(pk=bill_id)
+        if not bill.BillState ==StockBill.State_Choices.state_draft:
+            pass
+            # can't modify any more
     if request.method=="GET":
         form=StockBillForm(instance=bill)
     elif request.method=='POST':

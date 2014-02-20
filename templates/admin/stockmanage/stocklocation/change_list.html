@@ -3,20 +3,12 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}" />
-<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/jquery/jqueryui/themes/base/jquery-ui.css'%}" />
-
-<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/showroommanage.css'%}" />
 {% if cl.formset %}
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 {% endif %}
 {% if cl.formset or action_form %}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
-<script src="{%static 'stockmanage/jquery/jquery-1.6.4.min.js'%}" type="text/javascript"></script>
-<script src="{%static 'stockmanage/jquery/jqueryui/jquery-ui-1.10.3.min.js'%}" type="text/javascript"></script>
 
-<script  type="text/javascript" src="{%static 'stockmanage/jquery/plugin/jquery.cookie.js'%}"></script>
-<script  type="text/javascript" src="{%static 'stockmanage/js/locationservice.js'%}"></script>
 {% endif %}
 {{ media.css }}
 {% if not actions_on_top and not actions_on_bottom %}

@@ -1,4 +1,4 @@
-import uuid
+import uuid,time,logging
 from django.contrib.auth.models import User
 from datetime import datetime
 from decimal import Decimal
@@ -8,7 +8,7 @@ from django_extensions.db.fields import UUIDField
 from django.db.models.fields import CharField, DecimalField,IntegerField,DateTimeField,TextField,\
     Field
 from django.db.models.fields.related import ForeignKey, ManyToManyField
-
+logger = logging.getLogger(__name__)
 class Product(models.Model):
     id=UUIDField(primary_key=True)
     CategoryCode=CharField(max_length=255)
@@ -182,6 +182,7 @@ class BillBase(models.Model):
     '''base class of all bills 
     '''
     id=UUIDField(primary_key=True)#use uuid instead of autoincreament, to allow asigning an id to the object before saved into database
+    BillNo=CharField(max_length=100,default=datetime.now().strftime('%Y%m%d%H%M%S'))
     BillTime=DateTimeField(default=datetime.now())
     state_draft='draft' # saved for future change. not complete
     state_applied='applied'# appled for checking. can't change anymore 
@@ -191,14 +192,14 @@ class BillBase(models.Model):
     BillState=CharField(max_length=10,choices=State_Choices,default=state_draft)
     Creator=ForeignKey(User)
     # staff-- not the login user who assonated with the bill
-    StaffName=CharField(max_length=50)
-    Memo=CharField(max_length=1000)
+    StaffName=CharField(max_length=50,null=True,blank=True)
+    Memo=CharField(max_length=1000,null=True,blank=True)
     
 class StockBill(BillBase):
     '''bills record stock in and out'''
     BillType_Choices=(('in','stock in'),('out','stock out'))
     BillType=CharField(max_length=5, choices=BillType_Choices,default='in')
-    StockChange_Choices=(('in',
+    Reason_Choices=(('in',
                          (
                           ('buy','buy'),
                           ('return','return back'),
@@ -218,64 +219,40 @@ class StockBill(BillBase):
                          )
                         )
                          
-    StockChangeReason=CharField(max_length=20,choices=StockChange_Choices,default='repaired')
+    BillReason=CharField(max_length=20,choices=Reason_Choices,default='buy')
     TotalAmount=DecimalField(max_digits=10,decimal_places=2,default=0)
     # how many kinds of product in the bill
-    TotalKinds=IntegerField()
+    TotalKinds=IntegerField(default=0)
     def __str__(self):
         return str(self.BillTime)+self.BillType
-    
-    def stock_change(self,old_billdetail,new_billdetail):
-        oldstock=ProductStock.objects.all().get(theproduct__id=old_billdetail.product.id
-                                       ,stocklocation__id=oldbilldetail.location.id)
-        newstock,created=ProductStock.objects.all().get_or_create(theproduct__id=new_billdetail.product.id
-                                       ,stocklocation__id=new_billdetail.location.id
-                                       ,defaults={'Quantity':new_billdetail.Quantity,'theproduct':new_billdetail.product})
-        if not created:
-            oldstock.Quantity+=(1 if new_billdetail.stockbill.BillType=='in' else -1)*new_billdetail.Quantity
-            -(1 if old_billdetail.stockbill.BillType=='in' else -1)*old_billdetail.Quantity
-            newstock.Quantity+=(1 if new_billdetail.stockbill.BillType=='in' else -1)*new_billdetail.Quantity
-            -(1 if old_billdetail.stockbill.BillType=='in' else -1)*old_billdetail.Quantity
-        else:
-            oldstock.delete()
-            
-    def save(self, *args, **kwargs):
-        #change productstock models
-        
+    def apply_stock_change(self):
+        '''apply to stock,can;t changed anymore'''
+        self.BillState=BillBase.State_Choices.state_applied
         for detail in self.stockbilldetail_set.all():
-            
-            old_detial= self .stockbilldetail_set.all().get(pk=detail.id)
             
             productstock,productstock_created=ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
                                                             stocklocation__id=detail.location.id
-                                                            ,defaults={'Quantity':0
-                                                                    ,'theproduct':detail.product})
-            if detail_created:
-                if productstock_created:
-                    productstock.Quantity=detail.Quantity if self.BillType=='in' else -detail.Quantity
-                else:
-                    productstock.Quantity+=detail.Quantity if self.BillType=='in' else -detail.Quantity
-            else:
-                if productstock_created:
-                    pass
-                quantity_change=detail.Quantity if self.BillType=='in' else -detail.Quantity
-                
-            productstock.Quantity+=quantity_change
-            #import pdb; pdb.set_trace()
-            productstock.stocklocation_set.add(detail.location)
+                                                            ,defaults={'Quantity':(1 if self.BillType=='in' else -1)*detail.Quantity                                                          ,'theproduct':detail.product})
+            if not productstock_created:
+                productstock.Quantity+=(1 if self.BillType=='in' else -1)*detail.Quantity
             productstock.save()
-            #get product quantity in the same location
-            #if exists change quantity
-            #else create a new instance and save to database.
+            
+    def save(self, *args, **kwargs):
+        '''
+            #just save to database , no effect to stock
+        '''
         self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) if self.BillType=='in' else -x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
         self.TotalKinds=len(self.stockbilldetail_set.all())
+        logger.info('sdfasdf')
         super(StockBill,self).save(*args, **kwargs)
+        
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill=ForeignKey(BillBase)
     product=ForeignKey(Product)
     location=ForeignKey(StockLocation)
     Quantity=IntegerField()
+    
 
 
     

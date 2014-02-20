@@ -1,2 +1,5 @@
 pip install django-autofixture
 pip install apptemplates
+
+#needed by admin date_hierarchy = 'pub_date
+pip install pytz 
