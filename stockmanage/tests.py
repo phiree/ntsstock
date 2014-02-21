@@ -122,6 +122,8 @@ class StockLocationTest(TestCase):
             self.assertEqual(len(location.stocks.all()),5)
         
 class StockBillTest(TestCase):
+    
+        
     def testSaveBill(self):
         fixtureProduct=AutoFixture(Product,field_values={'PriceOfFactory':'1'})
         theproduct=fixtureProduct.create(1)[0]
