@@ -248,7 +248,7 @@ class StockBill(BillBase):
         
 class StockBillDetail(models.Model):
     '''product info in the bill'''
-    stockbill=ForeignKey(BillBase)
+    stockbill=ForeignKey(BillBase,null=True)
     product=ForeignKey(Product)
     location=ForeignKey(StockLocation)
     Quantity=IntegerField()

@@ -8,7 +8,9 @@ class ProductLanguageInLine(admin.TabularInline):
     model=Productlanguage
 class StockBillDetailInline(admin.TabularInline):
     model=StockBillDetail
-
+    fields=('product',)
+    readonly_fields=('product','location','Quantity',)
+    template='admin/stockmanage/stockbill/edit_inline/tabular.html' 
 class ProductAdmin(admin.ModelAdmin):
     inlines=[ProductLanguageInLine]
 
@@ -29,25 +31,17 @@ class StockLocationAdmin(admin.ModelAdmin):
         '''BUG IN JQUERY?'''
         js = (
               
-              'stockmanage/jquery/jquery-1.6.4.min.js'
-              ,'stockmanage/jquery/jqueryui/jquery-ui-1.10.3.min.js'
-             
+              'stockmanage/jquery/jquery-1.6.4.min.js',
+              'stockmanage/jquery/jqueryui/jquery-ui-1.10.3.min.js'
               ,'stockmanage/jquery/plugin/jquery.cookie.js'
               ,'stockmanage/js/locationservice.js'
               ,
               )
-        '''
-<script src="{%static 'stockmanage/jquery/jquery-1.6.4.min.js'%}" type="text/javascript"></script>
-<script src="{%static 'stockmanage/jquery/jqueryui/jquery-ui-1.10.3.min.js'%}" type="text/javascript"></script>
-
-<script  type="text/javascript" src="{%static 'stockmanage/jquery/plugin/jquery.cookie.js'%}"></script>
-<script  type="text/javascript" src="{%static 'stockmanage/js/locationservice.js'%}"></script>
-<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/jquery/jqueryui/themes/base/jquery-ui.css'%}" />
-
-<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/showroommanage.css'%}" />
-        '''
+        
 class StockBillDetailAdmin(admin.ModelAdmin):
-    raw_id_fields =('product',)
+   pass
+    
+    
 class StockBillAdmin(admin.ModelAdmin):
     list_filter=('BillType','BillState','BillTime')
     inlines=[StockBillDetailInline]
@@ -70,6 +64,20 @@ class StockBillAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.Creator = request.user
+        obj.stockbilldetail_set.clear()
+        #import pdb;pdb.set_trace()
+        plain_list= request.POST['tt_detail_plain_list']
+        for line in plain_list.splitlines():
+            if not line:
+                continue
+            procode=line.split(',')[0]
+            product=Product.objects.get(NTSCode=procode)
+            qty=line.split(',')[1]
+            location_code=line.split(',')[2]
+            location=StockLocation.objects.get(LocationCode=location_code)
+            detail=StockBillDetail(stockbill=obj,product=product,location=location,Quantity=qty)
+            obj.stockbilldetail_set.add(detail)
+            #import pdb;pdb.set_trace()
         obj.save()
     #actions_on_bottom = True
     #list_filter=
