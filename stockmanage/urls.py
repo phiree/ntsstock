@@ -11,6 +11,8 @@ urlpatterns=patterns(''
                      ,url(r'^stockbill/list/all/',views.stockbill_list,name='stockbill_list' )
                      ,url(r'^stockbill/in/',views.stockbill_in_index,name='stockbill_in_index' )
                      ,url(r'^stockbill/create/',views.stockbill_create,name='stockbill_create' )
-                     ,url(r'^stockbill/edit/(?P<bill_id>[^/]+)/',views.stockbill_edit,name='estockbill_edit' )
+                     ,url(r'^stockbill/edit/(?P<bill_id>[^/]+)/',views.stockbill_edit,name='stockbill_edit' )
+                     ,url(r'^stockbill/update_detail/(?P<bill_id>[^/]+)/',views.stockbill_update_detail,name='stockbill_update_detail' )
+                     
                      ,url(r'^$',views.index,name='index')
                      )

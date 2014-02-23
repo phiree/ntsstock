@@ -4,13 +4,27 @@ StockBill list
 {%endblock%}
 {%block content%}
 {% if stockbill_list %}
-<ul>
-{%for stockbill in stockbill_list%}
-  {#<li><a href="{%url 'stockmanage:stockbill_edit' stockbill.id%}">{{stockbill.billtime}}</a></li>#}
-  <li><a href="{%url 'stockmanage:estockbill_edit' stockbill.id%}">{{stockbill.BillTime}}</a></li>
-  {%endfor%}
-</ul>
+
+<table>
+	<tr><td>No</td><td>Operation</td></tr>
+	{%for stockbill in stockbill_list%}
+	<tr>
+	<td><a href="{%url 'stockmanage:stockbill_edit' stockbill.id%}">{{stockbill.BillNo}}</a>
+	</td><td>
+		
+		<a href="{%url 'stockmanage:stockbill_update_detail' stockbill.id%}">Details</a>
+	
+	</td>
+		</tr>
+	{%endfor%}
+</table>
 {%else%}
-<p>No bill are availabel.</p>
+<p>
+	No bill are availabel.
+</p>
 {%endif%}
+<div class="pagination">
+	<span>Total:{{paginator.count}} </span>
+	<span class="step-links"> {% if stockbill_list.has_previous %} <a href="?page={{ stockbill_list.previous_page_number }}">previous</a> {% endif %} <span class="current"> Page {{ stockbill_list.number }} of {{ stockbill_list.paginator.num_pages }}. </span> {% if stockbill_list.has_next %} <a href="?page={{ stockbill_list.next_page_number }}">next</a> {% endif %} </span>
+</div>
 {%endblock%}

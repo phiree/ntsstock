@@ -1,13 +1,30 @@
 {% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+{%block header%}
+<script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
+{%endblock%}
 {%block content_title%}
 StockBill In
 {%endblock%}
 {%block content%}
-<form method="post" action=".">
-	 {%csrf_token%}
-	 <table>
-	 {{form.as_table}}
-	 </table>
-<input type="submit" value="Submit" />
-</form>
+
+<div id='billeditor'>
+
+		<form method="post" action=".">
+			{%csrf_token%}
+			<table>
+				{{form.as_table}}
+			</table>
+			<input type="submit" value="Submit" />
+		</form>
+	</div>
+	<div id="tab_detail">
+		<p class='info'>格式要求:产品代码,展位代码,数量.每行一条.</p>
+		<form method="post" action='stockmanage/stockbill/stockbill_updatedetail/'>
+			{%csrf_token%}
+		<textarea name='tt_billdetail' class="span-18 clear" height="500"> </textarea>
+		<input type="submit" />
+		</form>
+		<div class="clear"> </div>
+	</div>
 {%endblock%}

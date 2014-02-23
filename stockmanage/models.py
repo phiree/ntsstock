@@ -188,7 +188,7 @@ class BillBase(models.Model):
     state_applied='applied'# appled for checking. can't change anymore 
     state_checked='checked'# ok
     State_Choices=((state_draft,'draft'),(state_applied,'applied'),
-                    (state_checked,'state_checked'))
+                    (state_checked,'checked'))
     BillState=CharField(max_length=10,choices=State_Choices,default=state_draft)
     Creator=ForeignKey(User)
     # staff-- not the login user who assonated with the bill
