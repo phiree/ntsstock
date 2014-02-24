@@ -1,0 +1,16 @@
+{%if bill.stockbilldetail_set.all%}
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+	<tr>
+		<td>Product</td><td>Location</td><td>Quantity</td>
+	</tr>
+	{%for detail in  bill.stockbilldetail_set.all%}
+	<tr>
+		<td>{{detail.product}} </td><td> {{detail.location}} </td>
+		<td> {{detail.Quantity}} </td>
+	</tr>
+	{%endfor%}
+</table></div>
+{%else%}
+<p>没有数据</p>
+{%endif%}

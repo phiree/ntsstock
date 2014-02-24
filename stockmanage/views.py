@@ -92,7 +92,7 @@ def stockbill_edit(request,bill_id):
     else:
         return HttpResponse('Http method is invalid')
              
-    return render(request,'stockmanage/stockbill_edit.html',{'form':form})
+    return render(request,'stockmanage/stockbill_edit.html',{'form':form,'bill':bill})
     pass
 def stockbill_update_detail(request,bill_id):
     bill=StockBill.objects.get(pk=bill_id)
@@ -100,15 +100,18 @@ def stockbill_update_detail(request,bill_id):
     if request.method=="GET":
         
         detaillist=StockBill.objects.get(pk=bill_id).stockbilldetail_set.all()
-        formated_text='\n'.join([x.product.NTSCode+','+x.location.LocationCode+','+str(x.Quantity)
+        formated_text='\n'.join([x.product.NTSCode+','+str(x.Quantity)+','+x.location.LocationCode
                             for x in detaillist])
     else:
+        if not bill_id:
+            bill.Creator=request.user
         bill.stockbilldetail_set.clear()
         detaillist=[]
         formated_text=request.POST['tt_billdetail']
         for line in formated_text.splitlines():
             if not line:
                 continue
+            #import pdb;pdb.set_trace()
             procode=line.split(',')[0]
             product=Product.objects.get(NTSCode=procode)
             qty=line.split(',')[1]

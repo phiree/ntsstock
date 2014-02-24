@@ -7,24 +7,22 @@
 StockBill In
 {%endblock%}
 {%block content%}
-
 <div id='billeditor'>
-
 		<form method="post" action=".">
 			{%csrf_token%}
-			<table>
-				{{form.as_table}}
-			</table>
-			<input type="submit" value="Submit" />
+			 {% for field in form %}
+        
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {%if forloop.counter == 3 %}
+            <br/>
+            {%endif%}
+    	{% endfor %}
+			<input class="btn" type="submit" value="Submit" />
 		</form>
-	</div>
-	<div id="tab_detail">
-		<p class='info'>格式要求:产品代码,展位代码,数量.每行一条.</p>
-		<form method="post" action='stockmanage/stockbill/stockbill_updatedetail/'>
-			{%csrf_token%}
-		<textarea name='tt_billdetail' class="span-18 clear" height="500"> </textarea>
-		<input type="submit" />
-		</form>
-		<div class="clear"> </div>
-	</div>
+	{%if bill.id%}
+	<label>详情：</label><a href="{%url 'stockmanage:stockbill_update_detail' bill.id %}">编辑详情</a>
+	{%endif%}
+	{%include 'stockmanage/widget_stockbilldetaillist.html'%}</div>
+	
 {%endblock%}
