@@ -183,7 +183,7 @@ class BillBase(models.Model):
     '''
     id=UUIDField(primary_key=True)#use uuid instead of autoincreament, to allow asigning an id to the object before saved into database
     BillNo=CharField(max_length=100,default=datetime.now().strftime('%Y%m%d%H%M%S'))
-    BillTime=DateTimeField(default=datetime.now())
+    BillTime=DateTimeField(auto_now_add=True)
     state_draft='draft' # saved for future change. not complete
     state_applied='applied'# appled for checking. can't change anymore 
     state_checked='checked'# ok

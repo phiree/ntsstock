@@ -4,18 +4,18 @@ StockBill list
 {%endblock%}
 {%block content%}
 {% if stockbill_list %}
-
-<table>
-	<tr><td>No</td><td>Operation</td></tr>
+<table class="table">
+	<tr>
+		<td>单号</td><td>操作</td>
+	</tr>
 	{%for stockbill in stockbill_list%}
 	<tr>
-	<td><a href="{%url 'stockmanage:stockbill_edit' stockbill.id%}">{{stockbill.BillNo}}</a>
-	</td><td>
-		
-		<a href="{%url 'stockmanage:stockbill_update_detail' stockbill.id%}">Details</a>
-	
-	</td>
-		</tr>
+		<td>{%ifequal stockbill.BillType 'in'%}
+			<a href="{%url 'stockmanage:stockbill_stockin_edit' stockbill.id%}">{{stockbill.BillNo}} </a>
+		 {%else%}
+		 	<a href="{%url 'stockmanage:stockbill_stockout_edit' stockbill.id%}">{{stockbill.BillNo}} </a>
+		{%endifequal%} </td><td><a href="{%url 'stockmanage:stockbill_update_detail' stockbill.id%}">Details</a></td>
+	</tr>
 	{%endfor%}
 </table>
 {%else%}

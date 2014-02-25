@@ -3,10 +3,15 @@ from django.forms import ModelForm
 from stockmanage.models import StockBill
 class StockBillForm(ModelForm):
     #BillTime=forms.DateTimeFiled(widget=forms.DateInput(attrs={'class':'timepicker'}),required=True)
+    BillNo=forms.CharField(label='入库单号')
+    #BillReason=forms.ChoiceField()
     def __init__(self, *args, **kwargs):
         super(StockBillForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         #import pdb; pdb.set_trace()
+        self.fields['BillReason']=forms.CharField(max_length=100,label='原因',
+                                                  widget=forms.Select(
+                                                choices=StockBill.Reason_Choices[0 if instance.BillType=='in' else 1][1]))
         self.fields['TotalAmount'].widget.attrs['readonly'] = True
         self.fields['TotalKinds'].widget.attrs['readonly'] = True
         if instance and  instance.BillState!=instance.state_draft:
@@ -14,8 +19,8 @@ class StockBillForm(ModelForm):
             self.fields['BillNo'].widget.attrs['readonly'] = True
     class Media:
         js=('stockbill.js',)
-        
-                
+        css={'all':('css/stockbill.css',)}
+      
     def clean_BillNo(self):
         instance = getattr(self, 'instance', None)
         if instance and  instance.BillState!=instance.state_draft:
@@ -24,4 +29,4 @@ class StockBillForm(ModelForm):
             return self.cleaned_data['BillNo']
     class Meta:
         model=StockBill
-        fields =['BillNo', 'BillType','BillReason','TotalAmount','TotalKinds']
+        fields =['BillNo','BillReason','TotalAmount','TotalKinds','Memo','StaffName']

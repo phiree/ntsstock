@@ -15,7 +15,7 @@
 		<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/site.css'%}" />
 		-->
 		{%block header%}{%endblock%}
-		<title>{%block title%}NTS Stock Management{%endblock%}</title>
+		<title>{%block title%}NTS 展厅管理{%endblock%}</title>
 		
 	</head>
 	<body>
@@ -28,12 +28,13 @@
 				<div id="lm" class='col-md-2'> 
 					<ul class='list-group'>
 						<li class='list-group-item'><a href="/stockmanage/stocklocation/">展位管理</a></li>
-						<li class='list-group-item'><a href="/stockmanage/stockbill/list/all/">出入库列表</a></li>
-						<li class='list-group-item'><a href="/stockmanage/stockbill/create/">新建入库</a></li>
-						<li class='list-group-item'><a href="">出库</a></li>
-						<li class='list-group-item'><a href="">盘点</a></li>
-						<li class='list-group-item'><a href="">报表</a></li>
-						<li class='list-group-item'><a href="">展品信息</a></li>
+						<li class='list-group-item'><a href="/stockmanage/stockbill/stockin/list/">入库列表</a></li>
+						<li class='list-group-item'><a href="{%url 'stockmanage:stockbill_stockout_list'%}">出库列表</a></li>
+						<li class='list-group-item'><a href="{%url 'stockmanage:stockbill_stockin_create'%}">新建入库</a></li>
+						<li class='list-group-item'><a href="{%url 'stockmanage:stockbill_stockout_create'%}">新建出库</a></li>
+						<li class='list-group-item'><a href="/stockmanage/stockcheck/">盘点</a></li>
+						<li class='list-group-item'><a href="/stockmanage/reports/">报表</a></li>
+						<li class='list-group-item'><a href="/stockmanage/productstock/">当前库存</a></li>
 					</ul>
 					</div>
 					<!--Main Content-->

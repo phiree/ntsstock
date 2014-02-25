@@ -1,10 +1,10 @@
 import string
+from django.forms.models import inlineformset_factory
 from django.utils import timezone
 from django.shortcuts import render,get_object_or_404,render_to_response
 from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
-from django.forms.formsets import formset_factory
 from django.core import serializers
 from stockmanage.models import Product,Productlanguage,StockLocation,StockBill,StockBillDetail
 from stockmanage.forms import StockBillForm
@@ -46,8 +46,8 @@ def location_delete(request,location_id):
     location.delete()
     return HttpResponse("")
 
-def stockbill_list(request):
-    stockbill_list=StockBill.objects.all().order_by('-BillTime')
+def stockbill_list(request,type):
+    stockbill_list=StockBill.objects.filter(BillType=type).order_by('-BillTime')
     paginator = Paginator(stockbill_list, 5) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
@@ -61,39 +61,70 @@ def stockbill_list(request):
 
     return render(request,'stockmanage/stockbill.html',{'stockbill_list':stockbill_list_page,'paginator':paginator})
 
-def stockbill_in_index(request):
-    return render(request,'stockmanage/stockbill.html')
+def stockbill_stockin_list(request):
+    return stockbill_list(request,'in')
+    
+def stockbill_stockout_list(request):
+    return stockbill_list(request,'out')
+    
+def stockbill_stockout_create(request):
+    action='create'
+    return stockbill_edit(request,'out',None,action)
 
-def stockbill_out_index(request):
-    return render(request,'stockmanage/stockbill.html')
+def stockbill_stockin_create(request):
+    action='create'
+    #import pdb; pdb.set_trace()
+    return stockbill_edit(request,'in',None,action)
 
-def stockbill_create(request):
-    return stockbill_edit(request,None)
+def stockbill_stockin_edit(request,bill_id):
+    return stockbill_edit(request,'in',bill_id,'.')
 
-def stockbill_edit(request,bill_id):
+def stockbill_stockout_edit(request,bill_id):
+    return stockbill_edit(request,'out',bill_id,'.')
+
+def stockbill_edit(request,type,bill_id,action):
     #import pdb; pdb.set_trace()
     if bill_id:
         bill=StockBill.objects.get(pk=bill_id)
         if not bill.BillState ==StockBill.state_draft:
-            
             pass
     else:
-        bill=StockBill()
+        bill=StockBill(BillType=type,Creator=request.user)
             # can't modify any more
+    billdetail_formset_factory =inlineformset_factory(StockBill, StockBillDetail)
+    
     if request.method=="GET":
-        form=StockBillForm(instance=bill)
+        detail_inlineformset=billdetail_formset_factory(instance=bill)
+        billform=StockBillForm(instance=bill)
     elif request.method=='POST':
+        p=request.POST
+        if 'savedraft' in p:
+            pass
+        elif 'apply' in p:
+            bill.BillState='applied'
+            pass
+        elif 'pass' in p:
+            bill.BillState='checked'
+            pass
+        elif 'refused' in p:
+            bill.BillState='draft'
+        else:
+            pass
         #import pdb; pdb.set_trace()
-        bill.BillState=request.POST.get('BillState')
         
-        form=StockBillForm(request.POST,instance=bill)
-        if form.is_valid():
-            form.save()
+        #form=StockBillForm(request.POST,instance=bill)
+        billform=StockBillForm(request.POST,instance=bill)
+        detail_inlineformset=billdetail_formset_factory(request.POST, instance=bill)
+        if billform.is_valid():
+            billform.save()
+        return HttpResponseRedirect(reverse('stockmanage:stockbill_stockin_edit',args=[bill.id]))
     else:
         return HttpResponse('Http method is invalid')
-             
-    return render(request,'stockmanage/stockbill_edit.html',{'form':form,'bill':bill})
-    pass
+    #import pdb; pdb.set_trace()         
+    return render(request,'stockmanage/stockbill_edit.html',{'form':billform,
+                                                             'inline_detain_formset':detail_inlineformset,
+                                                             'bill':bill,'action':action})
+ 
 def stockbill_update_detail(request,bill_id):
     bill=StockBill.objects.get(pk=bill_id)
     detaillist=bill.stockbilldetail_set.all()

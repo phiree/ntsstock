@@ -1,3 +1,3 @@
 $(function () {
-            $("#billeditor").tabs();
+            //$("#billeditor").tabs();
         });
