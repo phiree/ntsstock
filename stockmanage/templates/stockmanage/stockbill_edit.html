@@ -8,46 +8,70 @@
 {%if bill.id%}修改{%else%}创建{%endif%}{%ifequal bill.BillType 'in' %}入{%else%}出{%endifequal%}库单
 {%endblock%}
 {%block content%}
-<div id='billeditor'>
-	<div class="panel panel-default">
-
-		<div class="panel-body">
-			
-			
-			<form method="post" id='fm_bill' action="{{action}}">
+<form method="post" id='fm_bill' action="{{action}}">
+	{% csrf_token %}
+	<div id='billeditor'>
+		<div class="panel panel-default">
+			<div class="panel-heading">
 				{{form}}
-				
-				{% for detailform in inline_detain_formset%}
-				{{detailform}}
-				{%endfor%}
-				
+			</div>
+			{%if bill.id%}<div class="panel-heading">
+				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
+				<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal">
+修改详情</button>
+			</div>
+			{%endif%}
+			<div class="panel-body">
 				<div>
 					{%ifequal bill.BillState 'draft'%}
 					<input class="btn btn-xs btn-default" type="submit" name="savedraft" value="保存" />
+					{%if bill.id%}
 					<input class="btn btn-xs btn-default" onclick="javascript:return confirm('提交之后会进入库存,且单据不能再做修改,are you sure?')" type="submit" name="approve" value="提交审核" />
+					{%endif%}
 					{%endifequal%}
 					{%ifequal bill.BillState 'applied'%}
 					<input class="btn  btn-sm btn-default" type="submit" name="pass" value="审核通过" />
 					<input class="btn  btn-sm btn-default" type="submit" name="refused" value="审核不通过" />
 					{%endifequal%}
 				</div>
-			</form>
-			{%include 'stockmanage/widget_stockbilldetaillist.html'%}
-		</div>
-		<div class="panel-body">
-
-		</div>
-
-	</div>
-	<div class="panel panel-default">
-
-		<div class="panel-body">
-			{%if bill.id%} <label>编辑：</label><a href="{%url 'stockmanage:stockbill_update_detail' bill.id %}">编辑详情</a>
-			{%endif%}
-			{%include 'stockmanage/widget_stockbilldetaillist.html'%}
+			</div>
+			
 		</div>
 	</div>
-
+</form>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="tab_detail">
+					<p class='info'>
+						格式要求:产品代码,展位代码,数量.每行一条.
+						<br/>
+						注意:单据详情将被覆盖
+					</p>
+					<form method="post" id="fm_detail_update" action='.{#url 'stockmanage:stockbill_update_detail' bill.id #}'>
+						{%csrf_token%}
+							<textarea name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
+					</form>
+					<div class="clear"> </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+				<button id="btn_save" name='updatedetail' type="button" class="btn btn-primary">
+					Save changes
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 {%endblock%}

@@ -245,7 +245,9 @@ class StockBill(BillBase):
         self.TotalKinds=len(self.stockbilldetail_set.all())
         logger.info('sdfasdf')
         super(StockBill,self).save(*args, **kwargs)
-        
+    def generat_detail_to_formatedtext(self):
+        return [x.product.NTSCode+','+str(x.Quantity)+','+x.location.LocationCode
+                            for x in self.stockbilldetail_set.all()]
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill=ForeignKey(BillBase,null=True)

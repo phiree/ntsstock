@@ -91,12 +91,20 @@ def stockbill_edit(request,type,bill_id,action):
     else:
         bill=StockBill(BillType=type,Creator=request.user)
             # can't modify any more
-    billdetail_formset_factory =inlineformset_factory(StockBill, StockBillDetail)
+    #billdetail_formset_factory =inlineformset_factory(StockBill, StockBillDetail,max_num=5,extra=100)
     
     if request.method=="GET":
-        detail_inlineformset=billdetail_formset_factory(instance=bill)
+        #detail_inlineformset=billdetail_formset_factory(instance=bill)
         billform=StockBillForm(instance=bill)
+        detaillist_formated_text= bill.generat_detail_to_formatedtext()
+        return render(request,'stockmanage/stockbill_edit.html',
+                      {'form':billform,
+                     #'inline_detain_formset':detail_inlineformset,
+                     'detaillist_formated_text':'\n'.join(detaillist_formated_text),
+                     'bill':bill,'action':action})
+ 
     elif request.method=='POST':
+        #import pdb;pdb.set_trace()
         p=request.POST
         if 'savedraft' in p:
             pass
@@ -108,23 +116,25 @@ def stockbill_edit(request,type,bill_id,action):
             pass
         elif 'refused' in p:
             bill.BillState='draft'
+        elif 'tt_billdetail' in p:
+            stockbill_update_detail(request,bill.id)
+            pass
         else:
             pass
         #import pdb; pdb.set_trace()
         
         #form=StockBillForm(request.POST,instance=bill)
         billform=StockBillForm(request.POST,instance=bill)
-        detail_inlineformset=billdetail_formset_factory(request.POST, instance=bill)
+        #detail_inlineformset=billdetail_formset_factory(request.POST,request.FILES, instance=bill)
         if billform.is_valid():
             billform.save()
+            #if detail_inlineformset.is_valid():
+                #detail_inlineformset.save()
         return HttpResponseRedirect(reverse('stockmanage:stockbill_stockin_edit',args=[bill.id]))
     else:
         return HttpResponse('Http method is invalid')
     #import pdb; pdb.set_trace()         
-    return render(request,'stockmanage/stockbill_edit.html',{'form':billform,
-                                                             'inline_detain_formset':detail_inlineformset,
-                                                             'bill':bill,'action':action})
- 
+    
 def stockbill_update_detail(request,bill_id):
     bill=StockBill.objects.get(pk=bill_id)
     detaillist=bill.stockbilldetail_set.all()
@@ -154,7 +164,7 @@ def stockbill_update_detail(request,bill_id):
             #import pdb;pdb.set_trace()
         #import pdb;pdb.set_trace()
         bill.save()
-    return render(request,'stockmanage/stockbilldetail_list.html',{'bill':bill,'formated_text':formated_text})
+    #return render(request,'stockmanage/stockbilldetail_list.html',{'bill':bill,'formated_text':formated_text})
         
        
     
