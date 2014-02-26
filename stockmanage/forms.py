@@ -17,6 +17,10 @@ class StockBillForm(ModelForm):
         if instance and  instance.BillState!=instance.state_draft:
             #pass
             self.fields['BillNo'].widget.attrs['readonly'] = True
+            self.fields['BillReason'].widget.attrs['disabled'] ='disabled'
+            
+            self.fields['Memo'].widget.attrs['readonly'] = True
+            self.fields['StaffName'].widget.attrs['readonly'] = True
     class Media:
         js=('stockbill.js',)
         css={'all':('css/stockbill.css',)}
@@ -27,6 +31,24 @@ class StockBillForm(ModelForm):
             return instance.BillNo
         else:
             return self.cleaned_data['BillNo']
+    def clean_BillReason(self):
+        instance = getattr(self, 'instance', None)
+        if instance and  instance.BillState!=instance.state_draft:
+            return instance.BillReason
+        else:
+            return self.cleaned_data['BillReason']
+    def clean_Memo(self):
+        instance = getattr(self, 'instance', None)
+        if instance and  instance.BillState!=instance.state_draft:
+            return instance.Memo
+        else:
+            return self.cleaned_data['Memo']
+    def clean_StaffName(self):
+        instance = getattr(self, 'instance', None)
+        if instance and  instance.BillState!=instance.state_draft:
+            return instance.StaffName
+        else:
+            return self.cleaned_data['StaffName']
     class Meta:
         model=StockBill
         fields =['BillNo','BillReason','TotalAmount','TotalKinds','Memo','StaffName']

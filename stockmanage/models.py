@@ -227,7 +227,7 @@ class StockBill(BillBase):
         return str(self.BillTime)+self.BillType
     def apply_stock_change(self):
         '''apply to stock,can;t changed anymore'''
-        self.BillState=BillBase.State_Choices.state_applied
+        #self.BillState=BillBase.State_Choices.state_applied
         for detail in self.stockbilldetail_set.all():
             
             productstock,productstock_created=ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
@@ -241,7 +241,7 @@ class StockBill(BillBase):
         '''
             #just save to database , no effect to stock
         '''
-        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) if self.BillType=='in' else -x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
+        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
         self.TotalKinds=len(self.stockbilldetail_set.all())
         logger.info('sdfasdf')
         super(StockBill,self).save(*args, **kwargs)

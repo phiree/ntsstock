@@ -2,12 +2,16 @@
 {%load staticfiles%}
 {%block header%}
 <link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/css/stockbill.css'%}" media='screen,projector'/>
+
+<script type="text/javascript" src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/bootstrap-confirmation.js'%}"></script>
 <script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
 {%endblock%}
 {%block content_title%}
 {%if bill.id%}修改{%else%}创建{%endif%}{%ifequal bill.BillType 'in' %}入{%else%}出{%endifequal%}库单
 {%endblock%}
 {%block content%}
+<label>当前状态:{{bill.BillState}}</label> 
 <form method="post" id='fm_bill' action="{{action}}">
 	{% csrf_token %}
 	<div id='billeditor'>
@@ -17,8 +21,10 @@
 			</div>
 			{%if bill.id%}<div class="panel-heading">
 				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
+				{%if bill.BillState == 'draft'%}
 				<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal">
 修改详情</button>
+{%endif%}
 			</div>
 			{%endif%}
 			<div class="panel-body">
@@ -26,7 +32,7 @@
 					{%ifequal bill.BillState 'draft'%}
 					<input class="btn btn-xs btn-default" type="submit" name="savedraft" value="保存" />
 					{%if bill.id%}
-					<input class="btn btn-xs btn-default" onclick="javascript:return confirm('提交之后会进入库存,且单据不能再做修改,are you sure?')" type="submit" name="approve" value="提交审核" />
+					<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交审核" />
 					{%endif%}
 					{%endifequal%}
 					{%ifequal bill.BillState 'applied'%}
@@ -46,7 +52,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				<h4 class="modal-title" id="myModalLabel">编辑详情</h4>
 			</div>
 			<div class="modal-body">
 				<div id="tab_detail">

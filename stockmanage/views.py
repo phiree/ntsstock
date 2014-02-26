@@ -90,11 +90,7 @@ def stockbill_edit(request,type,bill_id,action):
             pass
     else:
         bill=StockBill(BillType=type,Creator=request.user)
-            # can't modify any more
-    #billdetail_formset_factory =inlineformset_factory(StockBill, StockBillDetail,max_num=5,extra=100)
-    
     if request.method=="GET":
-        #detail_inlineformset=billdetail_formset_factory(instance=bill)
         billform=StockBillForm(instance=bill)
         detaillist_formated_text= bill.generat_detail_to_formatedtext()
         return render(request,'stockmanage/stockbill_edit.html',
@@ -110,6 +106,7 @@ def stockbill_edit(request,type,bill_id,action):
             pass
         elif 'apply' in p:
             bill.BillState='applied'
+            bill.apply_stock_change()
             pass
         elif 'pass' in p:
             bill.BillState='checked'
@@ -117,8 +114,7 @@ def stockbill_edit(request,type,bill_id,action):
         elif 'refused' in p:
             bill.BillState='draft'
         elif 'tt_billdetail' in p:
-            stockbill_update_detail(request,bill.id)
-            pass
+            stockbill_update_detail(request,bill)
         else:
             pass
         #import pdb; pdb.set_trace()
@@ -132,39 +128,30 @@ def stockbill_edit(request,type,bill_id,action):
                 #detail_inlineformset.save()
         return HttpResponseRedirect(reverse('stockmanage:stockbill_stockin_edit',args=[bill.id]))
     else:
-        return HttpResponse('Http method is invalid')
-    #import pdb; pdb.set_trace()         
+        return HttpResponse('Http method is invalid')        
     
-def stockbill_update_detail(request,bill_id):
-    bill=StockBill.objects.get(pk=bill_id)
+def stockbill_update_detail(request,bill):
+    
     detaillist=bill.stockbilldetail_set.all()
-    if request.method=="GET":
-        
-        detaillist=StockBill.objects.get(pk=bill_id).stockbilldetail_set.all()
-        formated_text='\n'.join([x.product.NTSCode+','+str(x.Quantity)+','+x.location.LocationCode
-                            for x in detaillist])
-    else:
-        if not bill_id:
-            bill.Creator=request.user
-        bill.stockbilldetail_set.clear()
-        detaillist=[]
-        formated_text=request.POST['tt_billdetail']
-        for line in formated_text.splitlines():
-            if not line:
-                continue
-            #import pdb;pdb.set_trace()
-            procode=line.split(',')[0]
-            product=Product.objects.get(NTSCode=procode)
-            qty=line.split(',')[1]
-            location_code=line.split(',')[2]
-            location=StockLocation.objects.get(LocationCode=location_code)
-            detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
-            #[bill.stockbilldetail_set].append(detail) # 
-            bill.stockbilldetail_set.add(detail)
-            #import pdb;pdb.set_trace()
+
+    if not bill:#create new
+        bill.Creator=request.user
+    bill.stockbilldetail_set.clear()
+    detaillist=[]
+    formated_text=request.POST['tt_billdetail']
+    for line in formated_text.splitlines():
+        if not line:
+            continue
         #import pdb;pdb.set_trace()
-        bill.save()
-    #return render(request,'stockmanage/stockbilldetail_list.html',{'bill':bill,'formated_text':formated_text})
-        
-       
-    
+        procode=line.split(',')[0]
+        product=Product.objects.get(NTSCode=procode)
+        qty=line.split(',')[1]
+        location_code=line.split(',')[2]
+        location=StockLocation.objects.get(LocationCode=location_code)
+        detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
+        #[bill.stockbilldetail_set].append(detail) # 
+        bill.stockbilldetail_set.add(detail)
+
+def productstock_list(request):
+    return HttpResponse('产品库存列表')
+    pass
