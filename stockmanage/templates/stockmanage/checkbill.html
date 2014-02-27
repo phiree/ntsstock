@@ -1,0 +1,17 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+盘点单列表
+{%endblock%}
+{%block content%}
+
+<table class="table">
+	<tr><td>单号</td><td> </td></tr>
+	{%for checkbill in check_list%}
+	<tr><td>{{checkbill.BillNo}}</td><td><a href="{%url 'stockmanage:stockcheck_edit' checkbill.id %}">详情</a> </td></tr>
+	{%endfor%}
+</table>
+<form action="{%url 'stockmanage:checkbill_create'%}">
+	<button class="button">新建盘点单</button>
+</form>
+
+{%endblock%}
