@@ -219,7 +219,7 @@ class StockBill(BillBase):
                          )
                         )
                          
-    BillReason=CharField(max_length=20,choices=Reason_Choices,default='buy')
+    BillReason=CharField(max_length=20,choices=Reason_Choices)
     TotalAmount=DecimalField(max_digits=10,decimal_places=2,default=0)
     # how many kinds of product in the bill
     TotalKinds=IntegerField(default=0)

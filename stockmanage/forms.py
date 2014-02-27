@@ -31,12 +31,15 @@ class StockBillForm(ModelForm):
             return instance.BillNo
         else:
             return self.cleaned_data['BillNo']
+     
     def clean_BillReason(self):
+        #import pdb;pdb.set_trace()
         instance = getattr(self, 'instance', None)
         if instance and  instance.BillState!=instance.state_draft:
             return instance.BillReason
         else:
             return self.cleaned_data['BillReason']
+        
     def clean_Memo(self):
         instance = getattr(self, 'instance', None)
         if instance and  instance.BillState!=instance.state_draft:

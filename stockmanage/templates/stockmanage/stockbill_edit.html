@@ -18,6 +18,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				{{form}}
+				
 			</div>
 			{%if bill.id%}<div class="panel-heading">
 				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
@@ -61,7 +62,7 @@
 						<br/>
 						注意:单据详情将被覆盖
 					</p>
-					<form method="post" id="fm_detail_update" action='.{#url 'stockmanage:stockbill_update_detail' bill.id #}'>
+					<form method="post" id="fm_detail_update" action='{{action}}'>
 						{%csrf_token%}
 							<textarea name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
 					</form>

@@ -86,13 +86,12 @@ def stockbill_edit(request,type,bill_id,action):
     #import pdb; pdb.set_trace()
     if bill_id:
         bill=StockBill.objects.get(pk=bill_id)
-        if not bill.BillState ==StockBill.state_draft:
-            pass
     else:
         bill=StockBill(BillType=type,Creator=request.user)
+    detaillist_formated_text= bill.generat_detail_to_formatedtext()
     if request.method=="GET":
         billform=StockBillForm(instance=bill)
-        detaillist_formated_text= bill.generat_detail_to_formatedtext()
+        #import pdb;pdb.set_trace()
         return render(request,'stockmanage/stockbill_edit.html',
                       {'form':billform,
                      #'inline_detain_formset':detail_inlineformset,
@@ -101,7 +100,7 @@ def stockbill_edit(request,type,bill_id,action):
  
     elif request.method=='POST':
         #import pdb;pdb.set_trace()
-        p=request.POST
+        p=request.POST.copy()
         if 'savedraft' in p:
             pass
         elif 'apply' in p:
@@ -109,33 +108,37 @@ def stockbill_edit(request,type,bill_id,action):
             bill.apply_stock_change()
             pass
         elif 'pass' in p:
+            p["BillReason"]=bill.BillReason
             bill.BillState='checked'
-            pass
         elif 'refused' in p:
+            p["BillReason"]=bill.BillReason
             bill.BillState='draft'
         elif 'tt_billdetail' in p:
-            stockbill_update_detail(request,bill)
+           return stockbill_update_detail(request,bill)
         else:
-            pass
+            raise Exception('No Such Action')
         #import pdb; pdb.set_trace()
         
         #form=StockBillForm(request.POST,instance=bill)
-        billform=StockBillForm(request.POST,instance=bill)
+        billform=StockBillForm(p,instance=bill)
         #detail_inlineformset=billdetail_formset_factory(request.POST,request.FILES, instance=bill)
         if billform.is_valid():
             billform.save()
+        
+            
             #if detail_inlineformset.is_valid():
                 #detail_inlineformset.save()
-        return HttpResponseRedirect(reverse('stockmanage:stockbill_stockin_edit',args=[bill.id]))
-    else:
-        return HttpResponse('Http method is invalid')        
+        if not bill_id:
+            return HttpResponseRedirect(reverse('stockmanage:stockbill_stockin_edit',args=[bill.id]))
+       
+    return render(request,'stockmanage/stockbill_edit.html',
+              {'form':billform,
+             'detaillist_formated_text':'\n'.join(detaillist_formated_text),
+             'bill':bill,'action':action})     
     
 def stockbill_update_detail(request,bill):
     
     detaillist=bill.stockbilldetail_set.all()
-
-    if not bill:#create new
-        bill.Creator=request.user
     bill.stockbilldetail_set.clear()
     detaillist=[]
     formated_text=request.POST['tt_billdetail']
@@ -151,7 +154,12 @@ def stockbill_update_detail(request,bill):
         detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
         #[bill.stockbilldetail_set].append(detail) # 
         bill.stockbilldetail_set.add(detail)
-
+        detaillist_formated_text=bill.generat_detail_to_formatedtext()
+    return render(request,'stockmanage/stockbill_edit.html',
+                      {'form':StockBillForm(instance=bill),
+                     #'inline_detain_formset':detail_inlineformset,
+                     'detaillist_formated_text':'\n'.join(detaillist_formated_text),
+                     'bill':bill,'action':'.'})
 def productstock_list(request):
     return HttpResponse('产品库存列表')
     pass
