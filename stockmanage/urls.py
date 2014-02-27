@@ -1,5 +1,5 @@
 from django.conf.urls import patterns,url
-from stockmanage import views
+from stockmanage import views,views_productstock,views_checkbill
 
 urlpatterns=patterns(''
                      
@@ -21,7 +21,16 @@ urlpatterns=patterns(''
                      ,url(r'^stockbill/stockout/edit/(?P<bill_id>[^/]+)/',views.stockbill_stockout_edit,name='stockbill_stockout_edit' )
                      #编辑单据详情
                      ,url(r'^stockbill/update_detail/(?P<bill_id>[^/]+)/',views.stockbill_update_detail,name='stockbill_update_detail' )
-                     ,url(r'^productstock/list',views.productstock_list,name='productstock_list' )
+                     #库存清单
+                     ,url(r'^productstock/list',views_productstock.list,name='productstock_list' )
+                     
+                     #######盘点##############
+                     #盘点计划列表
+                     ,url(r'^checkbill/list',views_checkbill.list,name='checkbill_list')
+                     #创建盘点单
+                     ,url(r'^checkbill/create',views_checkbill.create,name='checkbill_create')
+                     #编辑盘点清单(增加,删除盘点目标)
+                     ,url(r'^checkbill/edit/(?P<bill_id>[^/]+)/',views_checkbill.edit,name='checkbill_edit')
                      
                      ,url(r'^$',views.index,name='index')
                      )

@@ -1,0 +1,28 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+当前库存情况
+{%endblock%}
+{%block content%}
+{% if productstock_list %}
+<table class="table">
+	<tr>
+		<td>产品</td><td>位置</td><td>数量</td>
+	</tr>
+	{%for stock in productstock_list%}
+	<tr>
+		<td>{{stock.theproduct}} </td>
+		<td>{{stock.stocklocation}}</td>
+		<td>{{stock.Quantity}} </td>
+	</tr>
+	{%endfor%}
+</table>
+{%else%}
+<p>
+	No data are availabel.
+</p>
+{%endif%}
+<div class="pagination">
+	<span>Total:{{paginator.count}} </span>
+	<span class="step-links"> {% if productstock_list.has_previous %} <a href="?page={{ productstock_list.previous_page_number }}">previous</a> {% endif %} <span class="current"> Page {{ productstock_list.number }} of {{ productstock_list.paginator.num_pages }}. </span> {% if productstock_list.has_next %} <a href="?page={{ productstock_list.next_page_number }}">next</a> {% endif %} </span>
+</div>
+{%endblock%}

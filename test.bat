@@ -1,2 +1,3 @@
-python manage.py test stockmanage
+rem python manage.py test stockmanage
+python manage.py test stockmanage.tests.StockBillTest.testSaveBill
 pause

@@ -136,9 +136,9 @@ class StockBillTest(TestCase):
                                            ,)
         theproductlanguage=fixtureProductlanguage.create(1)
         fixtureLocation=AutoFixture(StockLocation,generate_fk=True,
-                                    field_values={'id':'lcoation1'})
+                                    field_values={'LocationCode':'1.1'})
         location=fixtureLocation.create(1)[0]
-        fixtureBill=AutoFixture(StockBill,generate_fk=True)
+        fixtureBill=AutoFixture(StockBill,generate_fk=True,field_values={'BillState':'applied'})
         bill=fixtureBill.create(1)[0]
         fixtureBillDetail=AutoFixture(StockBillDetail,generate_fk=True
                                       ,field_values={'stockbill':bill,'product':theproduct,'Quantity':1
@@ -146,9 +146,19 @@ class StockBillTest(TestCase):
         detail=fixtureBillDetail.create(5)
         
         bill.save()
+        print (bill.BillType)
         self.assertEqual(len(ProductStock.objects.all()),1)
+        self.assertEqual(ProductStock.objects.all()[0].Quantity,5)
+        print ([ProductStock.objects.all()])
         self.assertEqual(bill.TotalAmount,5)
         
-        self.assertEqual(ProductStock.objects.all()[0].Quantity,5)
         
+        bill.BillType='out'
+        bill.save()
+        
+        print (bill.BillType)
+        print ([ProductStock.objects.all()])
+        self.assertEqual(len(ProductStock.objects.all()),1)
+        self.assertEqual(ProductStock.objects.all()[0].Quantity,0)
+        self.assertEqual(bill.TotalAmount,5)
         

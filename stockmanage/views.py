@@ -105,7 +105,7 @@ def stockbill_edit(request,type,bill_id,action):
             pass
         elif 'apply' in p:
             bill.BillState='applied'
-            bill.apply_stock_change()
+            #bill.apply_stock_change()
             pass
         elif 'pass' in p:
             p["BillReason"]=bill.BillReason

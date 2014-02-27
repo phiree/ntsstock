@@ -154,17 +154,7 @@ class ProductlanguageSnapshot(models.Model):
     theproductsnapshot=ForeignKey(ProductSnapshot)
     def __str__(self):
         return 'Language:'+self.Language+' Name:'+self.Name
-    
-class ProductStock(models.Model):
-    '''current stock quantity of a product
-    
-    '''
-    Quantity=IntegerField()
-    theproduct=ForeignKey(Product)
-    def __str__(self):
-        return str(self.theproduct)+':'+str(self.Quantity)
-    #stock bill detail will change stock quantity or location
-    
+  
 
 class StockLocation(models.Model):
     '''location infomation in the warehouse'''
@@ -172,12 +162,24 @@ class StockLocation(models.Model):
     Name=CharField(max_length=20)
     Description=CharField(max_length=200)
     ParentLocation=ForeignKey('self',db_column='parentlocation',blank=True,null=True)
-    stocks=ManyToManyField(ProductStock)
+    #stocks=ManyToManyField(ProductStock)
     def __str__(self):
         return self.LocationCode    
     def GetChildren(self):
         return self.stocklocation_set.all()#StockLocation.objects.filter(ParentLocation=self)
+  
+      
+class ProductStock(models.Model):
+    '''current stock quantity of a product
     
+    '''
+    Quantity=IntegerField()
+    theproduct=ForeignKey(Product)
+    stocklocation=ForeignKey(StockLocation)
+    def __str__(self):
+        return str(self.theproduct.id)+':'+str(self.Quantity)+':'+stocklocation
+    #stock bill detail will change stock quantity or location
+   
 class BillBase(models.Model):
     '''base class of all bills 
     '''
@@ -228,19 +230,31 @@ class StockBill(BillBase):
     def apply_stock_change(self):
         '''apply to stock,can;t changed anymore'''
         #self.BillState=BillBase.State_Choices.state_applied
+        #import pdb;pdb.set_trace()
         for detail in self.stockbilldetail_set.all():
             
             productstock,productstock_created=ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
                                                             stocklocation__id=detail.location.id
-                                                            ,defaults={'Quantity':(1 if self.BillType=='in' else -1)*detail.Quantity                                                          ,'theproduct':detail.product})
+                                                            ,defaults={'Quantity':(1 if self.BillType=='in' else -1)*detail.Quantity ,
+                                                                       'theproduct':detail.product,
+                                                                       'stocklocation':detail.location})
+            print(productstock_created)
             if not productstock_created:
                 productstock.Quantity+=(1 if self.BillType=='in' else -1)*detail.Quantity
+            #else:
+                #productstock.stocklocation_set.add(detail.location)
+                #detail.location.stocks.add(productstock)
+                #detail.location.save()
             productstock.save()
             
     def save(self, *args, **kwargs):
         '''
             #just save to database , no effect to stock
         '''
+        print('beigin_save')
+        if self.BillState==StockBill.state_applied:
+            print('beigin_apply_stock_change')
+            self.apply_stock_change()
         self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
         self.TotalKinds=len(self.stockbilldetail_set.all())
         logger.info('sdfasdf')
@@ -255,10 +269,36 @@ class StockBillDetail(models.Model):
     location=ForeignKey(StockLocation)
     Quantity=IntegerField()
     
-
-
+class CheckBill(BillBase):
+    
+    def Check(self):
+        pass   
+    def CreateDetail(self):
+        for ps in ProductStock.objects.all():
+            cbdetail=CheckBillDetail(product=ps.theproduct,
+                                     location=ps.stocklocation,
+                                     quantity=ps.Quantity)
+            self.checkbilldetail_set.add(cbdetail)
     
 
+class CheckBillDetail(models.Model):
+    checkbill=ForeignKey(CheckBill)
+    product=ForeignKey(Product)
+    location=ForeignKey(StockLocation)
+    quantity=IntegerField()
+    realquantity=IntegerField()
+    
+    def GenerateStockDetail(self,stockout,stockin):
+        '''if realquantity is not equal to systemquantity
+            create a stockdetail'''
+        change=realquantity-quantity
+        change_abs=abs(change)
+        if change==0:
+            return None
+        stockdetail=StockBillDetail(product=product,location=location,Quantity=change_abs)
+        stockdetail.stockbill=stockin if change>0 else stockout
+        return stockdetail
+      
 
 
     
