@@ -16,11 +16,12 @@
 		-->
 		{%block header%}{%endblock%}
 		<title>{%block title%}NTS 展厅管理{%endblock%}</title>
-		
+
 	</head>
 	<body>
 		<div class="container">
-		<h1>NTS Stock Management</h1>u:{{request.User}}
+		<h1>NTS Stock Management</h1>
+		{%if user%} {{user}}<a href="/accounts/logout/">注销</a>{%endif%}
 				<hr/>
 			
 			<!--Left Menu-->
@@ -50,4 +51,5 @@
 				<span>----------------NTS-----------------</span>
 				</footer>
 		</div>
+</body>
 </html>

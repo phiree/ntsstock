@@ -9,12 +9,23 @@ from django.core import serializers
 from stockmanage.models import Product,Productlanguage,StockLocation,StockBill,StockBillDetail
 from stockmanage.forms import StockBillForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 # Create your views here.
-def index(request):
-    return render(request,'stockmanage/index.html')
 
+def index(request):
+    #import pdb;pdb.set_trace()
+   
+    return render(request,'stockmanage/index.html')
+def logout(request):
+    logout(request)
+    HttpResponseRedirect('/')
 ##############Location COntrol#########################
+
 def location_index(request):
+    if not request.user.is_authenticated():
+        return redirect('/login/?next=%s' % request.path)
+    #import pdb;pdb.set_trace()
     all_top_location=StockLocation.objects.filter(ParentLocation=None)
     return render(request,'stockmanage/stocklocation.html',{'all_top_locations':all_top_location})
     pass

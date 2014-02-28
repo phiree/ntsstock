@@ -46,6 +46,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'stockmanage.middleware.LoginRequiredMiddleware',
 )
 
 ROOT_URLCONF = 'ntsstock.urls'
@@ -89,4 +90,4 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'apptemplates.Loader',
 )
-
+LOGIN_REDIRECT_URL='/'
