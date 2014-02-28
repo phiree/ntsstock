@@ -26,6 +26,7 @@ urlpatterns=patterns(''
                      
                      #######盘点##############
                      #盘点计划列表
+                     ,url(r'^checkbill/$',views_checkbill.list,name='checkbill_list')
                      ,url(r'^checkbill/list',views_checkbill.list,name='checkbill_list')
                      #创建盘点单
                      ,url(r'^checkbill/create',views_checkbill.create,name='checkbill_create')

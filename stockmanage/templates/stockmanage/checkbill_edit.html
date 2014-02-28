@@ -1,0 +1,56 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+盘点单详情
+{%endblock%}
+{%block content%}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<label>单号</label>:{{bill.BillNo}}<label>创建日期</label>:{{bill.BillTime}}<label>当前状态:</label>{{bill.CheckState}}
+	</div>
+	<div class="panel-body">
+		<form action='.' method="post"> {% csrf_token %} 
+			<input type="hidden" name='bill_id' value='{{bill.id}}'>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<td>产品</td><td>位置</td><td>系统数量</td>
+						{%if bill.CheckState == 'progressing'%}
+						<td>真实数量</td>
+						{%endif%}
+					</tr>
+				</thead>
+				<tbody>
+					{% for detail in bill.checkbilldetail_set.all %}
+					<tr>
+						<td>{{ detail.product.NTSCode }}</td>
+						<td>{{ detail.location}}</td>
+						<td>{{ detail.quantity}}</td>
+						{%if bill.CheckState == 'progressing'%}<td>
+							<input name='hi_detail_id' type='hidden' value='{{detail.id}}'/>
+						<input type="text" name='tbx_realquantity'  class="text-info" value='{{ detail.realquantity }}' />
+						</td>{%endif%}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+			{%if bill.CheckState == 'draft' %}
+			<button class="btn btn-default" name='begin_check'>
+				开始盘点
+			</button>
+			{%elif bill.CheckState == 'progressing' %}
+			<button class="btn btn-default" name='save'>
+				暂存
+			</button>
+			<button class="btn btn-default" name='complete_check'>
+				完成输入,结束盘点.
+			</button>
+			{%else%}
+			{%endif%}
+			<button class="btn btn-default" name='begin_check'>
+				下载为Excel
+			</button>
+		</form>
+	</div>
+</div>
+{%endblock%}

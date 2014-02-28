@@ -270,16 +270,19 @@ class StockBillDetail(models.Model):
     Quantity=IntegerField()
     
 class CheckBill(BillBase):
-    
+    CheckState_Choices=(('darft','not begin'),('progressing','began check'),('complete','complete checking'))
+    CheckState=CharField(max_length=20,choices=CheckState_Choices,default='draft')
     def Check(self):
         pass   
     def CreateDetail(self):
         for ps in ProductStock.objects.all():
             cbdetail=CheckBillDetail(product=ps.theproduct,
                                      location=ps.stocklocation,
+                                     realquantity=ps.Quantity,
                                      quantity=ps.Quantity)
             self.checkbilldetail_set.add(cbdetail)
-    
+    def CompleteCheck(self):
+        '''结束盘点'''
 
 class CheckBillDetail(models.Model):
     checkbill=ForeignKey(CheckBill)

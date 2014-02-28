@@ -6,12 +6,14 @@
 
 <table class="table">
 	<tr><td>单号</td><td> </td></tr>
-	{%for checkbill in check_list%}
-	<tr><td>{{checkbill.BillNo}}</td><td><a href="{%url 'stockmanage:stockcheck_edit' checkbill.id %}">详情</a> </td></tr>
+	{%for checkbill in checkbill_list%}
+	<tr><td>{{checkbill.BillNo}}</td><td><a href="{%url 'stockmanage:checkbill_edit' checkbill.id %}">详情</a>
+	</td></tr>
 	{%endfor%}
 </table>
-<form action="{%url 'stockmanage:checkbill_create'%}">
-	<button class="button">新建盘点单</button>
+<form action="." method="post">
+	{% csrf_token%}
+	<button type="submit" name='create' class="btn btn-default">新建盘点单</button>
 </form>
 
 {%endblock%}
