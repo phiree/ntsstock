@@ -3,6 +3,30 @@ autofixture
 	error: length = random.randint(self.max_length / 10, self.max_length)
 	fix: length = random.randint(self.max_length % 10, self.max_length)
 xlwt:
+ 1
 	formula.py 7
 	from:__slots__ = ["__init__",  "__s", "__parser", "__sheet_refs", "__xcall_refs"]
 	to:["__s", "__parser", "__sheet_refs", "__xcall_refs"]
+
+2.cannot import BiffRecord 或者ImportError: No module named 'BIFFRecords‘
+
+解决办法：
+使用编辑器或者IDLE或Wing IDE，打开“..\Lib\site-packages\xlwt3\BIFFRecords.py”修编码方式为'UTF-8'
+
+
+3.生成excel文件时出错：
+struct.error: argument for ‘s’ must be a bytes object
+解决办法：
+    def __init__(self, owner):
+        uowner = owner[0:0x30]
+        uowner_len = len(uowner)
+        self._rec_data = pack('%ds%ds' % (uowner_len, 0x70 - uowner_len),
+                              uowner, b' '*(0x70 - uowner_len)) # (to_py3): added b'...'
+修改为
+    def __init__(self, owner):
+        uowner = owner[0:0x30]
+        uowner_len = len(uowner)
+        self._rec_data = pack('%ds%ds' % (uowner_len, 0x70 - uowner_len),
+                              uowner.encode('utf-8'), b' '*(0x70 - uowner_len)) # (to_py3): added b'...'
+
+

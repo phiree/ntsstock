@@ -14,3 +14,19 @@ from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 def list(request):
     return render(request,'stockmanage/productstock.html',{'productstock_list':ProductStock.objects.all()})
     pass
+
+def stock_trace_list(request,product_id):
+    '''trace of stock change of a product'''
+    class stock_trace():
+        def __init__(self,quantity_original,quantity_change,bill,billdetail_id):
+            self.quantity_original=quantity_original
+            self.quantity_change=quantity_change
+            self.bill=bill
+            self.billdetail_id=billdetail_id
+    
+    #import pdb;pdb.set_trace()
+    detail_list=StockBillDetail.objects.filter(product__id=product_id)
+    return render(request,'stockmanage/stocktrace.html',
+                  {'trace_list':detail_list})
+            
+    

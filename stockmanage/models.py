@@ -221,16 +221,24 @@ class StockBill(BillBase):
                          )
                         )
                          
-    BillReason=CharField(max_length=20,choices=Reason_Choices)
-    TotalAmount=DecimalField(max_digits=10,decimal_places=2,default=0)
+   
     # how many kinds of product in the bill
-    TotalKinds=IntegerField(default=0)
+    
+    def get_totalamount(self):
+         return sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
+    def get_totalkind(self):
+        return len(self.stockbilldetail_set.all())
+    
+    BillReason=CharField(max_length=20,choices=Reason_Choices)
+    
+    TotalAmount=property(get_totalamount)
+    TotalKinds=property(get_totalkind)
     def __str__(self):
         return str(self.BillTime)+self.BillType
     def apply_stock_change(self):
         '''apply to stock,can;t changed anymore'''
         #self.BillState=BillBase.State_Choices.state_applied
-        #import pdb;pdb.set_trace()
+        
         for detail in self.stockbilldetail_set.all():
             
             productstock,productstock_created=ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
@@ -248,15 +256,12 @@ class StockBill(BillBase):
             productstock.save()
             
     def save(self, *args, **kwargs):
-        '''
-            #just save to database , no effect to stock
-        '''
-        print('beigin_save')
+        #if not self.id:
+            #self.BillNo=self.BillType.upper()+self.BillNo
         if self.BillState==StockBill.state_applied:
             print('beigin_apply_stock_change')
             self.apply_stock_change()
-        self.TotalAmount=sum(x.Quantity*Decimal(x.product.PriceOfFactory) for x in self.stockbilldetail_set.all())
-        self.TotalKinds=len(self.stockbilldetail_set.all())
+       
         logger.info('sdfasdf')
         super(StockBill,self).save(*args, **kwargs)
     def generat_detail_to_formatedtext(self):
@@ -264,7 +269,7 @@ class StockBill(BillBase):
                             for x in self.stockbilldetail_set.all()]
 class StockBillDetail(models.Model):
     '''product info in the bill'''
-    stockbill=ForeignKey(BillBase,null=True)
+    stockbill=ForeignKey(StockBill,null=True)
     product=ForeignKey(Product)
     location=ForeignKey(StockLocation)
     Quantity=IntegerField()
@@ -282,8 +287,23 @@ class CheckBill(BillBase):
                                      quantity=ps.Quantity)
             self.checkbilldetail_set.add(cbdetail)
     def CompleteCheck(self):
-        '''结束盘点'''
-
+        '''结束盘点 生成盘盈盘亏单据'''
+        check_stockin_bill=StockBill(BillType='in',BillState='applied',
+                                     StaffName=self.StaffName,Creator=self.Creator,
+                                     BillReason='inventory_profit')
+        check_stockout_bill=StockBill(BillType='out',BillState='applied',
+                                     StaffName=self.StaffName,Creator=self.Creator,
+                                     BillReason='inventory_loss')
+        check_stockout_bill.save()
+        check_stockin_bill.save()
+        import pdb;pdb.set_trace()
+        for detail in self.checkbilldetail_set.all():
+            detail.GenerateStockDetail(check_stockout_bill,check_stockin_bill)
+        if len(check_stockout_bill.stockbilldetail_set.all())>0:
+            check_stockin_bill.save()
+        if len(check_stockin_bill.stockbilldetail_set.all())>0:
+            check_stockin_bill.save()    
+        
 class CheckBillDetail(models.Model):
     checkbill=ForeignKey(CheckBill)
     product=ForeignKey(Product)
@@ -294,13 +314,16 @@ class CheckBillDetail(models.Model):
     def GenerateStockDetail(self,stockout,stockin):
         '''if realquantity is not equal to systemquantity
             create a stockdetail'''
-        change=realquantity-quantity
+        change=self.realquantity-self.quantity
         change_abs=abs(change)
         if change==0:
             return None
-        stockdetail=StockBillDetail(product=product,location=location,Quantity=change_abs)
+        stockdetail=StockBillDetail(product=self.product,location=self.location,Quantity=change_abs)
         stockdetail.stockbill=stockin if change>0 else stockout
-        return stockdetail
+        if change>0:
+            stockin.stockbilldetail_set.add(stockdetail)
+        else:
+            stockout.stockbilldetail_set.add(stockdetail)
       
 
 

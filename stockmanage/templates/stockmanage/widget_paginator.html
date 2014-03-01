@@ -1,0 +1,20 @@
+{%if paginator.num_pages > 1 %}
+
+<ul class="pagination">
+	<li>
+		<span>总数:{{paginator.count}}</span>
+	</li>
+	{%for i in range %}
+	{%ifequal i page.number %}
+	<li class='active'>
+		<a href="#">{{i}}<span class="sr-only">(current)</span></a>
+	</li>
+	{%else%}
+	<li>
+		<a href="?page={{ i }}">{{i}}</a>
+	</li>
+	{%endifequal%}
+
+	{%endfor%}
+</ul>
+{%endif%}

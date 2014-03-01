@@ -12,8 +12,6 @@ class StockBillForm(ModelForm):
         self.fields['BillReason']=forms.CharField(max_length=100,label='原因',
                                                   widget=forms.Select(
                                                 choices=StockBill.Reason_Choices[0 if instance.BillType=='in' else 1][1]))
-        self.fields['TotalAmount'].widget.attrs['readonly'] = True
-        self.fields['TotalKinds'].widget.attrs['readonly'] = True
         if instance and  instance.BillState!=instance.state_draft:
             #pass
             self.fields['BillNo'].widget.attrs['readonly'] = True
@@ -54,4 +52,4 @@ class StockBillForm(ModelForm):
             return self.cleaned_data['StaffName']
     class Meta:
         model=StockBill
-        fields =['BillNo','BillReason','TotalAmount','TotalKinds','Memo','StaffName']
+        fields =['BillNo','BillReason','Memo','StaffName']

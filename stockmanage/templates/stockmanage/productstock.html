@@ -10,7 +10,7 @@
 	</tr>
 	{%for stock in productstock_list%}
 	<tr>
-		<td>{{stock.theproduct}} </td>
+		<td> {{stock.theproduct}}<a href="{%url 'stockmanage:productstock_stocktrace_list' stock.theproduct.id%}">trace</a> </td>
 		<td>{{stock.stocklocation}}</td>
 		<td>{{stock.Quantity}} </td>
 	</tr>

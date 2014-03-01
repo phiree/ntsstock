@@ -14,7 +14,7 @@
 				<thead>
 					<tr>
 						<td>产品</td><td>位置</td><td>系统数量</td>
-						{%if bill.CheckState == 'progressing'%}
+						{%if bill.CheckState == 'progressing' or bill.CheckState == 'complete' %}
 						<td>真实数量</td>
 						{%endif%}
 					</tr>
@@ -28,6 +28,9 @@
 						{%if bill.CheckState == 'progressing'%}<td>
 							<input name='hi_detail_id' type='hidden' value='{{detail.id}}'/>
 						<input type="text" name='tbx_realquantity'  class="text-info" value='{{ detail.realquantity }}' />
+						</td>{%endif%}
+						{%if bill.CheckState == 'complete'%}<td>
+						{{detail.realquantity}}
 						</td>{%endif%}
 					</tr>
 					{% endfor %}
@@ -47,7 +50,7 @@
 			</button>
 			{%else%}
 			{%endif%}
-			<button class="btn btn-default" name='begin_check'>
+			<button class="btn btn-default" name='download_as_excel'>
 				下载为Excel
 			</button>
 		</form>

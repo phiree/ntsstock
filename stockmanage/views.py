@@ -70,7 +70,10 @@ def stockbill_list(request,type):
         # If page is out of range (e.g. 9999), deliver last page of results.
         stockbill_list_page = paginator.page(paginator.num_pages)
 
-    return render(request,'stockmanage/stockbill.html',{'stockbill_list':stockbill_list_page,'paginator':paginator})
+    return render(request,'stockmanage/stockbill.html',
+                  {'stockbill_list':stockbill_list_page,'paginator':paginator,
+                   'page':stockbill_list_page,
+                   'range':paginator.page_range})
 
 def stockbill_stockin_list(request):
     return stockbill_list(request,'in')
@@ -99,6 +102,7 @@ def stockbill_edit(request,type,bill_id,action):
         bill=StockBill.objects.get(pk=bill_id)
     else:
         bill=StockBill(BillType=type,Creator=request.user)
+        bill.BillNo=bill.BillType.upper()+bill.BillNo
     detaillist_formated_text= bill.generat_detail_to_formatedtext()
     if request.method=="GET":
         billform=StockBillForm(instance=bill)

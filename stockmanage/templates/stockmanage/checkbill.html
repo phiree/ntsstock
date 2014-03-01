@@ -1,19 +1,30 @@
 {% extends "stockmanage/base.html" %}
 {%block content_title%}
-盘点单列表
+<span class='sub-header'>盘点单列表</span>
 {%endblock%}
 {%block content%}
 
 <table class="table">
-	<tr><td>单号</td><td> </td></tr>
+	<thead>
+	<tr>
+		<th>单号</th><th>时间</th><th> </th>
+	</tr></thead>
 	{%for checkbill in checkbill_list%}
-	<tr><td>{{checkbill.BillNo}}</td><td><a href="{%url 'stockmanage:checkbill_edit' checkbill.id %}">详情</a>
-	</td></tr>
+	<tr>
+		<td>{{checkbill.BillNo}}</td>
+		<td>{{checkbill.BillTime}}</td>
+		<td><a href="{%url 'stockmanage:checkbill_edit' checkbill.id %}">详情</a></td>
+	</tr>
+	
 	{%endfor%}
 </table>
+{%include 'stockmanage/widget_paginator.html'%}
+
 <form action="." method="post">
 	{% csrf_token%}
-	<button type="submit" name='create' class="btn btn-default">新建盘点单</button>
+	<button type="submit" name='create' class="btn btn-default">
+		新建盘点单
+	</button>
 </form>
 
 {%endblock%}
