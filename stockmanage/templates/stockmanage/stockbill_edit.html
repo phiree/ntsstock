@@ -10,39 +10,48 @@
 {%block content_title%}
 {%if bill.id%}修改{%else%}创建{%endif%}{%ifequal bill.BillType 'in' %}入{%else%}出{%endifequal%}库单
 {%endblock%}
+
+{%block nav_stockin_create%}
+{%if not bill.id and  bill.BillType == 'in'%}
+active
+{%endif%}
+{%endblock%}
+{%block nav_stockout_create%}
+{%if not bill.id and  bill.BillType == 'out'%}
+active
+{%endif%}
+{%endblock%}
 {%block content%}
-<label>当前状态:{{bill.BillState}}</label> 
-<form method="post" id='fm_bill' action="{{action}}">
+<label class='text-info'>当前状态:{{bill.BillState}}</label>
+<form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
 	{% csrf_token %}
 	<div id='billeditor'>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				{{form}}
-				
 			</div>
-			{%if bill.id%}<div class="panel-heading">
+			{%if bill.id%}
+			<div class="panel-body" style='padding:0'>
 				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
 				{%if bill.BillState == 'draft'%}
 				<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#myModal">
-修改详情</button>
-{%endif%}
+					修改详情
+				</button>
+				{%endif%}
 			</div>
 			{%endif%}
-			<div class="panel-body">
-				<div>
-					{%ifequal bill.BillState 'draft'%}
-					<input class="btn btn-xs btn-default" type="submit" name="savedraft" value="保存" />
-					{%if bill.id%}
-					<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交审核" />
-					{%endif%}
-					{%endifequal%}
-					{%ifequal bill.BillState 'applied'%}
-					<input class="btn  btn-sm btn-default" type="submit" name="pass" value="审核通过" />
-					<input class="btn  btn-sm btn-default" type="submit" name="refused" value="审核不通过" />
-					{%endifequal%}
-				</div>
-			</div>
-			
+		</div>
+		<div>
+			{%ifequal bill.BillState 'draft'%}
+			<input class="btn  btn-default" type="submit" name="savedraft" value="保存" />
+			{%if bill.id%}
+			<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交审核" />
+			{%endif%}
+			{%endifequal%}
+			{%ifequal bill.BillState 'applied'%}
+			<input class="btn   btn-default" type="submit" name="pass" value="审核通过" />
+			<input class="btn   btn-default" type="submit" name="refused" value="审核不通过" />
+			{%endifequal%}
 		</div>
 	</div>
 </form>
@@ -64,9 +73,9 @@
 					</p>
 					<form method="post" id="fm_detail_update" action='{{action}}'>
 						{%csrf_token%}
-							<textarea name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
+						<textarea name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
 					</form>
-					<div class="clear"> </div>
+					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="modal-footer">

@@ -73,7 +73,8 @@ def stockbill_list(request,type):
     return render(request,'stockmanage/stockbill.html',
                   {'stockbill_list':stockbill_list_page,'paginator':paginator,
                    'page':stockbill_list_page,
-                   'range':paginator.page_range})
+                   'range':paginator.page_range,
+                   'type':type})
 
 def stockbill_stockin_list(request):
     return stockbill_list(request,'in')

@@ -2,11 +2,21 @@
 {%block content_title%}
 StockBill list
 {%endblock%}
+{%block nav_stockin_list%}
+{%if type == 'in'%}
+active
+{%endif%}
+{%endblock%}
+{%block nav_stockout_list%}
+{%if type == 'out'%}
+active
+{%endif%}
+{%endblock%}
 {%block content%}
 {% if stockbill_list %}
 <table class="table">
 	<tr>
-		<td>单号</td><td>操作</td>
+		<td>单号</td><td>操作{{request}}</td>
 	</tr>
 	{%for stockbill in stockbill_list%}
 	<tr>

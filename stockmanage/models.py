@@ -303,7 +303,8 @@ class CheckBill(BillBase):
             check_stockin_bill.save()
         if len(check_stockin_bill.stockbilldetail_set.all())>0:
             check_stockin_bill.save()    
-        
+    def IsProgressing(self):
+        pass
 class CheckBillDetail(models.Model):
     checkbill=ForeignKey(CheckBill)
     product=ForeignKey(Product)
