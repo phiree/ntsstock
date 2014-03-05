@@ -5,6 +5,9 @@
 <script  type="text/javascript" src="{%static 'stockmanage/jquery/plugin/jquery.cookie.js'%}"></script>
 <script  type="text/javascript" src="{%static 'stockmanage/js/locationservice.js'%}"></script>
 {%endblock%}
+{%block nav_location%}
+active
+{%endblock%}
 {%block content_title%}
 Stock Location Manage
 {%endblock%}
@@ -13,7 +16,7 @@ Stock Location Manage
 {%for location_lv1 in all_top_locations.all%}
            <div class="dvContainerLv1">
                 <h2 class="posName" posid='{{location_lv1.id}}'>
-                    {{location_lv1.Name}}</h2><a href='#'>342</a>
+                    {{location_lv1.Name}}</h2>
                     {%for location_lv2 in location_lv1.stocklocation_set.all%}
                     
                           <div class="dvContainerLv2">

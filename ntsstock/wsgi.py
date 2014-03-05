@@ -7,8 +7,8 @@ For more information on this file, see
 https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
-import os
+import os,sys
+sys.path.append(r'E:/workspace/code/ntsstock/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ntsstock.settings")
-
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()

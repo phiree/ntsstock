@@ -2,18 +2,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="{%static 'stockmanage/jquery/jquery-1.9.1.js'%}" type="text/javascript"></script>
 		<script src="{%static 'stockmanage/jquery/jqueryui/jquery-ui-1.10.3.min.js'%}" type="text/javascript"></script>
-		<!--BluePrint-->
-		<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/bootstrap-3.1.1-dist/css/bootstrap.min.css'%}" media='screen,projector'/>
-		<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/bootstrap-3.1.1-dist/css/bootstrap-theme.min.css'%}" media='screen,projector'/>
-		<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/blueprint/print.css'%}" media='print'/>
-		<!--[if lt IE 8]><link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/blueprint/ie.css'%}" /><![endif]-->
 		<!--jQueryUI-->
 		<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/jquery/jqueryui/themes/base/jquery-ui.css'%}" />
-		<!--site
-		<link rel="stylesheet" type="text/css" media="all" href="{%static 'stockmanage/css/site.css'%}" />
-		-->
+		
+		<!--bootstrap-->
+		<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/bootstrap-3.1.1-dist/css/bootstrap.min.css'%}" media='screen,projector'/>
+		<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/bootstrap-3.1.1-dist/css/bootstrap-theme.min.css'%}" media='screen,projector'/>
+ 
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="{%static 'stockmanage/js/html5shiv.js'%}"></script>
+      <script src="{%static 'stockmanage/js/respond.min.js'%}"></script>
+     <![endif]-->
+
 		{%block header%}{%endblock%}
 		<title>{%block title%}NTS 展厅管理{%endblock%}</title>
 
@@ -21,15 +27,15 @@
 	<body>
 		<div class="container">
 			<div class='row'>
-				<h1 class='col-md-10'>NTS Stock Management</h1>
-				<div class='col-md-2'>
+				<h1 class='col-sm-10'>NTS Stock Management</h1>
+				<div class='col-sm-2'>
 					{%if user%} {{user}}<a href="/accounts/logout/">注销</a>{%endif%}
 				</div>
 			</div>
 			<hr/>
 			<!--Left Menu-->
 			<div class="row">
-				<div id="lm" class='col-md-2 list-group'>
+				<div id="lm" class='col-sm-2 list-group'>
 					<a class='list-group-item {%block nav_stocklist%}{%endblock%}'href="/stockmanage/productstock/list"><span style='margin-right: 15px' class="glyphicon glyphicon-home"> </span>库存列表</a>
 					<a  class='list-group-item {%block nav_location%}{%endblock%}'href="/stockmanage/stocklocation/"><span style='margin-right: 15px'  class="glyphicon glyphicon-th"> </span>展位管理</a>
 					<a  class='list-group-item {%block nav_stockin_list%}{%endblock%} 'href="/stockmanage/stockbill/stockin/list/"><span  style='margin-right: 15px' class="glyphicon glyphicon-align-left"> </span>入库列表</a>
@@ -39,7 +45,7 @@
 					<a class='list-group-item {%block nav_check%}{%endblock%}' href="/stockmanage/checkbill/"><span  style='margin-right: 15px' class="glyphicon glyphicon-ok"> </span>盘点</a>
 				</div>
 				<!--Main Content-->
-				<div id='mc' class='col-md-10'>
+				<div id='mc' class='col-sm-10'>
 					<h2>{%block content_title%}Stock Manage{%endblock%}</h2>
 					{%block content%}my default content{%endblock%}
 				</div>
@@ -50,5 +56,21 @@
 				<span>----------------NTS-----------------</span>
 			</footer>
 		</div>
+		<script src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.js'%}" type="text/javascript"></script>
+		<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://a.nts.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "2"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Piwik Code -->
 	</body>
 </html>
