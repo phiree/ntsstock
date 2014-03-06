@@ -22,11 +22,15 @@ active
 {%endif%}
 {%endblock%}
 {%block content%}
-<label class='text-info'>当前状态:{{bill.BillState}}</label>
 <form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
 	{% csrf_token %}
 	<div id='billeditor'>
 		<div class="panel panel-default">
+			<div class="panel-heading">
+			{%if bill.id%}
+		<label>	单号:</label>{{bill.BillNo}}<label>状态:</label>{{bill.BillState}}
+			{%endif%}
+			</div>
 			<div class="panel-heading">
 				{{form}}
 			</div>
@@ -45,7 +49,7 @@ active
 			{%ifequal bill.BillState 'draft'%}
 			<input class="btn  btn-default" type="submit" name="savedraft" value="保存" />
 			{%if bill.id%}
-			<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交审核" />
+			<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存" />
 			{%endif%}
 			{%endifequal%}
 			{%ifequal bill.BillState 'applied'%}

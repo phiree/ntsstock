@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
-from stockmanage.models import Product,Productlanguage,StockLocation,StockBill,StockBillDetail
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail
 from stockmanage.forms import StockBillForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -103,7 +103,7 @@ def stockbill_edit(request,type,bill_id,action):
         bill=StockBill.objects.get(pk=bill_id)
     else:
         bill=StockBill(BillType=type,Creator=request.user)
-        bill.BillNo=bill.BillType.upper()+bill.BillNo
+        #bill.BillNo=bill.BillType.upper()+bill.BillNo
     detaillist_formated_text= bill.generat_detail_to_formatedtext()
     if request.method=="GET":
         billform=StockBillForm(instance=bill)
@@ -140,8 +140,8 @@ def stockbill_edit(request,type,bill_id,action):
         #detail_inlineformset=billdetail_formset_factory(request.POST,request.FILES, instance=bill)
         if billform.is_valid():
             billform.save()
-        
-            
+        else:
+            return render(request,'stockmanage/stockbill_edit.html',{"form":billform})
             #if detail_inlineformset.is_valid():
                 #detail_inlineformset.save()
         if not bill_id:
@@ -163,7 +163,7 @@ def stockbill_update_detail(request,bill):
             continue
         #import pdb;pdb.set_trace()
         procode=line.split(',')[0]
-        product=Product.objects.get(NTSCode=procode)
+        product=Product.objects.get(Code_Original=procode)
         qty=line.split(',')[1]
         location_code=line.split(',')[2]
         location=StockLocation.objects.get(LocationCode=location_code)

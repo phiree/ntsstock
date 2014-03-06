@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from stockmanage.models import StockBill
 class StockBillForm(ModelForm):
     #BillTime=forms.DateTimeFiled(widget=forms.DateInput(attrs={'class':'timepicker'}),required=True)
-    BillNo=forms.CharField(label='入库单号')
+    #BillNo=forms.CharField(label='入库单号')
     #BillReason=forms.ChoiceField()
     def __init__(self, *args, **kwargs):
         super(StockBillForm, self).__init__(*args, **kwargs)
@@ -14,7 +14,8 @@ class StockBillForm(ModelForm):
                                                 choices=StockBill.Reason_Choices[0 if instance.BillType=='in' else 1][1]))
         if instance and  instance.BillState!=instance.state_draft:
             #pass
-            self.fields['BillNo'].widget.attrs['readonly'] = True
+            #self.fields.add('BillNo')
+            #self.fields['BillNo'].widget.attrs['readonly'] = True
             self.fields['BillReason'].widget.attrs['disabled'] ='disabled'
             
             self.fields['Memo'].widget.attrs['readonly'] = True
@@ -52,4 +53,4 @@ class StockBillForm(ModelForm):
             return self.cleaned_data['StaffName']
     class Meta:
         model=StockBill
-        fields =['BillNo','BillReason','Memo','StaffName']
+        fields =['BillReason','Memo','StaffName']

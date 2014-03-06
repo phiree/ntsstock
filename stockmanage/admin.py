@@ -1,18 +1,17 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-from stockmanage.models import Product,Productlanguage,StockLocation,StockBill,StockBillDetail,ProductStock
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,ProductStock
 # Register your models here.
 
 
-class ProductLanguageInLine(admin.TabularInline):
-    model=Productlanguage
+
 class StockBillDetailInline(admin.TabularInline):
     model=StockBillDetail
     fields=('product',)
     readonly_fields=('product','location','Quantity',)
     template='admin/stockmanage/stockbill/edit_inline/tabular.html' 
 class ProductAdmin(admin.ModelAdmin):
-    inlines=[ProductLanguageInLine]
+  pass
 
 class StockLocationAdmin(admin.ModelAdmin):
     

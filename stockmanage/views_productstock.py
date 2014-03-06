@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
-from stockmanage.models import Product,Productlanguage,StockLocation,StockBill,StockBillDetail,ProductStock
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,ProductStock
 from stockmanage.forms import StockBillForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 # Create your views here.
@@ -17,13 +17,6 @@ def list(request):
 
 def stock_trace_list(request,product_id):
     '''trace of stock change of a product'''
-    class stock_trace():
-        def __init__(self,quantity_original,quantity_change,bill,billdetail_id):
-            self.quantity_original=quantity_original
-            self.quantity_change=quantity_change
-            self.bill=bill
-            self.billdetail_id=billdetail_id
-    
     #import pdb;pdb.set_trace()
     detail_list=StockBillDetail.objects.filter(product__id=product_id)
     return render(request,'stockmanage/stocktrace.html',
