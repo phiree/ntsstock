@@ -18,7 +18,7 @@ def list(request):
 def stock_trace_list(request,product_id):
     '''trace of stock change of a product'''
     #import pdb;pdb.set_trace()
-    detail_list=StockBillDetail.objects.filter(product__id=product_id)
+    detail_list=StockBillDetail.objects.filter(product__id=product_id,stockbill__BillState='applied')
     return render(request,'stockmanage/stocktrace.html',
                   {'trace_list':detail_list})
             

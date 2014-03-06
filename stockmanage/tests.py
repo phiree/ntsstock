@@ -7,16 +7,23 @@ from stockmanage.models import  Product\
                         ,StockLocation,ProductStock,ProductSnapshot\
                         ,StockBill,StockBillDetail
 # Create your tests here.
-class ProductMethodTests(TestCase):
-    
-   
+class CheckMethodTests(TestCase):
+	def test_Complete_Check(self):
+		fixtureProduct=AutoFixture(Product)
+        theproduct=fixtureProduct.create(1)[0]
+        fixtureParent=AutoFixture(StockLocation)
+        locationParent=fixtureParent.create(1)[0]
+        ProductStock.objects.create(Quantity=1,theproduct=theproduct,stocklocation=locationParent)
+        
+        checkbill=CheckBill.objects.create()
+        checkbill.checkbilldetail_set.create()
+
+class ProductMethodTests(TestCase):   
     def test_get_a_snapshot_of_given_time(self):
         
         print('----------test_get_a_snapshot_of_given_time')
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
-        
-        #造像
         self.assertEqual(0,  theproduct.productsnapshot_set.all().count())
         
         snapshot1=theproduct.Snapshot()

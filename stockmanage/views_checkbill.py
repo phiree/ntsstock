@@ -83,10 +83,9 @@ def edit(request,bill_id):
                 detail.realquantity=int(detail_realquantity_list[counter])
                 detail.save()
             if 'complete_check' in p:
-                
                 bill.CheckState='complete'
+                bill.CheckTime_Complete=datetime.now()
                 bill.save()
-                
                 try:
                     bill.CompleteCheck()
                 except IntegrityError:

@@ -199,6 +199,9 @@ class StockBillDetail(models.Model):
     Quantity = IntegerField()
     
 class CheckBill(BillBase):
+    CheckTime_Begin=DateTimeField(blank=True, default=datetime.now())
+    CheckTime_Complete=DateTimeField(null=True)
+   
     CheckState_Choices = (('darft', 'not begin'), ('progressing', 'began check'), ('complete', 'complete checking'))
     CheckState = CharField(max_length=20, choices=CheckState_Choices, default='draft')
     def Check(self):
@@ -212,6 +215,7 @@ class CheckBill(BillBase):
             self.checkbilldetail_set.add(cbdetail)
     def CompleteCheck(self):
         '''结束盘点 生成盘盈盘亏单据'''
+        
         check_stockin_bill = StockBill(BillType='in', BillState='applied',
                                      StaffName=self.StaffName, Creator=self.Creator,
                                      BillReason='inventory_profit')
