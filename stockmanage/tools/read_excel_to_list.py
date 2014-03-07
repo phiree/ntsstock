@@ -7,7 +7,9 @@ class excel_reader:
     def read(self):
         workbook = xlrd.open_workbook(self.excel_file_path,formatting_info=True)
         worksheets=workbook.sheets()
-        bookdata=[]
+        bookdata={}
+        bookdata['filename']=self.excel_file_path
+        bookdata['sheetsdata']=[]
         for sheet in worksheets:
             
             #fill merged cell with value of top left cell
@@ -35,7 +37,7 @@ class excel_reader:
                 current_row+=1
                 pass
                 sheetdata['rowlist'].append(rowdata)
-            bookdata.append(sheetdata)
+            bookdata['sheetsdata'].append(sheetdata)
         return bookdata
     
     def get_value_for_merged_cell(self,sheet,idxr,idxc):

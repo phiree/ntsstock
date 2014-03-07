@@ -14,7 +14,6 @@ class CheckMethodTests(TestCase):
         fixtureParent=AutoFixture(StockLocation)
         locationParent=fixtureParent.create(1)[0]
         ProductStock.objects.create(Quantity=1,theproduct=theproduct,stocklocation=locationParent)
-        
         checkbill=CheckBill.objects.create()
         checkbill.checkbilldetail_set.create()
 
