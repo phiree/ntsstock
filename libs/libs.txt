@@ -1,8 +1,14 @@
-#单元测试,自动生成对象
+﻿#单元测试,自动生成对象
 pip install django-autofixture
+
 #复制并直接扩展 好像没有用到
 pip install apptemplates
+
 #写入excel
 pip install xlwt3
+
+#读取excel
+pip install xlrd
+
 #needed by admin date_hierarchy = 'pub_date
 pip install pytz 
