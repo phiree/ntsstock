@@ -23,8 +23,7 @@ def logout(request):
 ##############Location COntrol#########################
 
 def location_index(request):
-    if not request.user.is_authenticated():
-        return redirect('/login/?next=%s' % request.path)
+    
     #import pdb;pdb.set_trace()
     all_top_location=StockLocation.objects.filter(ParentLocation=None)
     return render(request,'stockmanage/stocklocation.html',{'all_top_locations':all_top_location})
@@ -59,8 +58,10 @@ def location_delete(request,location_id):
 
 def stockbill_list(request,type):
     stockbill_list=StockBill.objects.filter(BillType=type).order_by('-BillTime')
+    
     paginator = Paginator(stockbill_list, 5) # Show 25 contacts per page
     page = request.GET.get('page')
+    paginator._count=100
     try:
         stockbill_list_page = paginator.page(page)
     except PageNotAnInteger:

@@ -23,8 +23,6 @@ active
 	No data are availabel.
 </p>
 {%endif%}
-<div class="pagination">
-	<span>Total:{{paginator.count}} </span>
-	<span class="step-links"> {% if productstock_list.has_previous %} <a href="?page={{ productstock_list.previous_page_number }}">previous</a> {% endif %} <span class="current"> Page {{ productstock_list.number }} of {{ productstock_list.paginator.num_pages }}. </span> {% if productstock_list.has_next %} <a href="?page={{ productstock_list.next_page_number }}">next</a> {% endif %} </span>
-</div>
+{%include 'stockmanage/widget_paginator.html'%}
+
 {%endblock%}

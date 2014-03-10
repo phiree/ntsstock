@@ -1,5 +1,6 @@
 import xlrd
 import os
+from datetime import datetime
 class excel_reader:
     def __init__(self,excel_file_path):
         self.excel_file_path=excel_file_path
@@ -18,7 +19,7 @@ class excel_reader:
             sheetname=sheet.name
             sheetdata['sheetname']=sheetname
             sheetdata['rowlist']=[]
-            current_row=0
+            current_row=3 # skip the title
             #print('sheet.nrows:'+str(sheet.nrows))
             #print('sheet.ncols:'+str(sheet.ncols))
             
@@ -29,6 +30,15 @@ class excel_reader:
                 #print('sheet.row_len():'+str(current_row)+','+str(sheet.row_len(current_row)))
                 while current_col <sheet.ncols:
                     current_cell_value=sheet.cell_value(current_row,current_col)
+                    current_cell_type=sheet.cell_type(current_row,current_col)
+                    if current_cell_type== xlrd.XL_CELL_DATE:
+                            dt_tuple = xlrd.xldate_as_tuple(current_cell_value, workbook.datemode)
+                            # Create datetime object from this tuple.
+                            get_col = datetime(
+                            dt_tuple[0], dt_tuple[1], dt_tuple[2], 
+                            dt_tuple[3], dt_tuple[4], dt_tuple[5]
+                            )
+                    
                     if current_cell_value=='':
                         current_cell_value=self.get_value_for_merged_cell(sheet, current_row,current_col)
                     #print ('current_row:'+str(current_row)+'current_col:'+str(current_col)+'value:'+str(current_cell_value))
@@ -43,9 +53,9 @@ class excel_reader:
     def get_value_for_merged_cell(self,sheet,idxr,idxc):
         #import pdb;pdb.set_trace()
         
-        print('--------------------')
+        #print('--------------------')
         for crange in sheet.merged_cells:
-            print(crange)
+            #print(crange)
             #0,1,0,3 the hi index is based 1 but the low 0, confused, bug?
             rlo, rhi, clo, chi = crange
             if rlo<=idxr<=rhi-1 and clo<=idxc<=chi-1: 

@@ -12,7 +12,22 @@ from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 # Create your views here.
 
 def list(request):
-    return render(request,'stockmanage/productstock.html',{'productstock_list':ProductStock.objects.all()})
+    productstock_list=ProductStock.objects.all()
+    
+    paginator = Paginator(productstock_list, 50) # Show 25 contacts per page
+    page = request.GET.get('page')
+    #paginator._count=100
+    try:
+        productstock_list_page = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        productstock_list_page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        productstock_list_page = paginator.page(paginator.num_pages)
+    return render(request,'stockmanage/productstock.html',{'productstock_list':productstock_list_page,
+                                                           'paginator':paginator,
+                                                           'range':paginator.page_range})
     pass
 
 def stock_trace_list(request,product_id):
