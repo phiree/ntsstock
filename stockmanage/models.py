@@ -96,7 +96,8 @@ class ProductStock(models.Model):
     '''
     Quantity = IntegerField()
     theproduct = ForeignKey(Product)
-    stocklocation = ForeignKey(StockLocation)
+    stocklocation = ForeignKey(StockLocation,null=True)
+    memo=CharField(max_length=2000)
     def __str__(self):
         return str(self.theproduct.id) + ':' + str(self.Quantity) + ':' + str(self.stocklocation)
     # stock bill detail will change stock quantity or location

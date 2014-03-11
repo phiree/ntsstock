@@ -24,8 +24,14 @@ class excel_reader:
             #print('sheet.ncols:'+str(sheet.ncols))
             
             while current_row<sheet.nrows:
+                
                 rowdata=[]
                 row=sheet.row(current_row)
+                dud_types = set([xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY ]) 
+                rowf = [ ty for ty in sheet.row_types(sheet.nrows-1) ] 
+                if all( x in dud_types for x in rowf ): 
+                    continue
+    
                 current_col=0
                 #print('sheet.row_len():'+str(current_row)+','+str(sheet.row_len(current_row)))
                 while current_col <sheet.ncols:
@@ -42,6 +48,7 @@ class excel_reader:
                     if current_cell_value=='':
                         current_cell_value=self.get_value_for_merged_cell(sheet, current_row,current_col)
                     #print ('current_row:'+str(current_row)+'current_col:'+str(current_col)+'value:'+str(current_cell_value))
+                    
                     rowdata.append(current_cell_value)
                     current_col+=1
                 current_row+=1
@@ -63,5 +70,5 @@ class excel_reader:
         return ''
             
 if __name__=='__main__':
-    reader=excel_reader('test2.xls')
+    reader=excel_reader('test.xls')
     print(reader.read())
