@@ -30,6 +30,7 @@ class excel_reader:
                 dud_types = set([xlrd.XL_CELL_BLANK, xlrd.XL_CELL_EMPTY ]) 
                 rowf = [ ty for ty in sheet.row_types(sheet.nrows-1) ] 
                 if all( x in dud_types for x in rowf ): 
+                    current_row+=1
                     continue
     
                 current_col=0

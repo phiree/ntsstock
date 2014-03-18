@@ -11,7 +11,7 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 logger = logging.getLogger(__name__)
 class Product(models.Model):
     id = UUIDField(primary_key=True)
-    SerialNo = IntegerField(default=0)
+    SerialNo = IntegerField(default=0,null=True)
     Code_Original = CharField(max_length=50)
     Code_Database = CharField(max_length=50)
     NTSCode=CharField(max_length=255)
@@ -20,6 +20,7 @@ class Product(models.Model):
     Specification = CharField(max_length=1000)
     Material = CharField(max_length=255)
     Price = DecimalField(max_digits=10, decimal_places=2)
+    Currency=CharField(max_length=10,default='CNY')
     Unit = CharField(max_length=10)
     CreateTime = DateTimeField('CreateTime', blank=True, default=datetime.now())
     LastUpdateTime = DateTimeField(blank=True, default=datetime.now())
@@ -43,6 +44,7 @@ class Product(models.Model):
             , Specification=self.Specification
             , Material=self.Material
             , Price=self.Price
+            ,Currency=self.Currency
             , State=self.State
            
             )
@@ -71,6 +73,7 @@ class ProductSnapshot(models.Model):
     Specification = CharField(max_length=1000)
     Material = CharField(max_length=255)
     Price = DecimalField(max_digits=10, decimal_places=2)
+    Currency=CharField(max_length=10,default='CNY')
     Unit = CharField(max_length=10)
     CreateTime = DateTimeField('CreateTime', blank=True, default=datetime.now())
     LastUpdateTime = DateTimeField(blank=True, default=datetime.now())
@@ -256,7 +259,11 @@ class CheckBillDetail(models.Model):
             stockin.stockbilldetail_set.add(stockdetail)
         else:
             stockout.stockbilldetail_set.add(stockdetail)
-      
+class CheckBillRealDetail(models.Model):
+    pass
+
+class Suppier(models.Model):
+    pass    
 
 
     

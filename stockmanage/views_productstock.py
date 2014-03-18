@@ -10,10 +10,16 @@ from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,P
 from stockmanage.forms import StockBillForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 # Create your views here.
-
 def list(request):
-    productstock_list=ProductStock.objects.all()
+    return list_search(request,'')
+def list_search(request,sw):
     
+    productstock_list=[]
+    if sw=='':
+        productstock_list=ProductStock.objects.all()
+    else:
+        productstock_list=ProductStock.objects.all()
+        #productstock_list
     paginator = Paginator(productstock_list, 50) # Show 25 contacts per page
     page = request.GET.get('page')
     #paginator._count=100
@@ -36,5 +42,8 @@ def stock_trace_list(request,product_id):
     detail_list=StockBillDetail.objects.filter(product__id=product_id,stockbill__BillState='applied')
     return render(request,'stockmanage/stocktrace.html',
                   {'trace_list':detail_list})
-            
+
+def productstock_search(keyword):
+    
+    pass
     

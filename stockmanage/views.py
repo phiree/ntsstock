@@ -61,7 +61,7 @@ def stockbill_list(request,type):
     
     paginator = Paginator(stockbill_list, 5) # Show 25 contacts per page
     page = request.GET.get('page')
-    paginator._count=100
+    #paginator._count=100
     try:
         stockbill_list_page = paginator.page(page)
     except PageNotAnInteger:

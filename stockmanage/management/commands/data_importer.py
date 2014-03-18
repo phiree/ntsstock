@@ -1,7 +1,7 @@
 
 from stockmanage.models import Product,StockBill,StockBillDetail,ProductStock,StockLocation
 from .read_excel_to_list import excel_reader
-
+import re
 
 class importer:
     def __init__(self,excel_file_path):
@@ -39,9 +39,20 @@ class importer:
         try:
             cell_price=decimal(row[7])
         except:
-            cell_price=0
+            usd_re=re.match(r'usd(?P<dollar>\d+(\.\d+)?)',str(row[7]),re.I)
+            if usd_re:
+                try:
+                    cell_price=decimal( usd_re.match('dollar'))
+                except:
+                    cell_price=0
+            else:
+                cell_price=0
+        serialNo=row[0]
+        if not serialNo:
+            serialNo=0       
+        #import pdb;pdb.set_trace()
         product,created=Product.objects.get_or_create(
-                                      SerialNo=row[0],
+                                      SerialNo=serialNo,
                                       Code_Original=row[1],
                                       Code_Database=row[2],
                                       NTSCode='',
@@ -60,7 +71,7 @@ class importer:
             quantity=int(row[11] if row[11] else row[10])
         except:
             quantity=0
-        locationCode=row[13]
+        locationCode=str(row[13])
         locations=self.parse_location(locationCode)
         parent=None
         location=None
