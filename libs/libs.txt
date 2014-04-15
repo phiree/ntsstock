@@ -12,3 +12,8 @@ pip install xlrd
 
 #needed by admin date_hierarchy = 'pub_date
 pip install pytz 
+
+#tables display for list
+pip install django-tables2
+
+

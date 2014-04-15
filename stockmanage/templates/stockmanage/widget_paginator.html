@@ -1,4 +1,7 @@
+{% load append_to_get %}
 {%if paginator.num_pages > 1 %}
+
+
 
 <ul class="pagination">
 	<li>
@@ -11,10 +14,17 @@
 	</li>
 	{%else%}
 	<li>
-		<a href="?page={{ i }}">{{i}}</a>
+		
+		<a href="{% append_to_get page=i %}">{{i}}</a>
 	</li>
 	{%endifequal%}
 
 	{%endfor%}
 </ul>
 {%endif%}
+
+{% for num in pagination.main_range %}
+        {% if not num %} ...  {# literally output dots #}
+        {% else %}<a href="?page={{ num }}">EX{{i}}</a>
+        {% endif %}
+    {% endfor %}

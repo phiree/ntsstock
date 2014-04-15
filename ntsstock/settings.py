@@ -37,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stockmanage',
+    #'simple_paginator',
+    'django_tables2',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,8 +78,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
+'''append  page parameter to url. '''
+TEMPLATE_CONTEXT_PROCESSORS= (
+                               
+'django.core.context_processors.request',
+'django.contrib.auth.context_processors.auth',
+)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 

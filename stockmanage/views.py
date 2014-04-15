@@ -1,4 +1,5 @@
 import string
+from datetime import datetime
 from django.forms.models import inlineformset_factory
 from django.utils import timezone
 from django.shortcuts import render,get_object_or_404,render_to_response
@@ -108,17 +109,24 @@ def stockbill_edit(request,type,bill_id,action):
     detaillist_formated_text= bill.generat_detail_to_formatedtext()
     if request.method=="GET":
         billform=StockBillForm(instance=bill)
+        bill_no=datetime.now().strftime('%Y%m%d%H%M%S%f')
         #import pdb;pdb.set_trace()
+        #detaillist_formated_text= bill.generat_detail_to_formatedtext()
         return render(request,'stockmanage/stockbill_edit.html',
                       {'form':billform,
                      #'inline_detain_formset':detail_inlineformset,
                      'detaillist_formated_text':'\n'.join(detaillist_formated_text),
-                     'bill':bill,'action':action})
+                     'bill':bill,'action':action,
+                     'bill_no':bill_no})
  
     elif request.method=='POST':
-        #import pdb;pdb.set_trace()
         p=request.POST.copy()
         if 'savedraft' in p:
+            #import pdb;pdb.set_trace()
+            
+            stockbill_update_detail(request,bill)
+            print('detailcount after return')
+            print(bill.stockbilldetail_set.count())
             pass
         elif 'apply' in p:
             bill.BillState='applied'
@@ -134,13 +142,18 @@ def stockbill_edit(request,type,bill_id,action):
            return stockbill_update_detail(request,bill)
         else:
             raise Exception('No Such Action')
-        #import pdb; pdb.set_trace()
+        
         
         #form=StockBillForm(request.POST,instance=bill)
         billform=StockBillForm(p,instance=bill)
         #detail_inlineformset=billdetail_formset_factory(request.POST,request.FILES, instance=bill)
         if billform.is_valid():
             billform.save()
+            if 'savedraft' in p:
+                pass
+                import pdb;pdb.set_trace()
+                stockbill_update_detail(request,bill)
+                #saved_bill.save()
         else:
             return render(request,'stockmanage/stockbill_edit.html',{"form":billform})
             #if detail_inlineformset.is_valid():
@@ -169,14 +182,20 @@ def stockbill_update_detail(request,bill):
         location_code=line.split(',')[2]
         location=StockLocation.objects.get(LocationCode=location_code)
         detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
+        print('detail')
+        print(detail.Quantity)
         #[bill.stockbilldetail_set].append(detail) # 
         bill.stockbilldetail_set.add(detail)
-        detaillist_formated_text=bill.generat_detail_to_formatedtext()
-    return render(request,'stockmanage/stockbill_edit.html',
+        print('detailcount after parse text')
+        print (bill.stockbilldetail_set.count())
+        #import pdb; pdb.set_trace()
+        #detaillist_formated_text=bill.generat_detail_to_formatedtext()
+    '''return render(request,'stockmanage/stockbill_edit.html',
                       {'form':StockBillForm(instance=bill),
                      #'inline_detain_formset':detail_inlineformset,
                      'detaillist_formated_text':'\n'.join(detaillist_formated_text),
                      'bill':bill,'action':'.'})
+                     '''
 def productstock_list(request):
     return HttpResponse('产品库存列表')
     pass

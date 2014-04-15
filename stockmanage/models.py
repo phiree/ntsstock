@@ -193,7 +193,7 @@ class StockBill(BillBase):
         logger.info('sdfasdf')
         super(StockBill, self).save(*args, **kwargs)
     def generat_detail_to_formatedtext(self):
-        return [x.product.NTSCode + ',' + str(x.Quantity) + ',' + x.location.LocationCode
+        return [x.product.Code_Original + ',' + str(x.Quantity) + ',' + x.location.LocationCode
                             for x in self.stockbilldetail_set.all()]
 class StockBillDetail(models.Model):
     '''product info in the bill'''

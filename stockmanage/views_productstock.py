@@ -8,22 +8,30 @@ from django.views import generic
 from django.core import serializers
 from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,ProductStock
 from stockmanage.forms import StockBillForm
-from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+#from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+from stockmanage.paging_extra import ExPaginator
+#from paging_extra import ExPaginator
+#import simple_paginator
 # Create your views here.
 def list(request):
-    return list_search(request,'')
-def list_search(request,sw):
     
+    return list_search(request)
+def list_search(request):
+    
+    kw=request.GET.get('kw')
     productstock_list=[]
-    if sw=='':
+    
+    if not kw:
         productstock_list=ProductStock.objects.all()
     else:
-        productstock_list=ProductStock.objects.all()
+        productstock_list=ProductStock.objects.filter(theproduct__Name__contains=kw)
         #productstock_list
-    paginator = Paginator(productstock_list, 50) # Show 25 contacts per page
+    paginator = ExPaginator(productstock_list, 50) # Show 25 contacts per page
     page = request.GET.get('page')
+    productstock_list_page = paginator.page(page)
+    #objects=productstock_list
     #paginator._count=100
-    try:
+    '''try:
         productstock_list_page = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
@@ -31,9 +39,13 @@ def list_search(request,sw):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         productstock_list_page = paginator.page(paginator.num_pages)
-    return render(request,'stockmanage/productstock.html',{'productstock_list':productstock_list_page,
+        '''
+    return render(request,'stockmanage/productstock.html',{'productstock_list_page':productstock_list_page,
+                                                           'productstock_list':productstock_list,
                                                            'paginator':paginator,
-                                                           'range':paginator.page_range})
+                                                           'range':paginator.page_range,
+                                                            'kw':kw if kw else ''}
+                 )
     pass
 
 def stock_trace_list(request,product_id):
