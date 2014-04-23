@@ -1,4 +1,6 @@
+import datetime
 import string
+from django.middleware import transaction
 
 from django.utils import timezone
 from django.shortcuts import render,get_object_or_404,render_to_response
@@ -9,7 +11,7 @@ from django.views import generic
 from django.core import serializers
 from django.db import IntegrityError
 from stockmanage.models import CheckBill,CheckBillDetail
-from stockmanage.forms import StockBillForm
+from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.forms.models import inlineformset_factory
 
@@ -41,25 +43,28 @@ def list(request):
                                                         'paginator':paginator,'range':paginator.page_range,
                                                         'page':checkbill_list_page})
     pass
-@require_http_methods(["POST"])
+
 def create(request):
-    #import pdb;pdb.set_trace()
-    bill=CheckBill(Creator=request.user)
-    bill.save()
-    generate_type=request.GET.get('type')
-    generate_condition={}
-    generate_condition.type=generate_type
-    #location,random,defined_list
-    if generate_type=='random':
-        generate_amount=request.GET.get('generate_amount')
-        generate_amount=int(generate_amount)
+    if request.method=='POST':
+        #import pdb;pdb.set_trace()
+        bill=CheckBill(Creator=request.user)
+        bill.save()
+        generate_type=request.POST.get('type')
+        generate_condition={}
+        generate_condition.type=generate_type
+        #location,random,defined_list
+        if generate_type=='random':
+            generate_amount=request.GET.get('generate_amount')
+            generate_amount=int(generate_amount)
+        bill.CreateDetail()
+        bill.save()
+        return bill
+    elif request.method=='GET':
+        generate_form=CheckBillGenerateForm()
+        return render(request,'stockmanage/checkbill_create_edit.html',{'generate_form':generate_form,})
+    else:
+        raise Exception('Error Method')
         
-        
-    
-    bill.CreateDetail()
-    bill.save()
-    return bill
-    
 def edit(request,bill_id):
     #import pdb;pdb.set_trace()
     bill=get_object_or_404(CheckBill,pk=bill_id)
