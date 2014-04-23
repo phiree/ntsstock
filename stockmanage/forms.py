@@ -54,3 +54,8 @@ class StockBillForm(ModelForm):
     class Meta:
         model=StockBill
         fields =['BillReason','Memo','StaffName']
+
+class CheckBillGenerateForm(forms.Form):
+    generate_type=CharField()
+-------------------begin from here-------------------------
+create a form for generate a list for checking.

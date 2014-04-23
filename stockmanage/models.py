@@ -1,5 +1,6 @@
 import uuid, time, logging
 from django.contrib.auth.models import User
+
 from datetime import datetime
 from decimal import Decimal
 from django.utils import timezone
@@ -101,6 +102,7 @@ class ProductStock(models.Model):
     theproduct = ForeignKey(Product)
     stocklocation = ForeignKey(StockLocation,null=True)
     memo=CharField(max_length=2000)
+    last_check_time=DateTimeField(blank=True,null=True)
     def __str__(self):
         return str(self.theproduct.id) + ':' + str(self.Quantity) + ':' + str(self.stocklocation)
     # stock bill detail will change stock quantity or location
@@ -202,6 +204,7 @@ class StockBillDetail(models.Model):
     location = ForeignKey(StockLocation)
     Quantity = IntegerField()
     
+    
 class CheckBill(BillBase):
     CheckTime_Begin=DateTimeField(blank=True, default=datetime.now())
     CheckTime_Complete=DateTimeField(null=True)
@@ -210,13 +213,38 @@ class CheckBill(BillBase):
     CheckState = CharField(max_length=20, choices=CheckState_Choices, default='draft')
     def Check(self):
         pass   
-    def CreateDetail(self):
-        for ps in ProductStock.objects.all():
+    def CreateDetail(self,condition):
+        '''
+           Create check detail, save into database;
+       '''
+        check_list=self.GenerateDetail(condition)
+        for ps in check_list:
             cbdetail = CheckBillDetail(product=ps.theproduct,
                                      location=ps.stocklocation,
                                      realquantity=ps.Quantity,
                                      quantity=ps.Quantity)
             self.checkbilldetail_set.add(cbdetail)
+    def GenerateDetail(self,condition):
+        '''
+        generate Candidated details , for choosen 
+        '''
+        check_list=[]
+        if not condition:
+            check_list=ProductStock.objects.all()
+        else:
+            if condition.type=='location' :
+                location_list=condition.location_list
+                check_list=ProductStock.objects.filter(stocklocation__LocationCode__in=location_list)
+            elif condition.type=='random':
+                amount=condition.amount
+                for i in range(1,amount):
+                    check_list.add(CheckBillDetail().get_random())
+            elif condition.type=='defined_list':
+                check_list=ProductStock.objects.filter(theproduct__Code_Original__in=condition.defined_list)
+            else:
+                raise Exception('No Such Type')
+        return check_list
+        
     def CompleteCheck(self):
         '''结束盘点 生成盘盈盘亏单据'''
         
@@ -245,7 +273,10 @@ class CheckBillDetail(models.Model):
     location = ForeignKey(StockLocation)
     quantity = IntegerField()
     realquantity = IntegerField()
-    
+    def get_random(self):
+        count = self.aggregate(count=Count('id'))['count']
+        random_index = randint(0, count -1)
+        return self.all()[random_index]
     def GenerateStockDetail(self, stockout, stockin):
         '''if realquantity is not equal to systemquantity
             create a stockdetail'''

@@ -16,7 +16,7 @@ active
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
-{% comment %}
+
 {% if productstock_list_page %}
 
 <table class="table">
@@ -28,7 +28,8 @@ active
 		<td>{{stock.theproduct}}</td>
 		<td>{{stock.stocklocation}}</td>
 		<td>{{stock.Quantity}} </td>
-		<td> <a href="{%url 'stockmanage:productstock_stocktrace_list' stock.theproduct.id%}">历史记录</a> <a href="{%url 'stockmanage:productstock_stocktrace_list' stock.theproduct.id%}">货品详情</a> </td>
+		<td> <a href="{%url 'stockmanage:productstock_stocktrace_list' stock.theproduct.id%}">历史记录</a>
+			 <a href="{%url 'stockmanage:product_detail' stock.theproduct.id%}">货品详情</a> </td>
 	</tr>
 	{%endfor%}
 </table>
@@ -38,8 +39,8 @@ active
 </p>
 {%endif%}
 {%include 'stockmanage/widget_paginator.html'%}
-{%endcomment%}
+
 <div>
-{%render_table productstock_list%}
+{#render_table productstock_list#}
 </div>
 {%endblock%}

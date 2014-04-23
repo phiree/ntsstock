@@ -46,6 +46,16 @@ def create(request):
     #import pdb;pdb.set_trace()
     bill=CheckBill(Creator=request.user)
     bill.save()
+    generate_type=request.GET.get('type')
+    generate_condition={}
+    generate_condition.type=generate_type
+    #location,random,defined_list
+    if generate_type=='random':
+        generate_amount=request.GET.get('generate_amount')
+        generate_amount=int(generate_amount)
+        
+        
+    
     bill.CreateDetail()
     bill.save()
     return bill

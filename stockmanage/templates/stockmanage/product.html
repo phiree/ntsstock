@@ -1,0 +1,51 @@
+{% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+
+
+{%block content_title%}
+展品详情
+{%endblock%}
+{%block nav_stocklist%}
+active
+{%endblock%}
+{%block content%}
+
+{% if product %}
+{%with product as p %}
+<table class="table">
+	<tr>
+		<td>序号</td><td>{{p.SerialNo}}</td>
+	</tr>
+	<tr>
+		<td>原NTS编码</td><td>{{p.Code_Original}}</td>
+	</tr>
+	<tr>
+		<td>数据库编码</td><td>{{p.Code_Database}}</td>
+	</tr>
+	<tr>
+		<td>产品名称</td><td>{{p.Name}}</td>
+	</tr>
+	<tr>
+		<td>供应商型号</td><td>{{p.ModelNumber}}</td>
+	</tr>
+	<tr>
+		<td>产品规格</td><td>{{p.Specification}}</td>
+	</tr>
+	<tr>
+		<td>材质</td><td>{{p.Material}}</td>
+	</tr>
+	<tr>
+		<td>价格</td><td>{{p.Price}}</td>
+	</tr>
+	<tr>
+		<td>单位</td><td>{{p.Unit}}</td>
+	</tr>
+</table>
+{%endwith%}
+{%else%}
+<p>
+	Not Found()
+</p>
+{%endif%}
+
+{%endblock%}
