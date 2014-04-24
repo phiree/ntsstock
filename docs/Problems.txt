@@ -1,0 +1,4 @@
+2014-04-24 WinError 10013
+Description: manage.py runserver   raise this error
+Reason: the default port has been taken by other application.  after i closed TTPlayer.exe, it gets ok,but no error occured when i run this command even with TTPlayer opened..
+
