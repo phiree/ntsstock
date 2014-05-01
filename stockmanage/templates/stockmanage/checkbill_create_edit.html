@@ -1,0 +1,81 @@
+{% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+{%block header%}
+<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/css/stockbill.css'%}" media='screen,projector'/>
+
+<script type="text/javascript" src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/bootstrap-confirmation.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
+{%endblock%}
+{%block content_title%}
+{%if bill.id%}修改{%else%}创建{%endif%}{%ifequal bill.BillType 'in' %}入{%else%}出{%endifequal%}库单
+{%endblock%}
+
+{%block nav_stockin_create%}
+{%if not bill.id and  bill.BillType == 'in'%}
+active
+{%endif%}
+{%endblock%}
+{%block nav_stockout_create%}
+{%if not bill.id and  bill.BillType == 'out'%}
+active
+{%endif%}
+{%endblock%}
+{%block content%}
+<form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
+	{% csrf_token %}
+	<div id='billeditor'>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				
+				<label> 单号:</label>
+				{%if bill.id%}{{bill.BillNo}}
+				{%else%}{{bill_no}}
+				{%endif%}
+				
+				<label>状态:</label>{{bill.BillState}}
+			</div>
+			<div class="panel-heading">
+				{{form}}
+			</div>
+			<div class="panel-body" style='padding:0'>
+				{%if bill.id%}
+
+				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
+
+				{%endif%}
+				{%if bill.BillState == 'draft'%}
+				<div class="modal-body">
+					<div id="tab_detail">
+						<p class='info'>
+							格式要求:" 产品代码,数量,展位代码 ","每行一条.
+							<br/>
+							注意:单据详情将被覆盖
+						</p>
+						<form method="post" id="fm_detail_update" action='{{action}}'>
+							{%csrf_token%}
+							<textarea style="width:100%" name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
+						</form>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				{%endif%}
+			</div>
+		</div>
+		<div>
+			{%ifequal bill.BillState 'draft'%}
+			<input class="btn  btn-default" type="submit" name="savedraft" value="保存" />
+			{%if bill.id%}
+			<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存" />
+			{%endif%}
+			{%endifequal%}
+			{%ifequal bill.BillState 'applied'%}
+			<input class="btn   btn-default" type="submit" name="pass" value="审核通过" />
+			<input class="btn   btn-default" type="submit" name="refused" value="审核不通过" />
+			{%endifequal%}
+		</div>
+	</div>
+</form>
+
+{%endblock%}

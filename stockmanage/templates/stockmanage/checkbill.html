@@ -21,7 +21,7 @@ active
 	{%endfor%}
 </table>
 {%include 'stockmanage/widget_paginator.html'%}
-
+<a href="{%url 'stockmanage:checkbill_create_edit' checkbill.id%}">新建盘点单</a>
 <form action="." method="post">
 	{% csrf_token%}
 	<button type="submit" name='create' class="btn btn-default">

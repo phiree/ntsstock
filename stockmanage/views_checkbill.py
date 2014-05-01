@@ -65,7 +65,7 @@ def create(request):
     else:
         raise Exception('Error Method')
         
-def edit(request,bill_id):
+def input_realquantity(request,bill_id):
     #import pdb;pdb.set_trace()
     bill=get_object_or_404(CheckBill,pk=bill_id)
     if request.method=="POST":
@@ -110,6 +110,6 @@ def edit(request,bill_id):
             
         else:
             pass
-    return render(request,'stockmanage/checkbill_edit.html',{'bill':bill})
+    return render(request,'stockmanage/checkbill_input_realquantity.html',{'bill':bill})
     pass
 

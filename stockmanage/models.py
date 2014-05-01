@@ -293,11 +293,7 @@ class CheckBill(BillBase):
         pass
 
 
-class CheckBillDetail(models.Model):
-    checkbill = ForeignKey(CheckBill)
-    product = ForeignKey(Product)
-    location = ForeignKey(StockLocation)
-    quantity = IntegerField()
+class CheckBillDetail(StockBillDetail):
     realquantity = IntegerField()
 
     def get_random(self):
@@ -308,7 +304,7 @@ class CheckBillDetail(models.Model):
     def GenerateStockDetail(self, stockout, stockin):
         '''if realquantity is not equal to systemquantity
             create a stockdetail'''
-        change = self.realquantity - self.quantity
+        change = self.realquantity - self.Quantity
         change_abs = abs(change)
         if change == 0:
             return None

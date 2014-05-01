@@ -26,11 +26,13 @@ urlpatterns=patterns(''
                      #######盘点##############
                      #盘点计划列表
                      ,url(r'^checkbill/$',views_checkbill.list,name='checkbill_list')
+                     ,url(r'^checkbill/create/',views_checkbill.create,name='checkbill_create')
+
                      #,url(r'^checkbill/list',views_checkbill.list,name='checkbill_list')
                      #创建盘点单
-                     ,url(r'^checkbill/create',views_checkbill.create,name='checkbill_create')
+                     ,url(r'^checkbill/edit/',views_checkbill.create,name='checkbill_edit')
                      #编辑盘点清单(增加,删除盘点目标)
-                     ,url(r'^checkbill/edit/(?P<bill_id>[^/]+)/',views_checkbill.edit,name='checkbill_edit')
+                     ,url(r'^checkbill/input_realquantity/(?P<bill_id>[^/]+)/',views_checkbill.input_realquantity,name='checkbill_input_realquantity')
                      #产品详情
                     ,url(r'^product/detail/(?P<product_id>[^/]+)/',views_product.detail,name='product_detail')
                      ,url(r'^$',views.index,name='index')
