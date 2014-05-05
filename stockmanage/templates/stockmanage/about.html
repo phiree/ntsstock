@@ -1,0 +1,26 @@
+{% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+{%block header%}
+<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/css/stockbill.css'%}" media='screen,projector'/>
+
+<script type="text/javascript" src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/bootstrap-confirmation.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
+{%endblock%}
+{%block content_title%}
+About this Site
+{%endblock%}
+
+{%block nav_stockin_create%}
+{%if not bill.id and  bill.BillType == 'in'%}
+active
+{%endif%}
+{%endblock%}
+{%block nav_stockout_create%}
+{%if not bill.id and  bill.BillType == 'out'%}
+active
+{%endif%}
+{%endblock%}
+{%block content%}
+{{company_name}}bts
+{%endblock%}

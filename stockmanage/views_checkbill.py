@@ -43,7 +43,8 @@ def list(request):
                                                         'paginator':paginator,'range':paginator.page_range,
                                                         'page':checkbill_list_page})
     pass
-
+def edit(request,bill_id):
+    pass
 def create(request):
     if request.method=='POST':
         #import pdb;pdb.set_trace()

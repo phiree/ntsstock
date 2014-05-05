@@ -117,9 +117,8 @@ class ProductStock(models.Model):
         return str(self.theproduct.id) + ':' + str(self.Quantity) + ':' + str(self.stocklocation)
         # stock bill detail will change stock quantity or location
 
-
 class BillBase(models.Model):
-    '''base class of all bills 
+    '''base class of all bills (stock_in_bill,stock_out_bill)
     '''
     id = UUIDField(
         primary_key=True)  # use uuid instead of autoincreament, to allow asigning an id to the object before saved into database
@@ -135,6 +134,9 @@ class BillBase(models.Model):
     # staff-- not the login user who assonated with the bill
     StaffName = CharField(max_length=50, null=True, blank=True)
     Memo = CharField(max_length=1000, null=True, blank=True)
+    def generat_detail_to_formatedtext(self):
+        return [x.product.Code_Original
+                for x in self.stockbilldetail_set.all()]
 
 
 class StockBill(BillBase):

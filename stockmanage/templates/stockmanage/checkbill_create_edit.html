@@ -33,7 +33,8 @@ active
 				{%else%}{{bill_no}}
 				{%endif%}
 				
-				<label>状态:</label>{{bill.BillState}}
+				<label>单据状态:</label>{{bill.BillState}}
+                <label>盘点状态:</label>{{bill.CheckState}}
 			</div>
 			<div class="panel-heading">
 				{{form}}
@@ -48,7 +49,7 @@ active
 				<div class="modal-body">
 					<div id="tab_detail">
 						<p class='info'>
-							格式要求:" 产品代码,数量,展位代码 ","每行一条.
+							格式要求:产品代码,每行一条.
 							<br/>
 							注意:单据详情将被覆盖
 						</p>
