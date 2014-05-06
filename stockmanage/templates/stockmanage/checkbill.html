@@ -1,7 +1,7 @@
 {% extends "stockmanage/base.html" %}
 {%block content_title%}
 <span class='sub-header'>盘点单列表</span>
-{%endblock%}{%block nav_check%}
+{%endblock%}{%block nav_check_list%}
 active
 {%endblock%}
 {%block content%}
@@ -21,12 +21,7 @@ active
 	{%endfor%}
 </table>
 {%include 'stockmanage/widget_paginator.html'%}
-<a href="{%url 'stockmanage:checkbill_create_edit' checkbill.id%}">新建盘点单</a>
-<form action="." method="post">
-	{% csrf_token%}
-	<button type="submit" name='create' class="btn btn-default">
-		新建盘点单
-	</button>
-</form>
+<a class="button" href="{%url 'stockmanage:checkbill_create'%}">新建盘点单</a>
+
 
 {%endblock%}

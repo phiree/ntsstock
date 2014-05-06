@@ -8,18 +8,11 @@
 <script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
 {%endblock%}
 {%block content_title%}
-{%if bill.id%}修改{%else%}创建{%endif%}{%ifequal bill.BillType 'in' %}入{%else%}出{%endifequal%}库单
+{%if bill.id%}修改{%else%}创建{%endif%}盘点单
 {%endblock%}
 
-{%block nav_stockin_create%}
-{%if not bill.id and  bill.BillType == 'in'%}
+{%block nav_check_create%}
 active
-{%endif%}
-{%endblock%}
-{%block nav_stockout_create%}
-{%if not bill.id and  bill.BillType == 'out'%}
-active
-{%endif%}
 {%endblock%}
 {%block content%}
 <form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
@@ -29,21 +22,16 @@ active
 			<div class="panel-heading">
 				
 				<label> 单号:</label>
-				{%if bill.id%}{{bill.BillNo}}
-				{%else%}{{bill_no}}
-				{%endif%}
-				
+				{{bill.BillNo}}
 				<label>单据状态:</label>{{bill.BillState}}
                 <label>盘点状态:</label>{{bill.CheckState}}
 			</div>
 			<div class="panel-heading">
-				{{form}}
+
 			</div>
 			<div class="panel-body" style='padding:0'>
 				{%if bill.id%}
-
 				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
-
 				{%endif%}
 				{%if bill.BillState == 'draft'%}
 				<div class="modal-body">

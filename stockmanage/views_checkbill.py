@@ -1,32 +1,25 @@
-import datetime
 import string
-from django.middleware import transaction
-
+from datetime import datetime
+from django.forms.models import inlineformset_factory
 from django.utils import timezone
 from django.shortcuts import render,get_object_or_404,render_to_response
-from django.views.decorators.http import require_http_methods
 from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
-from django.db import IntegrityError
-from stockmanage.models import CheckBill,CheckBillDetail
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,CheckBill
 from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
-from django.forms.models import inlineformset_factory
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 '''
 stock check views
 '''
 def list(request):
     #import pdb;pdb.set_trace()
     p=request.POST
-    if 'create' in p:
-        bill=create(request)
-        return HttpResponseRedirect(reverse('stockmanage:checkbill_edit',args=(bill.id,)))
     checkbill_list=CheckBill.objects.all()
-    
-    
+
     paginator = Paginator(checkbill_list, 10)
     count=CheckBill.objects.count()
     paginator._count=count
@@ -46,23 +39,18 @@ def list(request):
 def edit(request,bill_id):
     pass
 def create(request):
+    bill=CheckBill(Creator=request.user)
     if request.method=='POST':
         #import pdb;pdb.set_trace()
-        bill=CheckBill(Creator=request.user)
         bill.save()
-        generate_type=request.POST.get('type')
-        generate_condition={}
-        generate_condition.type=generate_type
-        #location,random,defined_list
-        if generate_type=='random':
-            generate_amount=request.GET.get('generate_amount')
-            generate_amount=int(generate_amount)
         bill.CreateDetail()
         bill.save()
         return bill
     elif request.method=='GET':
+        bill.BillNo=datetime.now().strftime('%Y%m%d%H%M%S%f')
         generate_form=CheckBillGenerateForm()
-        return render(request,'stockmanage/checkbill_create_edit.html',{'generate_form':generate_form,})
+        return render(request,'stockmanage/checkbill_create_edit.html'
+                      ,{'form':generate_form,'bill':bill})
     else:
         raise Exception('Error Method')
         

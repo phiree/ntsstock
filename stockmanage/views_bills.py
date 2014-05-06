@@ -10,7 +10,7 @@ from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
 from django.db import IntegrityError
-from stockmanage.models import CheckBill,CheckBillDetail,BillBase
+from stockmanage.models.md_bill import CheckBill,CheckBillDetail,BillBase
 from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.forms.models import inlineformset_factory

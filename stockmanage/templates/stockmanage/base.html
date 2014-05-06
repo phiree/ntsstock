@@ -42,8 +42,10 @@
 					<a class='list-group-item {%block nav_stockout_list%}{%endblock%}' href="{%url 'stockmanage:stockbill_stockout_list'%}"><span style='margin-right: 15px'  class="glyphicon glyphicon-align-right"> </span>出库列表</a>
 					<a class='list-group-item {%block nav_stockin_create%}{%endblock%}' href="{%url 'stockmanage:stockbill_stockin_create'%}"> <span  style='margin-right: 15px' class="glyphicon glyphicon-import"> </span>新建入库</a>
 					<a  class='list-group-item {%block nav_stockout_create%}{%endblock%}' href="{%url 'stockmanage:stockbill_stockout_create'%}"><span style='margin-right: 15px'  class="glyphicon glyphicon-export"> </span>新建出库</a>
-					<a class='list-group-item {%block nav_check%}{%endblock%}' href="/stockmanage/checkbill/"><span  style='margin-right: 15px' class="glyphicon glyphicon-ok"> </span>盘点</a>
-				</div>
+					<a class='list-group-item {%block nav_check_list%}{%endblock%}' href="{%url 'stockmanage:checkbill_list'%}"><span  style='margin-right: 15px' class="glyphicon glyphicon-ok"> </span>盘点列表</a>
+				    <a class='list-group-item {%block nav_check_create%}{%endblock%}' href="{%url 'stockmanage:checkbill_create'%}"><span  style='margin-right: 15px' class="glyphicon glyphicon-pencil"> </span>创建盘点</a>
+
+                </div>
 				<!--Main Content-->
 				<div id='mc' class='col-sm-10'>
 					<h2>{%block content_title%}Stock Manage{%endblock%}</h2>

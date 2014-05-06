@@ -66,3 +66,4 @@ class StockBillForm(ModelForm):
 class CheckBillGenerateForm(forms.Form):
     generate_type_choices = (('category', 'category'), ('random', 'random'), ('defined_list', 'defined_list'))
     generate_type = forms.ChoiceField(choices=generate_type_choices)
+    product_list=forms.CharField(widget=forms.Textarea)
