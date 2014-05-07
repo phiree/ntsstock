@@ -12,30 +12,14 @@ from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.views.generic import View,ListView
 '''
 stock check views
 '''
-def list(request):
-    #import pdb;pdb.set_trace()
-    p=request.POST
-    checkbill_list=CheckBill.objects.all()
+class CheckBillList(ListView):
+    model=CheckBill
+    paginate_by=2
 
-    paginator = Paginator(checkbill_list, 10)
-    count=CheckBill.objects.count()
-    paginator._count=count
-    page = request.GET.get('page')
-    try:
-        checkbill_list_page = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        checkbill_list_page = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        checkbill_list_page = paginator.page(paginator.num_pages)
-    return render(request,'stockmanage/checkbill.html',{'checkbill_list':checkbill_list_page,
-                                                        'paginator':paginator,'range':paginator.page_range,
-                                                        'page':checkbill_list_page})
-    pass
 def edit(request,bill_id):
     pass
 def create(request):

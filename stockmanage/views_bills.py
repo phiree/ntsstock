@@ -14,8 +14,9 @@ from stockmanage.models.md_bill import CheckBill,CheckBillDetail,BillBase
 from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.forms.models import inlineformset_factory
-
+from django.views.generic import ListView
 '''
 bill list views
 '''
+class ProductStockList(ListView):
 

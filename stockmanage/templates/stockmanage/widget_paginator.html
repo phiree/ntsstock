@@ -1,30 +1,24 @@
 {% load append_to_get %}
-{%if paginator.num_pages > 1 %}
-
-
+{% load get_range %}
+{%if is_paginated %}
 
 <ul class="pagination">
 	<li>
 		<span>总数:{{paginator.count}}</span>
 	</li>
-	{%for i in range %}
-	{%ifequal i page.number %}
+	{%for i in page_obj.paginator.num_pages|get_range%}{%with iplusone=i|add:"1"%}
+	{%ifequal iplusone page_obj.number %}
+
 	<li class='active'>
-		<a href="#">{{i}}<span class="sr-only">(current)</span></a>
+		<a href="#">{{iplusone}}<span class="sr-only">(current)</span></a>
 	</li>
 	{%else%}
 	<li>
-		
-		<a href="{% append_to_get page=i %}">{{i}}</a>
+		<a href="{% append_to_get page=iplusone %}">{{iplusone}}</a>
 	</li>
-	{%endifequal%}
 
+	{%endifequal%}
+{%endwith%}
 	{%endfor%}
 </ul>
 {%endif%}
-
-{% for num in pagination.main_range %}
-        {% if not num %} ...  {# literally output dots #}
-        {% else %}<a href="?page={{ num }}">EX{{i}}</a>
-        {% endif %}
-    {% endfor %}

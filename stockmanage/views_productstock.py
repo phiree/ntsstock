@@ -12,9 +12,32 @@ from stockmanage.forms import StockBillForm
 #from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from stockmanage.paging_extra import ExPaginator
 from stockmanage.tables3 import table2_productstock
+from django.views.generic import ListView
 #from paging_extra import ExPaginator
 #import simple_paginator
 # Create your views here.
+class ProductStockList(ListView):
+    model=ProductStock
+
+    context_object_name ='productstock_list_page'
+    def get_queryset(self):
+        #import pdb;pdb.set_trace()
+        kw=self.request.GET.get('kw')
+        productstock_list=[]
+
+        if not kw:
+            productstock_list=ProductStock.objects.all()
+        else:
+            productstock_list=ProductStock.objects.filter(Q(theproduct__Name__contains=kw )|\
+                                                       Q(theproduct__Code_Original__contains=kw))
+        return productstock_list
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ProductStockList, self).get_context_data(**kwargs)
+        # Add in the publisher
+        context['kw'] = self.request.GET.get('kw') if self.request.GET.get('kw') else ''
+        return context
+
 def list(request):
     
     return list_search(request)
@@ -46,7 +69,7 @@ def list_search(request):
     
     table=table2_productstock(productstock_list)
     table.paginate(page=request.GET.get('page', 1), per_page=25)
-    return render(request,'stockmanage/productstock.html',{'productstock_list_page':productstock_list_page,
+    return render(request,'stockmanage/productstock_list.html',{'productstock_list_page':productstock_list_page,
                                                            'productstock_list':productstock_list,
                                                            'table':table,
                                                            'paginator':paginator,
