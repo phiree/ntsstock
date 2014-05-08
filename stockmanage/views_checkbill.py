@@ -20,23 +20,28 @@ class CheckBillList(ListView):
     model=CheckBill
     paginate_by=2
 
-def edit(request,bill_id):
-    pass
-def create(request):
-    bill=CheckBill(Creator=request.user)
+def edit(request,id=None):
+    if id:
+        checkbill=get_object_or_404(Checkbill,pk=id)
+    else:
+        checkbill=CheckBill(Creator=request.user)
+
     if request.method=='POST':
         #import pdb;pdb.set_trace()
-        bill.save()
+        generate_form = CheckBillGenerateForm(request.POST)
+        if generate_form.is_valid():
+            checkbill.save()
+
+        '''bill.save()
         bill.CreateDetail()
         bill.save()
-        return bill
-    elif request.method=='GET':
-        bill.BillNo=datetime.now().strftime('%Y%m%d%H%M%S%f')
-        generate_form=CheckBillGenerateForm()
-        return render(request,'stockmanage/checkbill_create_edit.html'
-                      ,{'form':generate_form,'bill':bill})
+        return bill'''
     else:
-        raise Exception('Error Method')
+        generate_form=CheckBillGenerateForm()
+        detail_text=checkbill.generat_detail_to_formatedtext()
+        return render(request,'stockmanage/checkbill_create_edit.html'
+                      ,{'form':generate_form,'bill':checkbill,'detail_text':'\n'.join(detail_text)})
+
         
 def input_realquantity(request,bill_id):
     #import pdb;pdb.set_trace()

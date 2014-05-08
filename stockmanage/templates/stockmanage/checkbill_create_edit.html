@@ -15,9 +15,9 @@
 active
 {%endblock%}
 {%block content%}
-<form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
+<form method="post" id='fm_bill' class='navbar-form navbar-left'>
 	{% csrf_token %}
-	<div id='billeditor'>
+	<div id='billeditor' class="row">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				
@@ -26,12 +26,9 @@ active
 				<label>单据状态:</label>{{bill.BillState}}
                 <label>盘点状态:</label>{{bill.CheckState}}
 			</div>
-			<div class="panel-heading">
-
-			</div>
-			<div class="panel-body" style='padding:0'>
+			<div class="panel-body" >
 				{%if bill.id%}
-				{%include 'stockmanage/widget_stockbilldetaillist.html'%}
+				{%include 'stockmanage/widget_checkbilldetaillist.html'%}
 				{%endif%}
 				{%if bill.BillState == 'draft'%}
 				<div class="modal-body">
@@ -43,7 +40,7 @@ active
 						</p>
 						<form method="post" id="fm_detail_update" action='{{action}}'>
 							{%csrf_token%}
-							<textarea style="width:100%" name='tt_billdetail'  class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
+							<textarea style="width:100%" name='tt_billdetail'  class='form-control' rows='5'>{{detail_text}}</textarea>
 						</form>
 						<div class="clear"></div>
 					</div>
@@ -56,7 +53,7 @@ active
 			{%ifequal bill.BillState 'draft'%}
 			<input class="btn  btn-default" type="submit" name="savedraft" value="保存" />
 			{%if bill.id%}
-			<input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存" />
+			<input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存" />
 			{%endif%}
 			{%endifequal%}
 			{%ifequal bill.BillState 'applied'%}

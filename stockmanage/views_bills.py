@@ -18,5 +18,4 @@ from django.views.generic import ListView
 '''
 bill list views
 '''
-class ProductStockList(ListView):
 

@@ -30,7 +30,7 @@ urlpatterns=patterns(''
                      #######盘点##############
                      #盘点计划列表
                      ,url(r'^checkbill/list/',CheckBillList.as_view(),name='checkbill_list')
-                     ,url(r'^checkbill/create/',views_checkbill.create,name='checkbill_create')
+                     ,url(r'^checkbill/create/',views_checkbill.edit,name='checkbill_create')
 
                      #,url(r'^checkbill/list',views_checkbill.list,name='checkbill_list')
                      #创建盘点单

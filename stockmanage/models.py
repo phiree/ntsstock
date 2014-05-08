@@ -221,7 +221,7 @@ class StockBill(BillBase):
 
 class StockBillDetail(models.Model):
     '''product info in the bill'''
-    stockbill = ForeignKey(StockBill, null=True)
+    stockbill = ForeignKey(BillBase, null=True)
     product = ForeignKey(Product)
     location = ForeignKey(StockLocation)
     Quantity = IntegerField()
@@ -317,7 +317,40 @@ class CheckBillDetail(StockBillDetail):
         else:
             stockout.stockbilldetail_set.add(stockdetail)
 
+class DetailParser():
+    def __init__(self):
 
+    def parse(self,formated_text):
+        pass
+class DetailParser_Stock(DetailParser):
+    def parse(self,formated_text):
+        super(DetailParser_Stock,self).parse(formated_text)
+        for line in formated_text.splitlines():
+            if not line:
+                continue
+            #import pdb;pdb.set_trace()
+            procode=line.split(',')[0]
+            product=Product.objects.get(Code_Original=procode)
+            qty=line.split(',')[1]
+            location_code=line.split(',')[2]
+            location=StockLocation.objects.get(LocationCode=location_code)
+            detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
+            return detail
+
+class DetailParser_Check(DetailParser):
+    def parse(self,formated_text):
+        super(DetailParser_Check,self).parse(formated_text)
+        for line in formated_text.splitlines():
+            if not line:
+                continue
+            #import pdb;pdb.set_trace()
+            procode=line.split(',')[0]
+            product=Product.objects.get(Code_Original=procode)
+            qty=line.split(',')[1]
+            location_code=line.split(',')[2]
+            location=StockLocation.objects.get(LocationCode=location_code)
+            detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
+            return detail
 class CheckBillRealDetail(models.Model):
     pass
 

@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="235c92d3-2da8-497c-a9e7-bca3999f5747" name="Default" comment="just fo">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/stockmanage/templatetags/get_range.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.db3" afterPath="$PROJECT_DIR$/db.db3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" afterPath="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/forms.py" afterPath="$PROJECT_DIR$/stockmanage/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/models.py" afterPath="$PROJECT_DIR$/stockmanage/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/urls.py" afterPath="$PROJECT_DIR$/stockmanage/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/views_bills.py" afterPath="$PROJECT_DIR$/stockmanage/views_bills.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/views_checkbill.py" afterPath="$PROJECT_DIR$/stockmanage/views_checkbill.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/views_productstock.py" afterPath="$PROJECT_DIR$/stockmanage/views_productstock.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html" afterPath="$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="E:\workspace\code\ntsstock\stockmanage\templates\stockmanage\checkbill.html" afterPath="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_list.html" />
-      <change type="MOVED" beforePath="E:\workspace\code\ntsstock\stockmanage\templates\stockmanage\productstock.html" afterPath="$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html" />
     </list>
     <ignored path="ntsstock.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,19 +32,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="list.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Python33/Lib/site-packages/django/views/generic/list.py">
+      <file leaf-file-name="views_checkbill.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="15" selection-start="493" selection-end="504" vertical-scroll-proportion="10.37037" vertical-offset="480" max-vertical-offset="3780">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views_productstock.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/stockmanage/views_productstock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="0" selection-start="877" selection-end="877" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="1920">
+            <state line="32" column="21" selection-start="1173" selection-end="1182" vertical-scroll-proportion="-13.6" vertical-offset="204" max-vertical-offset="1683">
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -54,39 +43,52 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views_bills.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/stockmanage/views_bills.py">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stockmanage/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="0" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="560">
+            <state line="169" column="0" selection-start="6385" selection-end="7240" vertical-scroll-proportion="-7.24" vertical-offset="2471" max-vertical-offset="3298">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="paginator.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Python33/Lib/site-packages/django/core/paginator.py">
+      <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/stockmanage/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="23" selection-start="521" selection-end="530" vertical-scroll-proportion="0.0" vertical-offset="175" max-vertical-offset="3280">
+            <state line="337" column="25" selection-start="13353" selection-end="13353" vertical-scroll-proportion="0.48122066" vertical-offset="5149" max-vertical-offset="6171">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Python33/Lib/site-packages/django/views/generic/base.py">
+      <file leaf-file-name="checkbill_create_edit.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="6" selection-start="3969" selection-end="3969" vertical-scroll-proportion="0.0" vertical-offset="1935" max-vertical-offset="4300">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="88" selection-start="2059" selection-end="2059" vertical-scroll-proportion="0.77163905" vertical-offset="121" max-vertical-offset="1000">
+            <state line="42" column="122" selection-start="1493" selection-end="1493" vertical-scroll-proportion="-13.730769" vertical-offset="357" max-vertical-offset="1241">
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="n#style#0;n#textarea#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="middleware.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stockmanage/middleware.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="612">
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="68" column="16" selection-start="2761" selection-end="2773" vertical-scroll-proportion="-29.2" vertical-offset="426" max-vertical-offset="1275">
+              <folding>
+                <element signature="e#0#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,7 +97,7 @@
       <file leaf-file-name="stockbill.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/stockbill.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="8.034483" vertical-offset="233" max-vertical-offset="880">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
               <folding />
             </state>
           </provider>
@@ -104,7 +106,7 @@
       <file leaf-file-name="productstock_list.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="-7.586207" vertical-offset="60" max-vertical-offset="1040">
+            <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="884">
               <folding />
             </state>
           </provider>
@@ -113,7 +115,7 @@
       <file leaf-file-name="widget_paginator.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="43" selection-start="183" selection-end="183" vertical-scroll-proportion="-5.5172415" vertical-offset="0" max-vertical-offset="600">
+            <state line="7" column="9" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="510">
               <folding />
             </state>
           </provider>
@@ -122,7 +124,7 @@
       <file leaf-file-name="get_range.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stockmanage/templatetags/get_range.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="4" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+            <state line="5" column="4" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="510">
               <folding />
             </state>
           </provider>
@@ -138,29 +140,32 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/stockmanage/views.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/stockmanage/models.py" />
         <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/base.html" />
-        <option value="$PROJECT_DIR$/stockmanage/forms.py" />
-        <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" />
         <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill.html" />
         <option value="$PROJECT_DIR$/stockmanage/templatetags/get_range.py" />
-        <option value="$PROJECT_DIR$/stockmanage/views_bills.py" />
-        <option value="$PROJECT_DIR$/stockmanage/views_checkbill.py" />
         <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html" />
         <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html" />
         <option value="$PROJECT_DIR$/stockmanage/views_productstock.py" />
+        <option value="$PROJECT_DIR$/stockmanage/views_bills.py" />
+        <option value="$PROJECT_DIR$/stockmanage/forms.py" />
         <option value="$PROJECT_DIR$/stockmanage/urls.py" />
+        <option value="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" />
+        <option value="$PROJECT_DIR$/stockmanage/views_checkbill.py" />
+        <option value="$PROJECT_DIR$/stockmanage/models.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1376" />
-    <option name="height" value="744" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -168,6 +173,12 @@
         <expanded-state>
           <State>
             <id />
+          </State>
+          <State>
+            <id>Buildout</id>
+          </State>
+          <State>
+            <id>General</id>
           </State>
         </expanded-state>
         <selected-state>
@@ -210,80 +221,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="ntsstock" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.4 (C:/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ntsstock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.4 (C:/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ntsstock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.4 (C:/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="django" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ntsstock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.3.4 (C:/Python33/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="site-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="django" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="template" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -405,7 +342,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="options.lastSelected" value="fileTemplates" />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -583,23 +520,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1376" height="744" extended-state="7" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2889706" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28854167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.05172414" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.051578946" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -625,32 +562,124 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/base.html">
+    <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="199" selection-start="3179" selection-end="3179" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="1660">
+        <state line="33" column="0" selection-start="2501" selection-end="2501" vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="850">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="65" selection-start="1116" selection-end="1116" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1241">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_checkbilldetaillist.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="45" selection-start="220" selection-end="239" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="374">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/stockbill.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="884">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="9" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templatetags/get_range.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="4" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/views_productstock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="834" selection-end="834" vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="1241" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/views_bills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="0" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="476">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="85" selection-start="2079" selection-end="2079" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="731">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/stockbill.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="884">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="9" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="612">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templatetags/get_range.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="4" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="199" selection-start="3179" selection-end="3179" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="1660" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="55" column="24" selection-start="2118" selection-end="2131" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="2420">
-          <folding />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="176" column="20" selection-start="6616" selection-end="6624" vertical-scroll-proportion="0.0" vertical-offset="3480" max-vertical-offset="4140">
-          <folding />
-        </state>
+        <state line="176" column="20" selection-start="6616" selection-end="6624" vertical-scroll-proportion="0.0" vertical-offset="3480" max-vertical-offset="4140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="136" column="38" selection-start="5300" selection-end="5330" vertical-scroll-proportion="0.0" vertical-offset="2720" max-vertical-offset="6800">
-          <folding />
-        </state>
+        <state line="136" column="38" selection-start="5300" selection-end="5330" vertical-scroll-proportion="0.0" vertical-offset="2720" max-vertical-offset="6800" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html">
@@ -665,11 +694,6 @@
         <state line="0" column="33" selection-start="10" selection-end="33" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="440" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_checkbilldetaillist.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="29" selection-start="10" selection-end="29" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="440" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="95" selection-start="1847" selection-end="1865" vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="900">
@@ -680,7 +704,9 @@
     <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="69" column="36" selection-start="2674" selection-end="2674" vertical-scroll-proportion="0.0" vertical-offset="1040" max-vertical-offset="2420">
-          <folding />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -693,9 +719,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="49" selection-start="552" selection-end="573" vertical-scroll-proportion="0.0" vertical-offset="460" max-vertical-offset="760">
-          <folding />
-        </state>
+        <state line="23" column="49" selection-start="552" selection-end="573" vertical-scroll-proportion="0.0" vertical-offset="460" max-vertical-offset="760" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
@@ -705,54 +729,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_input_realquantity.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1360" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="53" column="23" selection-start="2192" selection-end="2207" vertical-scroll-proportion="0.0" vertical-offset="178" max-vertical-offset="1480">
-          <folding />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="313" column="19" selection-start="12316" selection-end="12323" vertical-scroll-proportion="0.0" vertical-offset="6260" max-vertical-offset="6760">
-          <folding />
-        </state>
+        <state line="313" column="19" selection-start="12316" selection-end="12323" vertical-scroll-proportion="0.0" vertical-offset="6260" max-vertical-offset="6760" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="2420">
-          <folding />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1480">
-          <folding />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="28" column="24" selection-start="1356" selection-end="1356" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1480">
-          <folding />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/db/models/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="426" column="0" selection-start="19061" selection-end="19061" vertical-scroll-proportion="0.29896906" vertical-offset="7826" max-vertical-offset="20440" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_input_realquantity.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="29" selection-start="190" selection-end="203" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_stockbilldetaillist.html">
@@ -760,187 +775,46 @@
         <state line="0" column="33" selection-start="10" selection-end="33" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="440" />
       </provider>
     </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/boa-constructor/Models/EditorModels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="13" selection-start="2411" selection-end="2411" vertical-scroll-proportion="0.9259259" vertical-offset="1040" max-vertical-offset="8240" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-1571908645/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="13" selection-start="6460" selection-end="6462" vertical-scroll-proportion="0.0" vertical-offset="3860" max-vertical-offset="116160">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/models/md_bill.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/models/md_product.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="28" selection-start="496" selection-end="496" vertical-scroll-proportion="0.0" vertical-offset="427" max-vertical-offset="980">
-          <folding>
-            <element signature="e#501#2350#0" expanded="false" />
-            <element signature="e#2394#3260#0" expanded="false" />
-            <element signature="e#3302#3783#0" expanded="false" />
-            <element signature="e#3824#4285#0" expanded="false" />
-            <element signature="e#4321#5434#0" expanded="false" />
-            <element signature="e#5468#8686#0" expanded="false" />
-            <element signature="e#8730#8914#0" expanded="false" />
-            <element signature="e#8948#11751#0" expanded="false" />
-            <element signature="e#11798#12604#0" expanded="false" />
-            <element signature="e#12652#12656#0" expanded="false" />
-            <element signature="e#12692#12696#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_checkbilldetaillist.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="100" selection-start="338" selection-end="346" vertical-scroll-proportion="0.31311154" vertical-offset="0" max-vertical-offset="511" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="136" column="38" selection-start="5300" selection-end="5330" vertical-scroll-proportion="0.0" vertical-offset="2867" max-vertical-offset="6600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/views/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/views/generic/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="556">
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="199" selection-start="3179" selection-end="3179" vertical-scroll-proportion="-8.275862" vertical-offset="660" max-vertical-offset="1660">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="83" selection-start="724" selection-end="734" vertical-scroll-proportion="-10.344828" vertical-offset="40" max-vertical-offset="1520">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="16" selection-start="2759" selection-end="2771" vertical-scroll-proportion="0.0" vertical-offset="933" max-vertical-offset="1460">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/views/generic/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="6" selection-start="3969" selection-end="3969" vertical-scroll-proportion="0.0" vertical-offset="1935" max-vertical-offset="4300">
-          <folding />
-        </state>
+        <state line="45" column="199" selection-start="3179" selection-end="3179" vertical-scroll-proportion="-8.275862" vertical-offset="660" max-vertical-offset="1660" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="39" selection-start="501" selection-end="517" vertical-scroll-proportion="-10.586206" vertical-offset="133" max-vertical-offset="660">
-          <folding />
-        </state>
+        <state line="22" column="39" selection-start="501" selection-end="517" vertical-scroll-proportion="-10.586206" vertical-offset="133" max-vertical-offset="660" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templatetags/append_to_get.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1060">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/core/paginator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="23" selection-start="521" selection-end="530" vertical-scroll-proportion="0.0" vertical-offset="175" max-vertical-offset="3280">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1060" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ntsstock/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="16" selection-start="1042" selection-end="1045" vertical-scroll-proportion="-6.5185184" vertical-offset="604" max-vertical-offset="2100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/template/defaultfilters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="7" selection-start="90" selection-end="90" vertical-scroll-proportion="-0.7194245" vertical-offset="480" max-vertical-offset="17980">
-          <folding />
-        </state>
+        <state line="39" column="16" selection-start="1042" selection-end="1045" vertical-scroll-proportion="-6.5185184" vertical-offset="604" max-vertical-offset="2100" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templatetags/paginator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1040">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="34" selection-start="2290" selection-end="2320" vertical-scroll-proportion="-1.7266186" vertical-offset="2220" max-vertical-offset="4140">
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/views_bills.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="72" selection-end="72" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="560">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="15" selection-start="830" selection-end="841" vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1600">
-          <folding />
-        </state>
+        <state line="10" column="0" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1040" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/stockbill.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="8.034483" vertical-offset="233" max-vertical-offset="880">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_paginator.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="43" selection-start="183" selection-end="183" vertical-scroll-proportion="-5.5172415" vertical-offset="0" max-vertical-offset="600">
+        <state line="7" column="9" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="510">
           <folding />
         </state>
       </provider>
@@ -952,35 +826,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python33/Lib/site-packages/django/views/generic/list.py">
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="15" selection-start="493" selection-end="504" vertical-scroll-proportion="10.37037" vertical-offset="480" max-vertical-offset="3780">
+        <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="884">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/productstock_list.html">
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/widget_checkbilldetaillist.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="55" selection-start="451" selection-end="453" vertical-scroll-proportion="-7.586207" vertical-offset="60" max-vertical-offset="1040">
+        <state line="6" column="45" selection-start="220" selection-end="239" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="374">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/views_productstock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="877" selection-end="877" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="1920">
+        <state line="43" column="0" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.6783555" vertical-offset="0" max-vertical-offset="1462" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/middleware.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="852">
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/stockmanage/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="88" selection-start="2059" selection-end="2059" vertical-scroll-proportion="0.77163905" vertical-offset="121" max-vertical-offset="1000">
+        <state line="32" column="45" selection-start="2450" selection-end="2450" vertical-scroll-proportion="-18.36" vertical-offset="0" max-vertical-offset="765">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/views_bills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="784" selection-end="784" vertical-scroll-proportion="0.08222491" vertical-offset="0" max-vertical-offset="827">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="16" selection-start="2761" selection-end="2773" vertical-scroll-proportion="-29.2" vertical-offset="426" max-vertical-offset="1275">
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#24#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="122" selection-start="1493" selection-end="1493" vertical-scroll-proportion="-13.730769" vertical-offset="357" max-vertical-offset="1241">
+          <folding>
+            <element signature="n#style#0;n#textarea#0;n#form#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/views_checkbill.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="21" selection-start="1173" selection-end="1182" vertical-scroll-proportion="-13.6" vertical-offset="204" max-vertical-offset="1683">
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="169" column="0" selection-start="6385" selection-end="7240" vertical-scroll-proportion="-7.24" vertical-offset="2471" max-vertical-offset="3298">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stockmanage/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="337" column="25" selection-start="13353" selection-end="13353" vertical-scroll-proportion="0.48122066" vertical-offset="5149" max-vertical-offset="6171">
+          <folding />
         </state>
       </provider>
     </entry>
