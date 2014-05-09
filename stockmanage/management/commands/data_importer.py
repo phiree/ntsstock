@@ -84,7 +84,7 @@ class importer:
                                                                )
                 parent=l
             location=StockLocation.objects.get(LocationCode=locationCode)
-        ProductStock.objects.get_or_create(Quantity=quantity,theproduct=product,stocklocation=location,memo=locationCode)
+        ProductStock.objects.get_or_create(quantity=quantity,theproduct=product,stocklocation=location,memo=locationCode)
     def parse_location(self,location_code):
         #1.2.3-->1,1.2,1.3
         import re

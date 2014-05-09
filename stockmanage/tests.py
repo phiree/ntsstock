@@ -13,7 +13,7 @@ class CheckMethodTests(TestCase):
         theproduct=fixtureProduct.create(1)[0]
         fixtureParent=AutoFixture(StockLocation)
         locationParent=fixtureParent.create(1)[0]
-        ProductStock.objects.create(Quantity=1,theproduct=theproduct,stocklocation=locationParent)
+        ProductStock.objects.create(quantity=1,theproduct=theproduct,stocklocation=locationParent)
         checkbill=CheckBill.objects.create()
         checkbill.checkbilldetail_set.create()
 
@@ -83,14 +83,14 @@ class StockBillTest(TestCase):
         fixtureBill=AutoFixture(StockBill,generate_fk=True,field_values={'BillState':'applied'})
         bill=fixtureBill.create(1)[0]
         fixtureBillDetail=AutoFixture(StockBillDetail,generate_fk=True
-                                      ,field_values={'stockbill':bill,'product':theproduct,'Quantity':1
+                                      ,field_values={'stockbill':bill,'product':theproduct,'quantity':1
                                                      ,'location':location})
         detail=fixtureBillDetail.create(5)
         
         bill.save()
         print (bill.BillType)
         self.assertEqual(len(ProductStock.objects.all()),1)
-        self.assertEqual(ProductStock.objects.all()[0].Quantity,5)
+        self.assertEqual(ProductStock.objects.all()[0].quantity,5)
         print ([ProductStock.objects.all()])
         self.assertEqual(bill.TotalAmount,5)
         
@@ -101,6 +101,6 @@ class StockBillTest(TestCase):
         print (bill.BillType)
         print ([ProductStock.objects.all()])
         self.assertEqual(len(ProductStock.objects.all()),1)
-        self.assertEqual(ProductStock.objects.all()[0].Quantity,0)
+        self.assertEqual(ProductStock.objects.all()[0].quantity,0)
         self.assertEqual(bill.TotalAmount,5)
         

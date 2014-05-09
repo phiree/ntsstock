@@ -107,14 +107,14 @@ class ProductStock(models.Model):
     '''current stock quantity of a product
     
     '''
-    Quantity = IntegerField()
+    quantity = IntegerField()
     theproduct = ForeignKey(Product)
     stocklocation = ForeignKey(StockLocation, null=True)
     memo = CharField(max_length=2000)
     last_check_time = DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.theproduct.id) + ':' + str(self.Quantity) + ':' + str(self.stocklocation)
+        return str(self.theproduct.id) + ':' + str(self.quantity) + ':' + str(self.stocklocation)
         # stock bill detail will change stock quantity or location
 
 class BillBase(models.Model):
@@ -137,6 +137,18 @@ class BillBase(models.Model):
     def generat_detail_to_formatedtext(self):
         return [x.product.Code_Original
                 for x in self.stockbilldetail_set.all()]
+    def parse_detail_from_formated_text(self,formated_text):
+        detail_list=[]
+        for line in formated_text.splitlines():
+            if not line:
+                continue
+            detail=self.parse(line)
+            detail_list.extend(detail)
+        self.stockbilldetail_set.add(*detail_list)
+        #return detail_list
+
+    def parse(self,line):
+        pass
 
 
 class StockBill(BillBase):
@@ -167,15 +179,11 @@ class StockBill(BillBase):
 
 
     # how many kinds of product in the bill
-
     def get_totalamount(self):
-        return sum(x.Quantity * Decimal(x.product.Price) for x in self.stockbilldetail_set.all())
-
+        return sum(x.quantity * Decimal(x.product.Price) for x in self.stockbilldetail_set.all())
     def get_totalkind(self):
         return len(self.stockbilldetail_set.all())
-
     BillReason = CharField(max_length=20, choices=Reason_Choices)
-
     TotalAmount = property(get_totalamount)
     TotalKinds = property(get_totalkind)
 
@@ -191,12 +199,12 @@ class StockBill(BillBase):
             productstock, productstock_created = ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
                                                                                     stocklocation__id=detail.location.id
                                                                                     , defaults={
-                    'Quantity': (1 if self.BillType == 'in' else -1) * detail.Quantity,
+                    'Quantity': (1 if self.BillType == 'in' else -1) * detail.quantity,
                     'theproduct': detail.product,
                     'stocklocation': detail.location})
             print(productstock_created)
             if not productstock_created:
-                productstock.Quantity += (1 if self.BillType == 'in' else -1) * detail.Quantity
+                productstock.quantity += (1 if self.BillType == 'in' else -1) * detail.quantity
                 # else:
                 # productstock.stocklocation_set.add(detail.location)
                 # detail.location.stocks.add(productstock)
@@ -215,16 +223,24 @@ class StockBill(BillBase):
         super(StockBill, self).save(*args, **kwargs)
 
     def generat_detail_to_formatedtext(self):
-        return [x.product.Code_Original + ',' + str(x.Quantity) + ',' + x.location.LocationCode
+        return [x.product.Code_Original + ',' + str(x.quantity) + ',' + x.location.LocationCode
                 for x in self.stockbilldetail_set.all()]
 
+    def parse(self,line):
+        procode=line.split(',')[0]
+        product=Product.objects.get(Code_Original=procode)
+        qty=line.split(',')[1]
+        location_code=line.split(',')[2]
+        location=StockLocation.objects.get(LocationCode=location_code)
+        detail=StockBillDetail(stockbill=bill,product=product,location=location,quantity=qty)
+        return detail
 
 class StockBillDetail(models.Model):
     '''product info in the bill'''
     stockbill = ForeignKey(BillBase, null=True)
     product = ForeignKey(Product)
-    location = ForeignKey(StockLocation)
-    Quantity = IntegerField()
+    location = ForeignKey(StockLocation,null=True)
+    quantity = IntegerField()
 
 
 class CheckBill(BillBase):
@@ -245,8 +261,8 @@ class CheckBill(BillBase):
         for ps in check_list:
             cbdetail = CheckBillDetail(product=ps.theproduct,
                                        location=ps.stocklocation,
-                                       realquantity=ps.Quantity,
-                                       quantity=ps.Quantity)
+                                       realquantity=ps.quantity,
+                                       quantity=ps.quantity)
             self.checkbilldetail_set.add(cbdetail)
 
     def GenerateDetail(self, condition):
@@ -290,14 +306,26 @@ class CheckBill(BillBase):
         if len(check_stockin_bill.stockbilldetail_set.all()) > 0:
             #check_stockin_bill.save()
             pass
-
+    def parse(self,line):
+        '''override super methoed'''
+        procode=line
+        # one product maybe in different locations
+        #product=Product.objects.get(Code_Original=procode)
+        productstock_list=ProductStock.objects.filter(theproduct__Code_Original=procode)
+        checkdetail_list=[]
+        for productstock in productstock_list:
+            #import pdb;pdb.set_trace()
+            #basebilldetail= StockBillDetail(stockbill=self,product=productstock.theproduct,location=productstock.stocklocation,quantity=productstock.quantity)
+            checkbilldetail=CheckBillDetail(stockbill=self,product=productstock.theproduct,location=productstock.stocklocation,quantity=productstock.quantity,realquantity=None)
+            checkdetail_list.append(checkbilldetail)
+        return checkdetail_list
     def IsProgressing(self):
         pass
 
 
 class CheckBillDetail(StockBillDetail):
-    realquantity = IntegerField()
 
+    realquantity = IntegerField(null=True)
     def get_random(self):
         count = self.aggregate(count=Count('id'))['count']
         random_index = randint(0, count - 1)
@@ -306,51 +334,18 @@ class CheckBillDetail(StockBillDetail):
     def GenerateStockDetail(self, stockout, stockin):
         '''if realquantity is not equal to systemquantity
             create a stockdetail'''
-        change = self.realquantity - self.Quantity
+        change = self.realquantity - self.quantity
         change_abs = abs(change)
         if change == 0:
             return None
-        stockdetail = StockBillDetail(product=self.product, location=self.location, Quantity=change_abs)
+        stockdetail = StockBillDetail(product=self.product, location=self.location, quantity=change_abs)
         stockdetail.stockbill = stockin if change > 0 else stockout
         if change > 0:
             stockin.stockbilldetail_set.add(stockdetail)
         else:
             stockout.stockbilldetail_set.add(stockdetail)
 
-class DetailParser():
-    def __init__(self):
 
-    def parse(self,formated_text):
-        pass
-class DetailParser_Stock(DetailParser):
-    def parse(self,formated_text):
-        super(DetailParser_Stock,self).parse(formated_text)
-        for line in formated_text.splitlines():
-            if not line:
-                continue
-            #import pdb;pdb.set_trace()
-            procode=line.split(',')[0]
-            product=Product.objects.get(Code_Original=procode)
-            qty=line.split(',')[1]
-            location_code=line.split(',')[2]
-            location=StockLocation.objects.get(LocationCode=location_code)
-            detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
-            return detail
-
-class DetailParser_Check(DetailParser):
-    def parse(self,formated_text):
-        super(DetailParser_Check,self).parse(formated_text)
-        for line in formated_text.splitlines():
-            if not line:
-                continue
-            #import pdb;pdb.set_trace()
-            procode=line.split(',')[0]
-            product=Product.objects.get(Code_Original=procode)
-            qty=line.split(',')[1]
-            location_code=line.split(',')[2]
-            location=StockLocation.objects.get(LocationCode=location_code)
-            detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
-            return detail
 class CheckBillRealDetail(models.Model):
     pass
 

@@ -183,7 +183,7 @@ def stockbill_update_detail(request,bill):
         location=StockLocation.objects.get(LocationCode=location_code)
         detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
         print('detail')
-        print(detail.Quantity)
+        print(detail.quantity)
         #[bill.stockbilldetail_set].append(detail) # 
         bill.stockbilldetail_set.add(detail)
         print('detailcount after parse text')

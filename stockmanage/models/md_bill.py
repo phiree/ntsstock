@@ -107,7 +107,7 @@ class ProductStock(models.Model):
     '''current stock quantity of a product
     
     '''
-    Quantity = IntegerField()
+    quantity = IntegerField()
     theproduct = ForeignKey(Product)
     stocklocation = ForeignKey(StockLocation, null=True)
     memo = CharField(max_length=2000)
@@ -169,7 +169,7 @@ class StockBill(BillBase):
     # how many kinds of product in the bill
 
     def get_totalamount(self):
-        return sum(x.Quantity * Decimal(x.product.Price) for x in self.stockbilldetail_set.all())
+        return sum(x.quantity * Decimal(x.product.Price) for x in self.stockbilldetail_set.all())
 
     def get_totalkind(self):
         return len(self.stockbilldetail_set.all())

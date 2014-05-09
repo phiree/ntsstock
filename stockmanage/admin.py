@@ -8,7 +8,7 @@ from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,P
 class StockBillDetailInline(admin.TabularInline):
     model=StockBillDetail
     fields=('product',)
-    readonly_fields=('product','location','Quantity',)
+    readonly_fields=('product','location','quantity',)
     template='admin/stockmanage/stockbill/edit_inline/tabular.html' 
 class ProductAdmin(admin.ModelAdmin):
   pass
@@ -74,7 +74,7 @@ class StockBillAdmin(admin.ModelAdmin):
             qty=line.split(',')[1]
             location_code=line.split(',')[2]
             location=StockLocation.objects.get(LocationCode=location_code)
-            detail=StockBillDetail(stockbill=obj,product=product,location=location,Quantity=qty)
+            detail=StockBillDetail(stockbill=obj,product=product,location=location,quantity=qty)
             obj.stockbilldetail_set.add(detail)
             #import pdb;pdb.set_trace()
         obj.save()

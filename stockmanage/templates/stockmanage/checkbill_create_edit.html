@@ -38,9 +38,9 @@ active
 							<br/>
 							注意:单据详情将被覆盖
 						</p>
-						<form method="post" id="fm_detail_update" action='{{action}}'>
+						<form method="post" id="fm_detail_update">
 							{%csrf_token%}
-							<textarea style="width:100%" name='tt_billdetail'  class='form-control' rows='5'>{{detail_text}}</textarea>
+                            {{form.product_list}}
 						</form>
 						<div class="clear"></div>
 					</div>

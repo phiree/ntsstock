@@ -19,25 +19,29 @@ stock check views
 class CheckBillList(ListView):
     model=CheckBill
     paginate_by=2
-
-def edit(request,id=None):
-    if id:
-        checkbill=get_object_or_404(Checkbill,pk=id)
+def create(request):
+    return edit(request)
+def edit(request,bill_id=None):
+    if bill_id:
+        checkbill=get_object_or_404(CheckBill,pk=bill_id)
     else:
         checkbill=CheckBill(Creator=request.user)
 
     if request.method=='POST':
-        #import pdb;pdb.set_trace()
+
         generate_form = CheckBillGenerateForm(request.POST)
         if generate_form.is_valid():
+            formated_text=generate_form.cleaned_data['product_list']
+            if not bill_id:
+                checkbill.save()
+            checkbill.parse_detail_from_formated_text(formated_text)
             checkbill.save()
+        import pdb;pdb.set_trace()
+        aa=reverse('checkbill_edit',args=[checkbill.id])
+        return HttpResponseRedirect(reverse('checkbill_edit',kwargs={'bill_id':checkbill.id}))
 
-        '''bill.save()
-        bill.CreateDetail()
-        bill.save()
-        return bill'''
     else:
-        generate_form=CheckBillGenerateForm()
+        generate_form=CheckBillGenerateForm({'product_list':'123'})
         detail_text=checkbill.generat_detail_to_formatedtext()
         return render(request,'stockmanage/checkbill_create_edit.html'
                       ,{'form':generate_form,'bill':checkbill,'detail_text':'\n'.join(detail_text)})
