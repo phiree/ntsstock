@@ -19,6 +19,7 @@ stock check views
 class CheckBillList(ListView):
     model=CheckBill
     paginate_by=2
+
 def create(request):
     return edit(request)
 def edit(request,bill_id=None):
@@ -41,10 +42,10 @@ def edit(request,bill_id=None):
         return HttpResponseRedirect(reverse('stockmanage:checkbill_edit',kwargs={'bill_id':str(checkbill.id)}))
 
     else:
-        generate_form=CheckBillGenerateForm({'product_list':'123'})
+        generate_form=CheckBillGenerateForm({'product_list':'\n'.join( checkbill.generat_detail_to_formatedtext())})
         detail_text=checkbill.generat_detail_to_formatedtext()
         return render(request,'stockmanage/checkbill_create_edit.html'
-                      ,{'form':generate_form,'bill':checkbill,'detail_text':'\n'.join(detail_text)})
+                      ,{'form':generate_form,'bill':checkbill})
 
         
 def input_realquantity(request,bill_id):

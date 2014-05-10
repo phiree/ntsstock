@@ -149,7 +149,8 @@ class BillBase(models.Model):
 
     def parse(self,line):
         pass
-
+    def generat_detail_to_formatedtext(self):
+        pass
 
 class StockBill(BillBase):
     '''bills record stock in and out'''
@@ -321,6 +322,9 @@ class CheckBill(BillBase):
         return checkdetail_list
     def IsProgressing(self):
         pass
+    def generat_detail_to_formatedtext(self):
+        return [x.product.Code_Original
+                for x in self.stockbilldetail_set.all()]
 
 
 class CheckBillDetail(StockBillDetail):
