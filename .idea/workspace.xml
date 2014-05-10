@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="235c92d3-2da8-497c-a9e7-bca3999f5747" name="Default" comment="just fo">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.db3" afterPath="$PROJECT_DIR$/db.db3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" afterPath="$PROJECT_DIR$/stockmanage/templates/stockmanage/checkbill_create_edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/models.py" afterPath="$PROJECT_DIR$/stockmanage/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stockmanage/views_checkbill.py" afterPath="$PROJECT_DIR$/stockmanage/views_checkbill.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="235c92d3-2da8-497c-a9e7-bca3999f5747" name="Default" comment="just fo" />
     <ignored path="ntsstock.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -525,7 +518,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1376" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.49962658" order="7" side_tool="false" content_ui="tabs" />
