@@ -36,9 +36,9 @@ def edit(request,bill_id=None):
                 checkbill.save()
             checkbill.parse_detail_from_formated_text(formated_text)
             checkbill.save()
-        import pdb;pdb.set_trace()
-        aa=reverse('checkbill_edit',args=[checkbill.id])
-        return HttpResponseRedirect(reverse('checkbill_edit',kwargs={'bill_id':checkbill.id}))
+        #import pdb;pdb.set_trace()
+        #aa=reverse('checkbill_edit',args=[checkbill.id])
+        return HttpResponseRedirect(reverse('stockmanage:checkbill_edit',kwargs={'bill_id':str(checkbill.id)}))
 
     else:
         generate_form=CheckBillGenerateForm({'product_list':'123'})
