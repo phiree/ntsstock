@@ -3,11 +3,19 @@
 <table class="table table-bordered table-striped">
 	<tr>
 		<td>Code</td><td>Product</td><td>Location</td><td>Quantity</td>
+         {% if bill.CheckState == 'progressing'%}
+        <td>Real Quantity</td>
+        {%endif%}
 	</tr>
-	{%for detail in  bill.stockbilldetail_set.all%}
+	{#for detail in  CheckBillList.objects.filter(stockbill__id=bill.id).select_subclasses()#}
+    {%for detail in  detaillist%}
 	<tr>
 		<td>{{detail.product.Code_Original}} </td><td>{{detail.product}} </td><td> {{detail.location}} </td>
-		<td> {{detail.Quantity}} </td>
+		<td> {{detail.quantity}} </td>
+        {% if bill.CheckState == 'progressing'%}
+
+        <td> <input type="text"  name="real_quantity_{{detail.id}}"  value="{{detail.realquantity}}" /></td>
+        {%endif%}
 	</tr>
 	{%endfor%}
 </table></div>

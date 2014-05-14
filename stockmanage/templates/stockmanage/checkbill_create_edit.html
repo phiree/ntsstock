@@ -30,7 +30,7 @@ active
 				{%if bill.id%}
 				{%include 'stockmanage/widget_checkbilldetaillist.html'%}
 				{%endif%}
-				{%if bill.BillState == 'draft'%}
+				{%if bill.CheckState == 'draft'%}
 				<div class="modal-body">
 					<div id="tab_detail">
 						<p class='info'>
@@ -50,12 +50,18 @@ active
 			</div>
 		</div>
 		<div>
-			{%ifequal bill.BillState 'draft'%}
+			{%ifequal bill.CheckState 'draft'%}
 			<input class="btn  btn-default" type="submit" name="savedraft" value="保存" />
-			{%if bill.id%}
-			<input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')" class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存" />
-			{%endif%}
+			<input id='btn_apply' onclick="javascript:return confirm('提交之后,盘点列表不可再修改.确定提交?')"
+                   class="btn btn-xs btn-default" type="submit" name="begin_input" value="开始盘点" />
 			{%endifequal%}
+            {%if bill.CheckState == 'progressing'%}
+            <input id='btn_apply'
+                   class="btn btn-xs btn-default" type="submit" name="begin_input" value="保存" />
+            <input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')"
+                   class="btn btn-xs btn-default" type="submit" name="complete" value="提交盘点结果" />
+            {%endif%}
+
 			{%ifequal bill.BillState 'applied'%}
 
 			<input class="btn   btn-default" type="submit" name="pass" value="审核通过" />

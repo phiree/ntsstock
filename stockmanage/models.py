@@ -9,7 +9,7 @@ from django_extensions.db.fields import UUIDField
 from django.db.models.fields import CharField, DecimalField, IntegerField, DateTimeField, TextField, \
     Field
 from django.db.models.fields.related import ForeignKey, ManyToManyField
-
+from model_utils.managers import InheritanceManager
 logger = logging.getLogger(__name__)
 
 
@@ -120,6 +120,7 @@ class ProductStock(models.Model):
 class BillBase(models.Model):
     '''base class of all bills (stock_in_bill,stock_out_bill)
     '''
+    objects=InheritanceManager()
     id = UUIDField(
         primary_key=True)  # use uuid instead of autoincreament, to allow asigning an id to the object before saved into database
     BillNo = CharField(max_length=100, default=datetime.now().strftime('%Y%m%d%H%M%S'), editable=False)
@@ -242,6 +243,7 @@ class StockBillDetail(models.Model):
     product = ForeignKey(Product)
     location = ForeignKey(StockLocation,null=True)
     quantity = IntegerField()
+    objects=InheritanceManager()
 
 
 class CheckBill(BillBase):

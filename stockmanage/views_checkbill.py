@@ -7,12 +7,13 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
-from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,CheckBill
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,CheckBill,CheckBillDetail
 from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.generic import View,ListView
+from model_utils.managers import InheritanceManager
 '''
 stock check views
 '''
@@ -24,28 +25,53 @@ def create(request):
     return edit(request)
 def edit(request,bill_id=None):
     if bill_id:
-        checkbill=get_object_or_404(CheckBill,pk=bill_id)
+        checkbill=CheckBill.objects.select_related('checkbill').get(id=bill_id)
     else:
         checkbill=CheckBill(Creator=request.user)
 
     if request.method=='POST':
+        p=request.POST.copy()
 
-        generate_form = CheckBillGenerateForm(request.POST)
-        if generate_form.is_valid():
-            formated_text=generate_form.cleaned_data['product_list']
-            if not bill_id:
+        if 'savedraft' in p:
+
+            generate_form = CheckBillGenerateForm(request.POST)
+            if generate_form.is_valid():
+                formated_text=generate_form.cleaned_data['product_list']
+                if not bill_id:
+                    checkbill.save()
+                checkbill.parse_detail_from_formated_text(formated_text)
                 checkbill.save()
-            checkbill.parse_detail_from_formated_text(formated_text)
-            checkbill.save()
-        #import pdb;pdb.set_trace()
-        #aa=reverse('checkbill_edit',args=[checkbill.id])
+
+            #aa=reverse('checkbill_edit',args=[checkbill.id])
+            checkbill.CheckState=CheckBill.CheckState_Choices[0][0]
+            return HttpResponseRedirect(reverse('stockmanage:checkbill_edit',kwargs={'bill_id':str(checkbill.id)}))
+        else:
+            #import pdb;pdb.set_trace()
+            for ks in p.keys():
+                if ks.startswith('real_quantity_'):
+                    detail_id=int(ks[14:])
+                    detail=get_object_or_404(CheckBillDetail, pk=detail_id)
+                    realquantity=int(p[ks])
+                    detail.realquantity=realquantity
+                    detail.save()
+            if 'begin_input' in p:
+                checkbill.CheckState=CheckBill.CheckState_Choices[1][0]
+            elif 'complete' in p:
+                checkbill.CheckState=CheckBill.CheckState_Choices[2][0]
+            # receive the realy quantity for each products.
+            else:
+                pass
+        checkbill.save()
         return HttpResponseRedirect(reverse('stockmanage:checkbill_edit',kwargs={'bill_id':str(checkbill.id)}))
 
     else:
+        #for billdetail in checkbill.stockbill_set.all():
+        checkbilldetail_list=StockBillDetail.objects.filter(stockbill__id=bill_id).select_subclasses()
+        #import pdb;pdb.set_trace()
         generate_form=CheckBillGenerateForm({'product_list':'\n'.join( checkbill.generat_detail_to_formatedtext())})
         detail_text=checkbill.generat_detail_to_formatedtext()
         return render(request,'stockmanage/checkbill_create_edit.html'
-                      ,{'form':generate_form,'bill':checkbill})
+                      ,{'form':generate_form,'bill':checkbill,'detaillist':checkbilldetail_list})
 
         
 def input_realquantity(request,bill_id):
