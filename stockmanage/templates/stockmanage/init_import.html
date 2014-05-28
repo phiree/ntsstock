@@ -1,0 +1,27 @@
+{% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+{%block header%}
+<link rel="stylesheet" type="text/css"  href="{%static 'stockmanage/css/stockbill.css'%}" media='screen,projector'/>
+
+<script type="text/javascript" src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/bootstrap-confirmation.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
+{%endblock%}
+{%block content_title%}
+初始化导入
+{%endblock%}
+
+{%block nav_init_import%}
+active
+{%endblock%}
+{%block content%}
+<form method="post" enctype="multipart/form-data" id='fm_init_import' class='navbar-form navbar-left'>
+	{% csrf_token %}
+    <input type="file" name='file_init_excel' value="选择初始化文件" />
+    <input type="submit"/>
+    <hr/>
+    {{form}}
+     <input type="submit"/>
+</form>
+
+{%endblock%}

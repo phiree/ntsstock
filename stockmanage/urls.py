@@ -1,9 +1,10 @@
 from django.conf.urls import patterns,url
-from stockmanage import views,views_productstock,views_checkbill,views_product
+from stockmanage import views,views_productstock,views_checkbill,views_product,views_init
 from stockmanage.views_about import about
 from django.views.generic import  TemplateView
 from stockmanage.views_checkbill import CheckBillList
 from stockmanage.views_productstock import ProductStockList
+from stockmanage.views_init import ViewInitImport
 urlpatterns=patterns(''
                      ,url(r'^about/',TemplateView.as_view(template_name='stockmanage/about.html'))
                      ,url(r'^stocklocation/',views.location_index,name='stocklocation_index' )
@@ -38,6 +39,7 @@ urlpatterns=patterns(''
                      ,url(r'^checkbill/input_realquantity/(?P<bill_id>[^/]+)/',views_checkbill.input_realquantity,name='checkbill_input_realquantity')
                      #产品详情
                      ,url(r'^product/detail/(?P<product_id>[^/]+)/',views_product.detail,name='product_detail')
+                     ,url(r'^init_importdata/',views_init.importdata,name='init_importdata')
                      ,url(r'^$',views.index,name='index')
                      ,
                      )

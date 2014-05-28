@@ -2,24 +2,31 @@ from django.test import TestCase
 from random import choice
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import User
 from autofixture import  AutoFixture,generators
-from stockmanage.models import  Product\
-                        ,StockLocation,ProductStock,ProductSnapshot\
-                        ,StockBill,StockBillDetail
+from stockmanage.models import  Product,StockLocation,ProductStock,ProductSnapshot,StockBill,StockBillDetail,CheckBill,CheckBillDetail
 # Create your tests here.
-class CheckMethodTests(TestCase):
-	def test_Complete_Check(self):
-		fixtureProduct=AutoFixture(Product)
-        theproduct=fixtureProduct.create(1)[0]
-        fixtureParent=AutoFixture(StockLocation)
-        locationParent=fixtureParent.create(1)[0]
-        ProductStock.objects.create(quantity=1,theproduct=theproduct,stocklocation=locationParent)
-        checkbill=CheckBill.objects.create()
-        checkbill.checkbilldetail_set.create()
+class AFTest(TestCase):
+    def testCreate(self):
+        af_StockBill=AutoFixture(StockBill,generate_fk=True)
+        bill=af_StockBill.create(1)
+
+        import pdb;pdb.set_trace()
+class CheckBillDetailMethodTests(TestCase):
+    def test_GenerateStockDetail(self):
+        ft_stockbill=AutoFixture(StockBill,generate_fk=True)
+        stockbills=ft_stockbill.create(2)
+        ft_cbd=AutoFixture(CheckBillDetail,generate_fk=True, field_values={'quantity':1,'realquantity':4})
+        detail=ft_cbd.create(1)[0]
+        #import pdb;pdb.set_trace()
+        detail.GenerateStockDetail(stockbills[0],stockbills[1])
+        self.assertEqual(1,stockbills[1].stockbilldetail_set.count())
+        self.assertEqual(3,stockbills[1].stockbilldetail_set.all()[0].quantity)
+        #cbd=ft_cbd.Check
 
 class ProductMethodTests(TestCase):   
     def test_get_a_snapshot_of_given_time(self):
-        
+        import os; file.readlines()
         print('----------test_get_a_snapshot_of_given_time')
         fixtureProduct=AutoFixture(Product)
         theproduct=fixtureProduct.create(1)[0]
@@ -103,4 +110,7 @@ class StockBillTest(TestCase):
         self.assertEqual(len(ProductStock.objects.all()),1)
         self.assertEqual(ProductStock.objects.all()[0].quantity,0)
         self.assertEqual(bill.TotalAmount,5)
-        
+
+class InitImportTest(TestCase):
+    def import_normal(self):
+        pass

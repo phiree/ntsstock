@@ -301,14 +301,19 @@ class CheckBill(BillBase):
         #check_stockout_bill.save()
         #check_stockin_bill.save()
         #import pdb;pdb.set_trace()
-        for detail in self.checkbilldetail_set.all():
+        for detail in CheckBillDetail.objects.filter(stockbill__id=self.id):
+            #import pdb;pdb.set_trace()
             detail.GenerateStockDetail(check_stockout_bill, check_stockin_bill)
+        logger.debug('check generated checkbill:')
         if len(check_stockout_bill.stockbilldetail_set.all()) > 0:
-            #check_stockout_bill.save()
+            logger.debug('stockout created')
+            check_stockout_bill.save()
             pass
         if len(check_stockin_bill.stockbilldetail_set.all()) > 0:
-            #check_stockin_bill.save()
+            logger.debug('stockin created')
+            check_stockin_bill.save()
             pass
+        logger.debug('check generated checkbill end')
     def parse(self,line):
         '''override super methoed'''
         procode=line
@@ -340,6 +345,7 @@ class CheckBillDetail(StockBillDetail):
     def GenerateStockDetail(self, stockout, stockin):
         '''if realquantity is not equal to systemquantity
             create a stockdetail'''
+        #import pdb;pdb.set_trace()
         change = self.realquantity - self.quantity
         change_abs = abs(change)
         if change == 0:
@@ -347,8 +353,10 @@ class CheckBillDetail(StockBillDetail):
         stockdetail = StockBillDetail(product=self.product, location=self.location, quantity=change_abs)
         stockdetail.stockbill = stockin if change > 0 else stockout
         if change > 0:
+            logger.debug('check profit found')
             stockin.stockbilldetail_set.add(stockdetail)
         else:
+            logger.debug('check loss found')
             stockout.stockbilldetail_set.add(stockdetail)
 
 

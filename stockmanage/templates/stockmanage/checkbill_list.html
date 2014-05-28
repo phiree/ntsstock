@@ -9,12 +9,13 @@ active
 <table class="table">
 	<thead>
 	<tr>
-		<th>单号</th><th>时间</th><th> </th>
+		<th>单号</th><th>时间</th><th>状态</th><th> </th>
 	</tr></thead>
 	{%for checkbill in object_list%}
 	<tr>
 		<td>{{checkbill.BillNo}}</td>
 		<td>{{checkbill.BillTime}}</td>
+		<td>{{checkbill.CheckState}}</td>
 		<td><a href="{%url 'stockmanage:checkbill_edit' checkbill.id %}">详情</a></td>
 	</tr>
 	

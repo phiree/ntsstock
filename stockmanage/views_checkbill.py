@@ -57,7 +57,11 @@ def edit(request,bill_id=None):
             if 'begin_input' in p:
                 checkbill.CheckState=CheckBill.CheckState_Choices[1][0]
             elif 'complete' in p:
+                #import pdb;pdb.set_trace()
                 checkbill.CheckState=CheckBill.CheckState_Choices[2][0]
+                # generate profit bill
+
+                checkbill.CompleteCheck()
             # receive the realy quantity for each products.
             else:
                 pass
