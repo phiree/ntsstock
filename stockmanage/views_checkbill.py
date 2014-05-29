@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.generic import View,ListView
 from model_utils.managers import InheritanceManager
+from stockmanage.biz_check import biz_check
 '''
 stock check views
 '''
@@ -60,8 +61,7 @@ def edit(request,bill_id=None):
                 #import pdb;pdb.set_trace()
                 checkbill.CheckState=CheckBill.CheckState_Choices[2][0]
                 # generate profit bill
-
-                checkbill.CompleteCheck()
+                biz_check().complete_check(checkbill)
             # receive the realy quantity for each products.
             else:
                 pass

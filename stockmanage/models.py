@@ -135,6 +135,7 @@ class BillBase(models.Model):
     # staff-- not the login user who assonated with the bill
     StaffName = CharField(max_length=50, null=True, blank=True)
     Memo = CharField(max_length=1000, null=True, blank=True)
+    RelatedBill=ForeignKey('self',null=True)
     def generat_detail_to_formatedtext(self):
         return [x.product.Code_Original
                 for x in self.stockbilldetail_set.all()]
@@ -289,31 +290,16 @@ class CheckBill(BillBase):
                 raise Exception('No Such Type')
         return check_list
 
-    def CompleteCheck(self):
-        '''结束盘点 生成盘盈盘亏单据'''
-
-        check_stockin_bill = StockBill(BillType='in', BillState='applied',
-                                       StaffName=self.StaffName, Creator=self.Creator,
-                                       BillReason='inventory_profit')
-        check_stockout_bill = StockBill(BillType='out', BillState='applied',
-                                        StaffName=self.StaffName, Creator=self.Creator,
-                                        BillReason='inventory_loss')
-        #check_stockout_bill.save()
-        #check_stockin_bill.save()
+    def GenerateChangeDetail(self):
+        '''结束盘点 生成 盘盈 盘亏数据'''
+        list_change=[]
         #import pdb;pdb.set_trace()
         for detail in CheckBillDetail.objects.filter(stockbill__id=self.id):
-            #import pdb;pdb.set_trace()
-            detail.GenerateStockDetail(check_stockout_bill, check_stockin_bill)
-        logger.debug('check generated checkbill:')
-        if len(check_stockout_bill.stockbilldetail_set.all()) > 0:
-            logger.debug('stockout created')
-            check_stockout_bill.save()
-            pass
-        if len(check_stockin_bill.stockbilldetail_set.all()) > 0:
-            logger.debug('stockin created')
-            check_stockin_bill.save()
-            pass
-        logger.debug('check generated checkbill end')
+
+            generated_detail=detail.GenerateStockDetail()
+            if generated_detail:
+                list_change.append(generated_detail)
+        return list_change
     def parse(self,line):
         '''override super methoed'''
         procode=line
@@ -342,22 +328,13 @@ class CheckBillDetail(StockBillDetail):
         random_index = randint(0, count - 1)
         return self.all()[random_index]
 
-    def GenerateStockDetail(self, stockout, stockin):
-        '''if realquantity is not equal to systemquantity
-            create a stockdetail'''
-        #import pdb;pdb.set_trace()
+    def GenerateStockDetail(self):
+
         change = self.realquantity - self.quantity
-        change_abs = abs(change)
         if change == 0:
             return None
-        stockdetail = StockBillDetail(product=self.product, location=self.location, quantity=change_abs)
-        stockdetail.stockbill = stockin if change > 0 else stockout
-        if change > 0:
-            logger.debug('check profit found')
-            stockin.stockbilldetail_set.add(stockdetail)
-        else:
-            logger.debug('check loss found')
-            stockout.stockbilldetail_set.add(stockdetail)
+        stockdetail = StockBillDetail(product=self.product, location=self.location, quantity=change)
+        return stockdetail
 
 
 class CheckBillRealDetail(models.Model):

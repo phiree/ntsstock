@@ -10,8 +10,11 @@ class AFTest(TestCase):
     def testCreate(self):
         af_StockBill=AutoFixture(StockBill,generate_fk=True)
         bill=af_StockBill.create(1)
+class ManagerTest(TestCase):
+    def foreignkey_save(self):
+        af_StockBill=AutoFixture(StockBill,generate_fk=True)
+        bill=af_StockBill.create(1)[0]
 
-        import pdb;pdb.set_trace()
 class CheckBillDetailMethodTests(TestCase):
     def test_GenerateStockDetail(self):
         ft_stockbill=AutoFixture(StockBill,generate_fk=True)
