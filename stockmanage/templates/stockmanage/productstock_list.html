@@ -24,12 +24,12 @@ active
 		<td>货品代码</td><td>货品名称</td><td>位置</td><td>数量</td><td></td>
 	</tr>
 	{%for stock in productstock_list_page%}
-	<tr><td>{{stock.theproduct.Code_Original}}</td>
-		<td>{{stock.theproduct}}</td>
+	<tr><td>{{stock.product.Code_Original}}</td>
+		<td>{{stock.product}}</td>
 		<td>{{stock.stocklocation}}</td>
 		<td>{{stock.quantity}} </td>
-		<td> <a href="{%url 'stockmanage:productstock_stocktrace_list' stock.theproduct.id%}">历史记录</a>
-			 <a href="{%url 'stockmanage:product_detail' stock.theproduct.id%}">货品详情</a> </td>
+		<td> <a href="{%url 'stockmanage:productstock_stocktrace_list' stock.product.id%}">历史记录</a>
+			 <a href="{%url 'stockmanage:product_detail' stock.product.id%}">货品详情</a> </td>
 	</tr>
 	{%endfor%}
 </table>

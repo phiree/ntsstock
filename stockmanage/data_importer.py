@@ -88,7 +88,7 @@ class importer:
                                                                )
                 parent = l
             location = StockLocation.objects.get(LocationCode=locationCode)
-            ProductStock.objects.get_or_create(quantity=quantity, theproduct=product, stocklocation=location, memo=locationCode)
+            ProductStock.objects.get_or_create(quantity=quantity, product=product, stocklocation=location, memo=locationCode)
         else:
             self.errmsg +='Error:Location'+ row[1] + '\n'
     def parse_location(self, location_code):

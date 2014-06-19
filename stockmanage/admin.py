@@ -63,7 +63,7 @@ class StockBillAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.Creator = request.user
-        obj.stockbilldetail_set.clear()
+        obj.billdetailbase_set.clear()
         #import pdb;pdb.set_trace()
         plain_list= request.POST['tt_detail_plain_list']
         for line in plain_list.splitlines():
@@ -75,7 +75,7 @@ class StockBillAdmin(admin.ModelAdmin):
             location_code=line.split(',')[2]
             location=StockLocation.objects.get(LocationCode=location_code)
             detail=StockBillDetail(stockbill=obj,product=product,location=location,quantity=qty)
-            obj.stockbilldetail_set.add(detail)
+            obj.billdetailbase_set.add(detail)
             #import pdb;pdb.set_trace()
         obj.save()
     #actions_on_bottom = True

@@ -35,7 +35,7 @@ class Product(models.Model):
         # self.productsnapshot_set.create  ProductSnapshot
         snapshot = self.productsnapshot_set.create(
             id=uuid.uuid4()
-            # ,theproduct=self
+            # ,product=self
             , SerialNo=self.SerialNo
             , Code_Original=self.Code_Original
             , Code_Database=self.Code_Database
@@ -69,7 +69,7 @@ class Product(models.Model):
 class ProductSnapshot(models.Model):
     '''keep a snapshot when it is modified
     '''
-    theproduct = ForeignKey(Product)
+    product = ForeignKey(Product)
     ShotTime = DateTimeField("ShotTime", default=timezone.now())
 
     id = UUIDField(primary_key=True)
@@ -108,13 +108,13 @@ class ProductStock(models.Model):
     
     '''
     quantity = IntegerField()
-    theproduct = ForeignKey(Product)
+    product = ForeignKey(Product)
     stocklocation = ForeignKey(StockLocation, null=True)
     memo = CharField(max_length=2000)
     last_check_time = DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.theproduct.id) + ':' + str(self.quantity) + ':' + str(self.stocklocation)
+        return str(self.product.id) + ':' + str(self.quantity) + ':' + str(self.stocklocation)
         # stock bill detail will change stock quantity or location
 
 class BillBase(models.Model):
@@ -131,6 +131,7 @@ class BillBase(models.Model):
     State_Choices = ((state_draft, 'draft'), (state_applied, 'applied'),
                      (state_checked, 'checked'))
     BillState = CharField(max_length=10, choices=State_Choices, default=state_draft)
+
     Creator = ForeignKey(User)
     # staff-- not the login user who assonated with the bill
     StaffName = CharField(max_length=50, null=True, blank=True)
@@ -138,7 +139,7 @@ class BillBase(models.Model):
     RelatedBill=ForeignKey('self',null=True)
     def generat_detail_to_formatedtext(self):
         return [x.product.Code_Original
-                for x in self.stockbilldetail_set.all()]
+                for x in self.billdetailbase_set.all()]
     def parse_detail_from_formated_text(self,formated_text):
         detail_list=[]
         for line in formated_text.splitlines():
@@ -146,7 +147,7 @@ class BillBase(models.Model):
                 continue
             detail=self.parse(line)
             detail_list.extend(detail)
-        self.stockbilldetail_set.add(*detail_list)
+        self.billdetailbase_set.add(*detail_list)
         #return detail_list
 
     def parse(self,line):
@@ -183,9 +184,9 @@ class StockBill(BillBase):
 
     # how many kinds of product in the bill
     def get_totalamount(self):
-        return sum(x.quantity * Decimal(x.product.Price) for x in self.stockbilldetail_set.all())
+        return sum(x.quantity * Decimal(x.product.Price) for x in self.billdetailbase_set.all())
     def get_totalkind(self):
-        return len(self.stockbilldetail_set.all())
+        return len(self.billdetailbase_set.all())
     BillReason = CharField(max_length=20, choices=Reason_Choices)
     TotalAmount = property(get_totalamount)
     TotalKinds = property(get_totalkind)
@@ -197,13 +198,13 @@ class StockBill(BillBase):
         '''apply to stock,can;t changed anymore'''
         # self.BillState=BillBase.State_Choices.state_applied
 
-        for detail in self.stockbilldetail_set.all():
+        for detail in self.billdetailbase_set.all():
 
-            productstock, productstock_created = ProductStock.objects.get_or_create(theproduct__id=detail.product.id,
+            productstock, productstock_created = ProductStock.objects.get_or_create( product__id=detail.product.id,
                                                                                     stocklocation__id=detail.location.id
                                                                                     , defaults={
                     'Quantity': (1 if self.BillType == 'in' else -1) * detail.quantity,
-                    'theproduct': detail.product,
+                    'product': detail.product,
                     'stocklocation': detail.location})
             print(productstock_created)
             if not productstock_created:
@@ -227,7 +228,7 @@ class StockBill(BillBase):
 
     def generat_detail_to_formatedtext(self):
         return [x.product.Code_Original + ',' + str(x.quantity) + ',' + x.location.LocationCode
-                for x in self.stockbilldetail_set.all()]
+                for x in self.billdetailbase_set.all().select_subclasses()]
 
     def parse(self,line):
         procode=line.split(',')[0]
@@ -238,13 +239,16 @@ class StockBill(BillBase):
         detail=StockBillDetail(stockbill=bill,product=product,location=location,quantity=qty)
         return detail
 
-class StockBillDetail(models.Model):
-    '''product info in the bill'''
-    stockbill = ForeignKey(BillBase, null=True)
+class BillDetailBase(models.Model):
+    billbase = ForeignKey(BillBase, null=True)
     product = ForeignKey(Product)
-    location = ForeignKey(StockLocation,null=True)
     quantity = IntegerField()
     objects=InheritanceManager()
+
+class StockBillDetail(BillDetailBase):
+    '''product info in the bill'''
+    location = ForeignKey(StockLocation,null=True)
+
 
 
 class CheckBill(BillBase):
@@ -263,7 +267,7 @@ class CheckBill(BillBase):
        '''
         check_list = self.GenerateDetail(condition)
         for ps in check_list:
-            cbdetail = CheckBillDetail(product=ps.theproduct,
+            cbdetail = CheckBillDetail(product=ps. product,
                                        location=ps.stocklocation,
                                        realquantity=ps.quantity,
                                        quantity=ps.quantity)
@@ -285,7 +289,7 @@ class CheckBill(BillBase):
                 for i in range(1, amount):
                     check_list.add(CheckBillDetail().get_random())
             elif condition.type == 'defined_list':
-                check_list = ProductStock.objects.filter(theproduct__Code_Original__in=condition.defined_list)
+                check_list = ProductStock.objects.filter( product__Code_Original__in=condition.defined_list)
             else:
                 raise Exception('No Such Type')
         return check_list
@@ -294,7 +298,7 @@ class CheckBill(BillBase):
         '''结束盘点 生成 盘盈 盘亏数据'''
         list_change=[]
         #import pdb;pdb.set_trace()
-        for detail in CheckBillDetail.objects.filter(stockbill__id=self.id):
+        for detail in CheckBillDetail.objects.filter(billbase__id=self.id):
 
             generated_detail=detail.GenerateStockDetail()
             if generated_detail:
@@ -305,23 +309,22 @@ class CheckBill(BillBase):
         procode=line
         # one product maybe in different locations
         #product=Product.objects.get(Code_Original=procode)
-        productstock_list=ProductStock.objects.filter(theproduct__Code_Original=procode)
+        productstock_list=ProductStock.objects.filter(product__Code_Original=procode)
         checkdetail_list=[]
         for productstock in productstock_list:
             #import pdb;pdb.set_trace()
-            #basebilldetail= StockBillDetail(stockbill=self,product=productstock.theproduct,location=productstock.stocklocation,quantity=productstock.quantity)
-            checkbilldetail=CheckBillDetail(stockbill=self,product=productstock.theproduct,location=productstock.stocklocation,quantity=productstock.quantity,realquantity=None)
+            #basebilldetail= StockBillDetail(stockbill=self,product=productstock.product,location=productstock.stocklocation,quantity=productstock.quantity)
+            checkbilldetail=CheckBillDetail(billbase=self,product=productstock. product,location=productstock.stocklocation,quantity=productstock.quantity,realquantity=None)
             checkdetail_list.append(checkbilldetail)
         return checkdetail_list
     def IsProgressing(self):
         pass
     def generat_detail_to_formatedtext(self):
         return [x.product.Code_Original
-                for x in self.stockbilldetail_set.all()]
+                for x in self.billdetailbase_set.all()]
 
 
 class CheckBillDetail(StockBillDetail):
-
     realquantity = IntegerField(null=True)
     def get_random(self):
         count = self.aggregate(count=Count('id'))['count']
@@ -333,12 +336,10 @@ class CheckBillDetail(StockBillDetail):
         change = self.realquantity - self.quantity
         if change == 0:
             return None
-        stockdetail = StockBillDetail(product=self.product, location=self.location, quantity=change)
+        stockdetail = StockBillDetail( product=self.product, location=self.location, quantity=change)
         return stockdetail
 
 
-class CheckBillRealDetail(models.Model):
-    pass
 
 
 class Suppier(models.Model):

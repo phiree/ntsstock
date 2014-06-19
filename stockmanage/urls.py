@@ -3,7 +3,7 @@ from stockmanage import views,views_productstock,views_checkbill,views_product,v
 from stockmanage.views_about import about
 from django.views.generic import  TemplateView
 from stockmanage.views_checkbill import CheckBillList
-from stockmanage.views_productstock import ProductStockList
+from stockmanage.views_productstock import ProductStockList,StockTraceList
 from stockmanage.views_init import ViewInitImport
 urlpatterns=patterns(''
                      ,url(r'^about/',TemplateView.as_view(template_name='stockmanage/about.html'))
@@ -27,7 +27,7 @@ urlpatterns=patterns(''
                      ,url(r'^stockbill/update_detail/(?P<bill_id>[^/]+)/',views.stockbill_update_detail,name='stockbill_update_detail' )
                      #库存清单
                      ,url(r'^productstock/list/',ProductStockList.as_view(paginate_by=20),name='productstock_list' )
-                     ,url(r'productstock/stock_trace/(?P<product_id>[^/]+)/',views_productstock.stock_trace_list,name='productstock_stocktrace_list')
+                     ,url(r'^productstock/stock_trace/(?P<product_id>[^/]+)/',StockTraceList.as_view(template_name='stockmanage/stocktrace_list.html'),name='productstock_stocktrace_list')
                      #######盘点##############
                      #盘点计划列表
                      ,url(r'^checkbill/list/',CheckBillList.as_view(),name='checkbill_list')

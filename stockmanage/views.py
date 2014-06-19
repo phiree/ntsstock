@@ -126,7 +126,7 @@ def stockbill_edit(request,type,bill_id,action):
             
             stockbill_update_detail(request,bill)
             print('detailcount after return')
-            print(bill.stockbilldetail_set.count())
+            print(bill.billdetailbase_set.count())
             pass
         elif 'apply' in p:
             bill.BillState='applied'
@@ -168,8 +168,8 @@ def stockbill_edit(request,type,bill_id,action):
     
 def stockbill_update_detail(request,bill):
     
-    detaillist=bill.stockbilldetail_set.all()
-    bill.stockbilldetail_set.clear()
+    detaillist=bill.billdetailbase_set.all()
+    bill.billdetailbase_set.clear()
     detaillist=[]
     formated_text=request.POST['tt_billdetail']
     for line in formated_text.splitlines():
@@ -184,10 +184,10 @@ def stockbill_update_detail(request,bill):
         detail=StockBillDetail(stockbill=bill,product=product,location=location,Quantity=qty)
         print('detail')
         print(detail.quantity)
-        #[bill.stockbilldetail_set].append(detail) # 
-        bill.stockbilldetail_set.add(detail)
+        #[bill.billdetailbase_set].append(detail) #
+        bill.billdetailbase_set.add(detail)
         print('detailcount after parse text')
-        print (bill.stockbilldetail_set.count())
+        print (bill.billdetailbase_set.count())
         #import pdb; pdb.set_trace()
         #detaillist_formated_text=bill.generat_detail_to_formatedtext()
     '''return render(request,'stockmanage/stockbill_edit.html',

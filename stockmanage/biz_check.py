@@ -20,14 +20,15 @@ class biz_check():
             for change in list_change:
                 #import pdb;pdb.set_trace()
                 #update productstock
-                ps=get_object_or_404(ProductStock,stocklocation=change.location,theproduct=change.product)
+                ps=get_object_or_404(ProductStock,stocklocation=change.location, product=change.product)
                 ps.quantity+=change.quantity
                 ps.save()
+                change.save()
                 if change.quantity>0:
-                    change.stockbill=check_stockin_bill
+                    change.billbase=check_stockin_bill
                 else:
                     change.quantity*=-1
-                    change.stockbill=check_stockout_bill
+                    change.billbase=check_stockout_bill
                 change.save()
 
 

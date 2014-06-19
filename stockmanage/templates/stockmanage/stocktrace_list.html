@@ -1,0 +1,37 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+        {%load get_bill_type%}
+stock trace
+{%endblock%}
+{%block content%}
+{% if trace_list %}
+<table class="table">
+	<thead>
+		<tr>
+			<th>数量变化</th><th>时间</th><th>单据类型</th><th>原因</th><th>单据号</th>
+		</tr>
+	</thead>
+
+	{%for trace in trace_list%}
+	<tr>
+		<td>{{trace.quantity}}</td>
+		<td>{{trace.BillTime}}</td>
+		<td>{{trace|get_bill_type}}</td>
+		<td>{{trace.BillReason}}</td>
+		<td> {%if trace.BillType == 'in'%}
+			<a href="{%url 'stockmanage:stockbill_stockin_edit' trace.id%}"> {{trace.BillNo}}</a>
+			{%elif trace.BillType == 'out'%}
+			<a href="{%url 'stockmanage:stockbill_stockout_edit' trace.id%}"> {{trace.BillNo}}</a>
+		    {%else%}{{trace.billbase.BillNo}}
+			{%endif%}</td>
+	</tr>
+	{%endfor%}
+</table>
+{%else%}
+<p>
+	No bill are availabel.
+</p>
+{%endif%}
+{%include 'stockmanage/widget_paginator.html'%}
+
+{%endblock%}

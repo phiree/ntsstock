@@ -23,8 +23,8 @@ class CheckBillDetailMethodTests(TestCase):
         detail=ft_cbd.create(1)[0]
         #import pdb;pdb.set_trace()
         detail.GenerateStockDetail(stockbills[0],stockbills[1])
-        self.assertEqual(1,stockbills[1].stockbilldetail_set.count())
-        self.assertEqual(3,stockbills[1].stockbilldetail_set.all()[0].quantity)
+        self.assertEqual(1,stockbills[1].billdetailbase_set.count())
+        self.assertEqual(3,stockbills[1].billdetailbase_set.all()[0].quantity)
         #cbd=ft_cbd.Check
 
 class ProductMethodTests(TestCase):   
@@ -72,7 +72,7 @@ class StockLocationTest(TestCase):
         
         fixturelocation=AutoFixture(StockLocation,generate_fk=True)
         location=fixturelocation.create(1)[0]
-        fixturestock=AutoFixture(ProductStock,field_values={'theproduct':theproduct},)
+        fixturestock=AutoFixture(ProductStock,field_values={'product':theproduct},)
         stocks=fixturestock.create(5)
         for stock in stocks:
             stock.stocklocation=location

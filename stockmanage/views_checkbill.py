@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.core.urlresolvers import  reverse
 from django.views import generic
 from django.core import serializers
-from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,CheckBill,CheckBillDetail
+from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,CheckBill,CheckBillDetail,BillDetailBase
 from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -70,7 +70,7 @@ def edit(request,bill_id=None):
 
     else:
         #for billdetail in checkbill.stockbill_set.all():
-        checkbilldetail_list=StockBillDetail.objects.filter(stockbill__id=bill_id).select_subclasses()
+        checkbilldetail_list=BillDetailBase.objects.filter(billbase__id=bill_id).select_subclasses()
         #import pdb;pdb.set_trace()
         generate_form=CheckBillGenerateForm({'product_list':'\n'.join( checkbill.generat_detail_to_formatedtext())})
         detail_text=checkbill.generat_detail_to_formatedtext()
