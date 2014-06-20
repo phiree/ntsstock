@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'stockmanage',
     #'simple_paginator',
-    'django_tables2',
+
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,0 +1,62 @@
+{% extends "stockmanage/base.html" %}
+{%block content_title%}
+<span class='sub-header'>用户手册</span>
+{%endblock%}{%block nav_user_manual%}
+active
+{%endblock%}
+{%block content%}
+        <style>
+            .format_tip
+            {
+             color:red;
+            }
+        </style>
+<h3>1 初始化数据</h3>
+<ol>
+    <li>点击左侧菜单栏的 '初始化导入'</li>
+    <li>选择初始化excel文件.文件格式与现在使用的excel保持一致,具体格式如下:
+        <table border="1">
+            <tr>
+                <td>序号</td>
+                <td>原NTS编码</td>
+                <td>数据库编码</td>
+                <td>产品名称</td>
+                <td>供应商型号</td>
+                <td>产品规格</td>
+                <td>材质</td>
+                <td>价格</td>
+                <td>单位</td>
+                <td>入库时间</td>
+                <td>原始数</td>
+                <td>本次盘点数</td>
+                <td>盘点人员</td>
+                <td>货架号</td>
+                <td>出库时间</td>
+                <td>出库数量</td>
+                <td>备注</td>
+            </tr>
+            <tr>
+                <td><span class="format_tip">如果为空,则为0</span>237
+</td>
+                <td><span class="format_tip">必填</span> NS00017707</td>
+                <td>可以为空</td>
+                <td><span class="format_tip">必填</span> 宝鼎座地烟灰桶(岩石玻璃盆) GROUND ASH BARREL </td>
+                <td>	GPX-33H	</td>
+                <td> </td>
+                <td>铜</td>
+                <td><span class="format_tip">如果是美元,前面加 USD;如果是'无此产品',则不导入.</span> 304.85</td>
+                <td>个</td>
+                <td>2013/5/7</td>
+                <td>1</td>
+                <td>1</td>
+                <td> </td>
+                <td><span class="format_tip">必须指定精确的位置,可以合并行</span>1.2.35</td>
+                <td> </td>
+                <td> </td>
+                <td><span class="format_tip">如果是'已退货'则不导入</span>已退货</td>
+            </tr>
+        </table>
+    </li>
+</ol>
+<h3>2 创建入库单</h3>
+{%endblock%}

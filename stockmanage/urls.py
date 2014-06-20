@@ -40,6 +40,7 @@ urlpatterns=patterns(''
                      #产品详情
                      ,url(r'^product/detail/(?P<product_id>[^/]+)/',views_product.detail,name='product_detail')
                      ,url(r'^init_importdata/',views_init.importdata,name='init_importdata')
+                     ,url(r'^user_manual/',TemplateView.as_view(template_name='stockmanage/user_manual.html'),name='user_manual')
                      ,url(r'^$',views.index,name='index')
                      ,
                      )

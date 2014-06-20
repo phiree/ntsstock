@@ -11,7 +11,7 @@ class StockBillForm(ModelForm):
         super(StockBillForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         #import pdb; pdb.set_trace()
-        self.fields['BillReason'] = forms.CharField(max_length=100, label='鍘熷洜',
+        self.fields['BillReason'] = forms.CharField(max_length=100, label='原因',
                                                     widget=forms.Select(
                                                         choices=
                                                         StockBill.Reason_Choices[0 if instance.BillType == 'in' else 1][
