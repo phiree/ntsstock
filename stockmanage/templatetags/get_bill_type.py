@@ -23,7 +23,7 @@ def get_bill_type( value ):
     """
 
     if  isinstance(value,StockBill):
-        return 'Stock_'+ StockBill(value).BillType
+        return 'Stock_'+ value.BillType
     elif isinstance(value,CheckBill):
         return 'CheckBill'
     else:

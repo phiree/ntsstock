@@ -3,6 +3,7 @@ from stockmanage import views,views_productstock,views_checkbill,views_product,v
 from stockmanage.views_about import about
 from django.views.generic import  TemplateView
 from stockmanage.views_checkbill import CheckBillList
+from stockmanage.views_bill import BillListView
 from stockmanage.views_productstock import ProductStockList,StockTraceList
 from stockmanage.views_init import ViewInitImport
 urlpatterns=patterns(''
@@ -11,6 +12,8 @@ urlpatterns=patterns(''
                      ,url(r'^location_add_modify/',views.location_add_modify,name='location_add_modify' )
                      ,url(r'^location_get/(?P<location_id>\d+)$',views.location_get,name='location_get' )
                      ,url(r'^location_delete/(?P<location_id>\d+)$',views.location_delete,name='location_delete' )
+                     #单据列表
+                     ,url(r'^bill/list/(?P<billtype>[^/]+)/',BillListView.as_view(template_name='stockmanage/billbase_list.html'),name='bill_list' )
                      #入库单
                      ,url(r'^stockbill/stockin/list/',views.stockbill_stockin_list,name='stockbill_stockin_list' )
                      #出库单

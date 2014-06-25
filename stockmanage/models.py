@@ -249,8 +249,12 @@ class StockBillDetail(BillDetailBase):
     '''product info in the bill'''
     location = ForeignKey(StockLocation,null=True)
 
+class StockTransDetail(BillDetailBase):
+    location_from=ForeignKey(StockLocation,null=True,related_name='location_from')
+    location_to=ForeignKey(StockLocation,null=True, related_name='location_to')
 
-
+class StockTransBill(BillBase):
+    pass
 class CheckBill(BillBase):
     CheckTime_Begin = DateTimeField(blank=True, default=datetime.now())
     CheckTime_Complete = DateTimeField(null=True)
