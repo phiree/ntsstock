@@ -15,6 +15,7 @@ from stockmanage.forms import StockBillForm,CheckBillGenerateForm
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.forms.models import inlineformset_factory
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 '''
 bill list views
 '''
@@ -25,14 +26,15 @@ class BillListView(ListView):
         #import pdb;pdb.set_trace()
         #determine bill type
         billtype=self.kwargs.get('billtype')
-        print(billtype)
-        if billtype.lower()=='checkbill':
-            bill_list=CheckBill.objects.order_by('BillTime')
-        elif billtype.lower()=='stockbill':
-            bill_list=StockBill.objects.order_by('BillTime')
-        elif billtype.lower()=='stocktransbill':
-            bill_list=StockTransBill.objects.order_by('BillTime')
+        if not billtype:
+            bill_list=BillBase.objects.all().select_subclasses()
         else:
-            bill_list=[]
+            #real_cls=eval(billtype)
+            real_cls=globals()[billtype]
+            return real_cls.objects.all()
         return bill_list
+
+class BillDetailView(DetailView):
+    model=BillBase
+
 

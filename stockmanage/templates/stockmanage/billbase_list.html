@@ -17,7 +17,7 @@ active
 		<td>{{bill.BillNo}}</td>
 		<td>{{bill.BillTime}}</td>
 		<td>{{bill|get_bill_type}}</td>
-		<td><a href="#">详情</a></td>
+		<td><a href="{%url 'stockmanage:bill_detail' bill.id%}">详情</a></td>
 	</tr>
 	
 	{%endfor%}

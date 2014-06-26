@@ -1,0 +1,138 @@
+{% extends "stockmanage/base.html" %}
+{%load staticfiles%}
+{%load get_subclass_bill%}
+{%load get_class_name%}
+{%load select_subclasses_bill_detail%}
+{%block header%}
+<link rel="stylesheet" type="text/css" href="{%static 'stockmanage/css/stockbill.css'%}" media='screen,projector'/>
+
+<script type="text/javascript" src="{%static 'stockmanage/bootstrap-3.1.1-dist/js/bootstrap.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/bootstrap-confirmation.js'%}"></script>
+<script type="text/javascript" src="{%static 'stockmanage/js/stockbill.js'%}"></script>
+{%endblock%}
+{%block content_title%}
+{%endblock%}
+
+{%block nav_stockin_create%}
+
+{%endblock%}
+{%block nav_stockout_create%}
+
+{%endblock%}
+{%block content%}
+{%with object=object|get_subclass_bill object_name=object|get_subclass_bill|get_class_name%}
+<form method="post" id='fm_bill' class='navbar-form navbar-left' action="{{action}}">
+    {% csrf_token %}
+    <div id='billeditor'>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                <label> 单号:</label>
+
+
+                {%if object.id%}{{object.BillNo}}
+                {%else%}{{bill_no}}
+                {%endif%}
+
+                <label>状态:</label>{{object.BillState}}
+            </div>
+            <div class="panel-heading">
+                {{form}}
+            </div>
+            <div class="panel-body" style='padding:0'>
+                <!--detail list-->
+                {%if object.id%}
+
+                {%if object.billdetailbase_set.all%}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td>Code</td>
+                            <td>Product</td>
+                            <td>Location</td>
+                            <td>Quantity</td>
+                            {%  if object_name == 'CheckBill'%}
+                            <td>Real Quantity</td>
+                            {%endif%}
+                        </tr>
+                        {%for detail in object|select_subclasses_bill_detail %}
+                        <tr>
+                            <td>{{detail.product.Code_Original}}</td>
+                            <td>{{detail.product}}</td>
+                            <td> {{detail.location}}</td>
+                            <td> {{detail.quantity}}</td>
+                            {%if object_name == 'CheckBill'%}
+                            {% if object.CheckState == 'progressing'%}
+                            <td><input type="text" name="real_quantity_{{detail.id}}" value="{{detail.realquantity}}"/>
+                            </td>
+                            {%elif object.CheckState == 'complete'%}
+                            <td> {{detail.realquantity}}</td>
+                            {%else%}
+                            <td> {{detail|get_class_name}}</td>
+                            {%endif%}
+                            {%endif%}
+
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%else%}
+                <p>没有数据</p>
+                {%endif%}
+                <!--detail list end-->
+
+                {%endif%}
+                {%if object.BillState == 'draft'%}
+                <div class="modal-body">
+                    <div id="tab_detail">
+                        <p class='info'>
+                            格式要求:" 产品代码,数量,展位代码 ","每行一条.
+                            <br/>
+                            注意:单据详情将被覆盖
+                        </p>
+
+                        <form method="post" id="fm_detail_update" action='{{action}}'>
+                            {%csrf_token%}
+                            <textarea style="width:100%" name='tt_billdetail' class='form-control' rows='5'>{{detaillist_formated_text}}</textarea>
+                        </form>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                {%endif%}
+            </div>
+        </div>
+        <div>
+
+                {%ifequal object.BillState 'draft'%}
+                <input class="btn  btn-default" type="submit" name="savedraft" value="保存"/>
+                    {%if object.id%}
+                        {%if object_name == 'StockBill'%}
+                        <input id='btn_apply' onclick="javascript:return confirm('提交之后,将进入库存,单据不可再修改.确定提交?')"
+                           class="btn btn-xs btn-default" type="submit" name="apply" value="提交库存"/>
+                        {%elif  object_name == 'CheckBill'%}
+                           {%if object.CheckState == 'progressing'%}
+
+                         <input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')"
+                           class="btn btn-xs btn-default" type="submit" name="apply" value="
+                           "/>
+                            {%elif object.CheckState == 'complete'%}
+                                <input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')"
+                           class="btn btn-xs btn-default" type="submit" name="apply" value="提交盘点表"/>
+                            {%else%}
+                                <input id='btn_apply' onclick="javascript:return confirm('提交之后,单据不可再修改.确定提交?')"
+                           class="btn btn-xs btn-default" type="submit" name="apply" value="提交盘点表"/>
+                            {%endif%}
+                        {%endif%}
+                    {%endif%}
+                {%endifequal%}
+                {%ifequal object.BillState 'applied'%}
+                    <input class="btn   btn-default" type="submit" name="pass" value="审核通过"/>
+                    <input class="btn   btn-default" type="submit" name="refused" value="审核不通过"/>
+                {%endifequal%}
+
+        </div>
+    </div>
+</form>
+{%endwith%}
+{%endblock%}
