@@ -1,0 +1,29 @@
+{% extends "stockmanage/base.html" %}
+{%load get_bill_type%}
+{%block content_title%}
+<span class='sub-header'></span>
+{%endblock%}{%block nav_check_list%}
+active
+{%endblock%}
+{%block content%}
+
+<table class="table">
+	<thead>
+	<tr>
+		<th>单号</th><th>时间</th><th>状态</th><th> </th>
+	</tr></thead>
+	{%for bill in object_list%}
+	<tr>
+		<td>{{bill.BillNo}}</td>
+		<td>{{bill.BillTime}}</td>
+		<td>{{bill|get_bill_type}}</td>
+		<td><a href="{%url 'stockmanage:bill_detail' bill.id%}">详情</a></td>
+	</tr>
+	
+	{%endfor%}
+</table>
+{%include 'stockmanage/widget_paginator.html'%}
+<a class="button" href="#">新建盘点单</a>
+
+
+{%endblock%}

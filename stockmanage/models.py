@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.db.models.fields import CharField, DecimalField, IntegerField, DateTimeField, TextField, \
-    Field
+    Field,BooleanField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 from model_utils.managers import InheritanceManager
 logger = logging.getLogger(__name__)
@@ -128,6 +128,7 @@ class BillBase(models.Model):
     state_draft = 'draft'  # saved for future change. not complete
     state_applied = 'applied'  # appled for checking. can't change anymore 
     state_checked = 'checked'  # ok
+    IsApproved=BooleanField(default=False)
     State_Choices = ((state_draft, 'draft'), (state_applied, 'applied'),
                      (state_checked, 'checked'))
     BillState = CharField(max_length=10, choices=State_Choices, default=state_draft)
@@ -249,8 +250,12 @@ class StockBillDetail(BillDetailBase):
     '''product info in the bill'''
     location = ForeignKey(StockLocation,null=True)
 
+class StockTransDetail(BillDetailBase):
+    location_from=ForeignKey(StockLocation,null=True,related_name='location_from')
+    location_to=ForeignKey(StockLocation,null=True, related_name='location_to')
 
-
+class StockTransBill(BillBase):
+    pass
 class CheckBill(BillBase):
     CheckTime_Begin = DateTimeField(blank=True, default=datetime.now())
     CheckTime_Complete = DateTimeField(null=True)

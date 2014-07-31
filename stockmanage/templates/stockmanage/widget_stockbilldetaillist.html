@@ -1,12 +1,12 @@
 {%if bill.billdetailbase_set.all%}
 
-        {%load select_subclasses%}
+
 <div class="table-responsive">
 <table class="table table-bordered table-striped">
 	<tr>
 		<td>Code</td><td>Product</td><td>Location</td><td>Quantity</td><td></td>
 	</tr>
-	{%for detail in  bill.billdetailbase_set.all|select_subclasses%}
+	{%for detail in  bill.billdetailbase_set.all%}
 	<tr>
 		<td>{{detail.product.Code_Original}} </td><td>{{detail.product}} </td><td> {{detail.location}} </td>
 		<td> {{detail.quantity}} </td><td> {{detail.realquantity}} </td>

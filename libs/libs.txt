@@ -19,3 +19,6 @@ pip install django-tables2
 #get the real type
 
 pip instll django-model-utils
+
+#package tool 
+pip install cx_Freeze  
