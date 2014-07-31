@@ -11,7 +11,7 @@ from stockmanage.models import Product,StockLocation,StockBill,StockBillDetail,P
 from stockmanage.forms import StockBillForm
 #from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from stockmanage.paging_extra import ExPaginator
-from stockmanage.tables3 import table2_productstock
+
 from django.views.generic import ListView
 #from paging_extra import ExPaginator
 #import simple_paginator
