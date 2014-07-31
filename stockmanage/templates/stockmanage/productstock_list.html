@@ -1,6 +1,8 @@
 {% extends "stockmanage/base.html" %}
 {%load staticfiles%}
+
 {%block header%}
+
 {%endblock%}
 {%block content_title%}
 当前库存情况
@@ -39,6 +41,6 @@ active
 {%include 'stockmanage/widget_paginator.html'%}
 
 <div>
-{#render_table productstock_list#}
+
 </div>
 {%endblock%}
